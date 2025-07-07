@@ -1,0 +1,22 @@
+.slider-container .slick-slide h3 {
+  background: #9bc7f6;
+  color: #333;
+  font-size: 36px;
+  line-height: 100px;
+  margin: 10px;
+  padding: 2%;
+  position: relative;
+  text-align: center;
+  transition: transform 0.3s ease, z-index 0.3s ease, background 0.3s,
+    color 0.3s, opacity 0.3s;
+  z-index: 1;
+  opacity: 0.5; /* 양옆 카드 투명도 적용 */
+}
+
+.slider-container .slick-center h3 {
+  transform: scale(1.2) translateZ(0.01px);
+  z-index: 10;
+  background: #007bff;
+  color: #fff;
+  opacity: 1; /* 센터 카드만 불투명 */
+}
