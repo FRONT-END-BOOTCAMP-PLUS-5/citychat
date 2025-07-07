@@ -2,11 +2,14 @@
 
 /* 전체 앱 바 스타일 */
 .app-bar {
-  background-color: #87ceeb; /* 하늘색 배경 */
+  background-color: rgba(255, 255, 255, 0.3); /* 하늘색 배경 */
   min-height: 10vh; /* 최소 높이 */
   position: static; /* 위치 고정 (원래 MUI와 동일) */
   width: 100%;
   box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+  position: fixed;
+  left: 0;
+  top: 0;
 }
 
 /* 컨테이너 Wrapper (MUI Container maxWidth="xl" 역할) */
@@ -22,7 +25,7 @@
 .toolbar {
   display: flex;
   align-items: center;
-  padding-top: 2.5vh;
+  /* padding-top: 2.5vh; */
   min-height: 10vh;
   justify-content: space-between; /* 로고와 메뉴를 양 끝으로 정렬 */
   flex-wrap: wrap; /* 작은 화면에서 요소들이 줄바꿈되도록 */
@@ -31,7 +34,7 @@
 /* 로고 링크 스타일 */
 .logo-link {
   text-decoration: none;
-  color: #ffffff; /* 흰색 글자 */
+  color: #ffffff; /* 로고 글자 */
   flex-shrink: 0; /* 공간이 부족해도 줄어들지 않도록 */
 }
 
@@ -75,7 +78,7 @@
   margin: 0px 20px;
   font-size: 18px;
   font-weight: bold;
-  color: white;
+  color: #ffbb00;
   display: block;
   text-decoration: none;
   transition: color 0.3s ease; /* 호버 효과 부드럽게 */
@@ -106,7 +109,7 @@
 }
 
 .drawer.open {
-  right: 0; /* 열렸을 때 화면 안으로 */
+  right: 200; /* 열렸을 때 화면 안으로 */
 }
 
 /* 사이드바 내용 */

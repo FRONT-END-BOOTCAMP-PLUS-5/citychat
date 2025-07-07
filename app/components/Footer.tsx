@@ -22,7 +22,10 @@ export default function Footer() {
           </div>
           <div className="footer-links">
             <p className="footer-text personal-data-agreement">
-              사이트 경로 넣을 곳
+              6조 1차 프로젝트
+            </p>
+            <p className="footer-text personal-data-agreement">
+              배포 사이트 주소 링크
             </p>
           </div>
         </div>
