@@ -1,5 +1,4 @@
 import "./globals.css"; // 전역 스타일
-import Image from "next/image"; // img태그 사용시 경고
 import Slider from "./components/Slider"; // 슬라이더
 
 export default function Home() {
@@ -8,20 +7,10 @@ export default function Home() {
       style={{
         position: "relative",
         width: "100vw",
-        height: "100vh",
+        height: "90vh",
         overflow: "hidden",
       }}
     >
-      {/* 배경 이미지 */}
-      <Image
-        src="/assets/background.jpg"
-        alt="메인배경 이미지"
-        layout="fill" // 영역에 꽉 채우게 해줌
-        objectFit="cover" // 이미지가 부모 요소를 꽉 채우면서 비율을 유지
-        quality={100} // 이미지 품질 (선택 사항)
-        style={{ zIndex: -1 }} // 다른 요소들보다 뒤에 오도록 z-index 낮추기
-      />
-
       {/* 크로셀 슬라이드 */}
       <div
         style={{

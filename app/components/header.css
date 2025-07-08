@@ -4,12 +4,13 @@
 .app-bar {
   background-color: rgba(255, 255, 255, 0.3); /* 하늘색 배경 */
   min-height: 10vh; /* 최소 높이 */
-  position: static; /* 위치 고정 (원래 MUI와 동일) */
+  position: sticky; /* 위치 고정 (원래 MUI와 동일) */
   width: 100%;
   box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
   position: fixed;
   left: 0;
   top: 0;
+  z-index: 10; /* 메인페이지에서 이미지보다 높은 인덱스값 부여 */
 }
 
 /* 컨테이너 Wrapper (MUI Container maxWidth="xl" 역할) */
@@ -88,6 +89,8 @@
   color: rgba(255, 255, 255, 0.7); /* 호버 시 색상 변경 */
 }
 
+/* ---------------- 모바일 영역(반응형) ----------------- */
+
 /* 모바일 메뉴 아이콘 Wrapper (데스크톱에서는 숨김) */
 .mobile-menu-icon-wrapper {
   display: flex; /* 기본적으로 모바일에서 보임 */
@@ -102,14 +105,14 @@
   right: -200px; /* 초기에는 화면 밖으로 숨김 */
   width: 200px;
   height: 100vh;
-  background-color: #87ceeb; /* 사이드바 배경색 */
+  background-color: #ffbb00; /* 사이드바 배경색 */
   transition: right 0.3s ease-in-out; /* 부드러운 슬라이드 효과 */
-  z-index: 1200; /* AppBar보다 위에 오도록 */
+  z-index: 10; /* AppBar보다 위에 오도록 */
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
 }
 
 .drawer.open {
-  right: 200; /* 열렸을 때 화면 안으로 */
+  right: 0px; /* 열렸을 때 화면 안으로 */
 }
 
 /* 사이드바 내용 */
@@ -124,8 +127,7 @@
 .drawer-close-button-wrapper {
   display: flex;
   justify-content: flex-end;
-  padding: 8px 0;
-  margin-right: 50px; /* 원본과 유사하게 오른쪽 여백 */
+  padding-bottom: 10px;
 }
 
 /* 사이드바 리스트 */
@@ -137,24 +139,25 @@
 
 /* 사이드바 리스트 아이템 */
 .drawer-list-item {
-  margin-bottom: 8px; /* 아이템 간 간격 */
+  margin-bottom: 8px;
 }
 
 /* 사이드바 링크 */
 .drawer-link {
   display: block;
   text-decoration: none;
-  color: #ffffff; /* 글자색 */
-  padding: 12px 16px; /* 패딩 */
+  color: #ffffff;
+  padding: 12px 16px;
   font-size: 16px;
   font-weight: bold;
   transition: background-color 0.3s ease, color 0.3s ease;
-  border-radius: 4px; /* 살짝 둥근 모서리 */
+  border-radius: 4px;
 }
 
+/* 사이드바 버튼 호버 */
 .drawer-link:hover {
   background-color: #ffffff; /* 호버 시 배경색 */
-  color: #87ceeb; /* 호버 시 글자색 */
+  color: #ffbb00; /* 호버 시 글자색 */
 }
 
 /* 미디어 쿼리: 데스크톱 화면에서만 적용 */
