@@ -31,8 +31,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* ⭐ 중요: 슬라이더 컨테이너의 높이를 명시적으로 지정 */
-  /* 예를 들어, 부모인 .main-content-area의 높이를 꽉 채우도록 100%로 설정 */
   height: 100%;
 }
 
@@ -44,6 +42,7 @@
 .slick-slider.slick-vertical .slick-track {
   display: flex !important; /* 트랙을 flex로 설정하여 슬라이드들이 세로로 정렬되도록 */
   flex-direction: column !important; /* 세로 정렬 */
+  height: 100% !important;
 }
 
 .slick-slider.slick-vertical .slick-slide {
@@ -51,7 +50,7 @@
   display: flex !important; /* flexbox로 내용 정렬 */
   align-items: center !important; /* 세로 가운데 정렬 */
   justify-content: flex-start !important; /* 텍스트를 시작점에 정렬 */
-  padding: 10px 0; /* 세로 패딩 추가 */
+  padding: 20px 0; /* 세로 패딩 추가 */
   box-sizing: border-box;
 }
 
@@ -66,6 +65,7 @@
   text-align: left;
   width: 100%;
   white-space: nowrap;
+  line-height: 3.5;
 }
 
 .city-nav-item.active {

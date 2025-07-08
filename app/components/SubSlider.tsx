@@ -44,20 +44,22 @@ const SubSlider: React.FC = () => {
   const [activeCityIndex, setActiveCityIndex] = useState<number>(0);
   const cityNavSliderRef = useRef<Slider | null>(null);
 
+  // 지역 네비게이션 슬라이더 설정
   const navSettings: Settings = {
     dots: false,
-    infinite: false, // 무한 스크롤 여부. 세로 스크롤에서는 보통 false로 설정합니다.
-    slidesToShow: 1, // 한 화면에 보여줄 슬라이드 개수
-    slidesToScroll: 1, // 한 번에 스크롤될 슬라이드 개수
-    vertical: true, // 세로 모드 활성화
-    verticalSwiping: true, // 세로 스와이프 활성화
-    swipeToSlide: true, // 스와이프 시 가장 가까운 슬라이드로 스냅
-    centerMode: true, // 활성화된 슬라이드를 가운데로 정렬 (시각적 효과)
-    centerPadding: "0px", // centerMode 사용 시 패딩
+    infinite: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    vertical: true,
+    verticalSwiping: true,
+    swipeToSlide: true,
+    centerMode: true,
+    centerPadding: "0px",
+    initialSlide: 0,
     beforeChange: (_current: number, next: number) => {
       setActiveCityIndex(next);
     },
-    // 필요하다면 반응형 설정 추가
+    //  반응형 설정
     responsive: [
       {
         breakpoint: 768,
