@@ -1,0 +1,160 @@
+/* subSlider.css */
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.brick-background {
+  width: 100%;
+  max-width: 1200px;
+  background-size: cover;
+  background-repeat: repeat;
+  padding: 50px;
+  box-sizing: border-box;
+}
+
+.main-content-area {
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-height: 500px; /* 세로 슬라이더의 높이를 충분히 확보 */
+}
+
+.vertical-nav-container {
+  width: 150px; /* 세로 슬라이더의 너비 */
+  margin-right: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* ⭐ 중요: 슬라이더 컨테이너의 높이를 명시적으로 지정 */
+  /* 예를 들어, 부모인 .main-content-area의 높이를 꽉 채우도록 100%로 설정 */
+  height: 100%;
+}
+
+/* vertical nav용 react-slick 오버라이드 */
+.slick-slider.slick-vertical .slick-list {
+  height: 100% !important; /* 슬라이드 리스트가 전체 높이를 차지하도록 */
+}
+
+.slick-slider.slick-vertical .slick-track {
+  display: flex !important; /* 트랙을 flex로 설정하여 슬라이드들이 세로로 정렬되도록 */
+  flex-direction: column !important; /* 세로 정렬 */
+}
+
+.slick-slider.slick-vertical .slick-slide {
+  height: auto !important; /* 슬라이드가 콘텐츠 높이를 갖도록 */
+  display: flex !important; /* flexbox로 내용 정렬 */
+  align-items: center !important; /* 세로 가운데 정렬 */
+  justify-content: flex-start !important; /* 텍스트를 시작점에 정렬 */
+  padding: 10px 0; /* 세로 패딩 추가 */
+  box-sizing: border-box;
+}
+
+.city-nav-item {
+  font-size: 24px;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+  position: relative;
+  padding-left: 20px;
+  text-align: left;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.city-nav-item.active {
+  color: #000;
+}
+
+.city-nav-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #ccc;
+  transition: background-color 0.3s ease;
+}
+
+.city-nav-item.active::before {
+  background-color: #000;
+}
+
+.slick-slider.slick-vertical
+  .slick-slide.slick-current.slick-active.slick-center
+  .city-nav-item {
+  color: #007bff; /* 활성화 및 중앙에 있는 아이템 강조 색상 */
+  transform: scale(1.1); /* 중앙 아이템 크기 확대 */
+}
+
+.welcome-section {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 50px;
+}
+
+.welcome-section h1 {
+  font-size: 48px;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.content-card {
+  display: flex;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  max-width: 800px;
+}
+
+.card-image {
+  width: 50%;
+  height: auto;
+  object-fit: cover;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.card-text-container {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50%;
+}
+
+.card-text-container p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.explore-button {
+  background-color: #ffd700;
+  color: #333;
+  border: none;
+  border-radius: 30px;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  align-self: flex-start;
+}
+
+.explore-button:hover {
+  background-color: #ffc107;
+  transform: translateY(-2px);
+}

@@ -46,7 +46,7 @@ function CenterModeCarousel() {
   };
 
   return (
-    <div className="slider-container">
+    <div className="slider-container" style={{ paddingTop: "15px" }}>
       <Slider {...settings}>
         <div>
           <h3>1</h3>
