@@ -1,0 +1,116 @@
+/* Footer.css */
+
+/* 메인 박스 컴포넌트 스타일 */
+.footer-container {
+  width: 100%;
+  /* 최소 높이: 10vh; */ /* 필요에 따라 높이를 조정합니다. 콘텐츠가 높이를 결정합니다. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #000;
+  font-weight: bold;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  z-index: 1000;
+  box-sizing: border-box;
+  padding: 20px 16px;
+}
+
+/* 컨테이너 컴포넌트 스타일 */
+.footer-content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1280px;
+  width: 100%;
+}
+
+/* 왼쪽 섹션: 로고 및 텍스트 */
+.footer-left-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* 로고 이미지 */
+.footer-logo img {
+  height: 30px;
+  width: auto;
+  display: block;
+}
+
+/* 푸터 텍스트 영역*/
+.footer-links {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 푸터 텍스트 */
+.footer-text {
+  font-weight: normal;
+  margin-bottom: 0;
+  white-space: nowrap;
+  line-height: 1.5;
+  margin-top: 0;
+  color: #000;
+  font-weight: bold;
+  font-size: 0.7rem;
+}
+
+.social-icons {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 20px;
+}
+
+/* 소셜 아이콘 이미지 */
+.social-icons li a img {
+  height: 30px;
+  width: 30px;
+  display: block;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.social-icons li a img:hover {
+  opacity: 1;
+}
+
+/* 화면 축소시 적용 */
+@media (max-width: 768px) {
+  .footer-content-wrapper {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 0 16px;
+  }
+
+  .footer-left-section {
+    /* 로고와 텍스트를 나란히 유지하기 위해 flex-direction: row 유지 */
+    flex-direction: row;
+    gap: 10px; /* 나란히 있는 항목을 위한 간격 조정 */
+    align-items: center; /* 항목들을 세로 중앙에 정렬 */
+  }
+
+  .footer-links {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* 소셜 아이콘 */
+  .social-icons {
+    justify-content: center;
+  }
+
+  /* 매우 작은 화면의 경우 필요하다면 글꼴 크기 추가로 줄이기 */
+  .footer-text {
+    font-size: 0.6rem;
+  }
+}
