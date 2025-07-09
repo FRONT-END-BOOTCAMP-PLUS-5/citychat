@@ -1,6 +1,6 @@
 // Subslider.tsx
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -44,6 +44,39 @@ const SubSlider: React.FC = () => {
   const [activeCityIndex, setActiveCityIndex] = useState<number>(0);
   const cityNavSliderRef = useRef<Slider | null>(null);
 
+  // 마우스 스크롤(useEffect 사용)
+  // (현재 이슈 : 위아래로 클릭 드래그가 되지 않음, 해결 되면 삭제)
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const handleWheel = (event: WheelEvent) => {
+      if (!cityNavSliderRef.current) return; // debounce
+
+      if (scrollTimeout.current) return;
+      scrollTimeout.current = setTimeout(() => {
+        scrollTimeout.current = null;
+      }, 700); // prevent fast scrolls
+
+      if (event.deltaY > 0) {
+        // scroll down
+        const nextIndex = (activeCityIndex + 1) % cityData.length;
+        setActiveCityIndex(nextIndex);
+        cityNavSliderRef.current.slickGoTo(nextIndex);
+      } else {
+        // scroll up
+        const prevIndex =
+          (activeCityIndex - 1 + cityData.length) % cityData.length;
+        setActiveCityIndex(prevIndex);
+        cityNavSliderRef.current.slickGoTo(prevIndex);
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel);
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+    };
+  }, [activeCityIndex]);
+
   // 지역 네비게이션 슬라이더 설정
   const navSettings: Settings = {
     dots: false,
@@ -56,9 +89,12 @@ const SubSlider: React.FC = () => {
     centerMode: true,
     centerPadding: "0px",
     initialSlide: 0,
-    beforeChange: (_current: number, next: number) => {
-      setActiveCityIndex(next);
-    },
+    beforeChange: (_c, n) => setActiveCityIndex(n),
+    // 하단은 마우스 휠 동작 이전 beforeChange
+    // beforeChange: (_current: number, next: number) => {
+    //   setActiveCityIndex(next);
+    // },
+
     //  반응형 설정
     responsive: [
       {
