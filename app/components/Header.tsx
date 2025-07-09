@@ -1,8 +1,8 @@
 "use client";
 import * as React from "react";
 import Image from "next/image";
-
-import "./header.css"; // CSS 파일을 import
+import Link from "next/link";
+import styles from "./header.module.css";
 
 const pages = ["Home", "Citys", "Landmark", "About", "Mypage"];
 
@@ -22,38 +22,39 @@ function Header() {
     };
 
   return (
-    <header className="app-bar">
-      <div className="container-wrapper">
-        <div className="toolbar">
-          {/* 로고/타이틀 부분 */}
-          <a href="#" className="logo-link">
+    <header className={styles.appBar}>
+      <div className={styles.containerWrapper}>
+        <div className={styles.toolbar}>
+          {/* ─────── 로고 / 타이틀 ─────── */}
+          <Link href="/" className={styles.logoLink}>
             <Image
               src="/assets/citychat.png"
               alt="CityChat Logo"
-              className="logo-image"
-              width={100}
-              height={30}
+              className={styles.logoImage}
+              width={664}
+              height={173}
+              priority
             />
-          </a>
+          </Link>
 
-          {/* 모바일 메뉴 아이콘 (햄버거 메뉴) */}
-          <div className="mobile-menu-icon-wrapper">
+          {/* ─────── 모바일 햄버거 아이콘 ─────── */}
+          <div className={styles.mobileMenuIconWrapper}>
             <button
-              className="icon-button menu-icon"
+              className={styles.iconButton}
               aria-label="메뉴 열기"
               onClick={toggleDrawer(true)}
             >
-              ☰ {/* 햄버거 아이콘 */}
+              ☰
             </button>
           </div>
 
-          {/* 데스크톱 내비게이션 */}
-          <nav className="nav-desktop">
+          {/* ─────── 데스크톱 내비게이션 ─────── */}
+          <nav className={styles.navDesktop}>
             {pages.map((page) => (
               <a
                 href={`/${page.toLowerCase()}`}
                 key={page}
-                className="nav-item"
+                className={styles.navItem}
               >
                 {page}
               </a>
@@ -62,23 +63,29 @@ function Header() {
         </div>
       </div>
 
-      {/* 사이드바 (Drawer) 컴포넌트 */}
-      <div className={`drawer ${isDrawerOpen ? "open" : ""}`}>
-        <div className="drawer-content">
-          {/* 사이드바 닫기 버튼 */}
-          <div className="drawer-close-button-wrapper">
+      {/* ─────── 사이드 Drawer ─────── */}
+      <div
+        className={`${styles.drawer} ${isDrawerOpen ? styles.open : ""}`.trim()}
+      >
+        <div className={styles.drawerContent}>
+          <div className={styles.drawerCloseButtonWrapper}>
             <button
-              className="icon-button close-icon"
+              className={styles.iconButton}
+              aria-label="메뉴 닫기"
               onClick={toggleDrawer(false)}
             >
-              ✕ {/* 닫기 아이콘 */}
+              ✕
             </button>
           </div>
-          {/* 사이드바 메뉴 리스트 */}
-          <ul className="drawer-list">
+
+          <ul className={styles.drawerList}>
             {pages.map((page) => (
-              <li key={page} className="drawer-list-item">
-                <a href={`/${page.toLowerCase()}`} className="drawer-link">
+              <li key={page} className={styles.drawerListItem}>
+                <a
+                  href={`/${page.toLowerCase()}`}
+                  className={styles.drawerLink}
+                  onClick={toggleDrawer(false)}
+                >
                   {page}
                 </a>
               </li>
