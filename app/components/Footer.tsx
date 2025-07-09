@@ -1,51 +1,57 @@
 "use client";
-import "./footer.css";
 
 import Image from "next/image";
+import Link from "next/link";
+import styles from "./footer.module.css";
 
 export default function Footer() {
   return (
-    // Box 컴포넌트 역할(전체적인 영역)을 하는 div
-    <div className="footer-container">
-      {/* Container(분할 시켜줄 영역) 컴포넌트 역할을 하는 div */}
-      <div className="footer-content-wrapper">
-        {/* Left section: Logo and texts */}
-        <div className="footer-left-section">
-          <div className="footer-logo">
+    <footer className={styles.footerContainer}>
+      <div className={styles.footerContentWrapper}>
+        {/* 왼쪽: 로고 + 텍스트 */}
+        <div className={styles.footerLeftSection}>
+          <Link href="/" className={styles.footerLogo}>
             <Image
               src="/assets/citychat2.png"
               alt="CityChat"
               width={50}
               height={50}
+              priority
             />
-            {/* Replace with your logo path */}
-          </div>
-          <div className="footer-links">
-            <p className="footer-text personal-data-agreement">
-              6조 1차 프로젝트
-            </p>
-            <p className="footer-text personal-data-agreement">
-              배포 사이트 주소 링크
+          </Link>
+
+          <div className={styles.footerLinks}>
+            <p className={styles.footerText}>6조 1차 프로젝트</p>
+            <p className={styles.footerText}>
+              <Link
+                href="https://배포‑사이트‑주소"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                배포 사이트 주소 링크
+              </Link>
             </p>
           </div>
         </div>
 
-        {/* Right section: Social media icons */}
-        <div className="footer-right-section">
-          <ul className="social-icons">
-            <li>
-              <a href="#">
-                <Image
-                  src="/assets/github.png"
-                  alt="github"
-                  width={24}
-                  height={24}
-                />
-              </a>
-            </li>
-          </ul>
-        </div>
+        {/* 오른쪽: 소셜 아이콘 */}
+        <ul className={styles.socialIcons}>
+          <li>
+            <Link
+              href="https://github.com/your‑repo"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image
+                src="/assets/github.png"
+                alt="GitHub"
+                width={24}
+                height={24}
+              />
+            </Link>
+          </li>
+        </ul>
       </div>
-    </div>
+    </footer>
   );
 }

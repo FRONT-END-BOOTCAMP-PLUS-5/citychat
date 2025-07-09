@@ -2,16 +2,14 @@
 
 import React from "react";
 import Slider from "react-slick";
+// import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "./slider.css";
-// CustomArrowProps 타입을 임포트
+import styles from "./slider.module.css";
 import { CustomArrowProps } from "react-slick";
 
-// 커스텀 화살표 컴포넌트
-// props의 타입을 CustomArrowProps로 지정
-function NextArrow(props: CustomArrowProps) {
-  const { className, style, onClick } = props;
+// ▶ 커스텀 화살표 컴포넌트
+function NextArrow({ className, style, onClick }: CustomArrowProps) {
   return (
     <div
       className={className}
@@ -21,9 +19,7 @@ function NextArrow(props: CustomArrowProps) {
   );
 }
 
-// PrevArrow도 똑같이 CustomArrowProps
-function PrevArrow(props: CustomArrowProps) {
-  const { className, style, onClick } = props;
+function PrevArrow({ className, style, onClick }: CustomArrowProps) {
   return (
     <div
       className={className}
@@ -33,7 +29,7 @@ function PrevArrow(props: CustomArrowProps) {
   );
 }
 
-function CenterModeCarousel() {
+export default function CenterModeCarousel() {
   const settings = {
     className: "center",
     centerMode: true,
@@ -43,32 +39,28 @@ function CenterModeCarousel() {
     speed: 500,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          centerPadding: "40px",
+        },
+      },
+    ],
   };
 
   return (
-    <div className="slider-container" style={{ paddingTop: "15px" }}>
+    <div className={styles.sliderContainer}>
       <Slider {...settings}>
-        <div>
-          <h3>1</h3>
-        </div>
-        <div>
-          <h3>2</h3>
-        </div>
-        <div>
-          <h3>3</h3>
-        </div>
-        <div>
-          <h3>4</h3>
-        </div>
-        <div>
-          <h3>5</h3>
-        </div>
-        <div>
-          <h3>6</h3>
-        </div>
+        {/* h3 대신 이미지 사용 예 */}
+        {[1, 2, 3, 4, 5, 6].map((n) => (
+          <div key={n}>
+            <h3>{n}</h3>
+            {/* <Image src={`/assets/slide-${n}.jpg`} alt={`slide ${n}`} fill /> */}
+          </div>
+        ))}
       </Slider>
     </div>
   );
 }
-
-export default CenterModeCarousel;
