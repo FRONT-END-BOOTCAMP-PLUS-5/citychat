@@ -3,17 +3,7 @@
 import { useState, useRef, KeyboardEvent } from "react";
 import { parseTags } from "./ParseTags";
 import { ChatReply } from "./ChatReply";
-interface Message {
-  content: string;
-  tags?: string[];
-  sender: string;
-  replyTo?: string;
-}
-interface ChatInputProps {
-  onSend: (content: string, tags: string[], replyTo?: Message | null) => void;
-  replyTo: Message | null;
-  onCancelReply: () => void;
-}
+import { ChatInputProps } from "../types";
 
 export default function ChatInput({
   onSend,
@@ -30,8 +20,9 @@ export default function ChatInput({
     const tags = parseTags(input);
     onSend(input, tags, replyTo);
     setInput("");
-    console.log("메시지 전송:", input, "태그:", tags, "답글 대상:", replyTo);
-
+    console.log("input", input);
+    console.log("tags", tags);
+    console.log("replyTo", replyTo);
     setTimeout(() => {
       textareaRef.current?.scrollIntoView({ behavior: "smooth" }); // 최근 채팅으로 스크롤 이동
     }, 0);

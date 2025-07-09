@@ -5,18 +5,7 @@ import { use, useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import ChatLog from "./components/ChatLog";
 import ChatInput from "./components/ChatInput";
-import { ChatReply } from "./components/ChatReply";
-
-interface Message {
-  content: string;
-  tags?: string[];
-  sender: string;
-  replyTo?: string;
-}
-interface ChatReplyProps {
-  msg: Message;
-  onCancel: () => void;
-}
+import { Message } from "./types";
 
 export default function ChatRoom() {
   const params = useParams();
@@ -26,7 +15,7 @@ export default function ChatRoom() {
   const [isSending, setIsSending] = useState(false);
   const socketRef = useRef<Socket | null>(null);
 
-  // 소켓 연결
+  //✅소켓 연결
   useEffect(() => {
     const socket = io("http://localhost:4000", {
       query: { roomId },
@@ -34,14 +23,15 @@ export default function ChatRoom() {
 
     socketRef.current = socket;
 
-    // 채팅방 입장
+    //✅채팅방 입장
     socket.on("connect", () => {
-      console.log(`✅ Connected to room ${roomId}`);
+      console.log(`Connected to room ${roomId}`);
     });
 
-    // 서버로부터 메시지를 받았을 때
+    //✅서버로부터 메세지 받기
     socket.on("receiveMessage", (msg: Message) => {
       setMessages((prev) => [...prev, msg]);
+      console.log("서버로부터 받은 메세지:", msg);
     });
 
     return () => {
@@ -49,7 +39,7 @@ export default function ChatRoom() {
     };
   }, [roomId]);
 
-  //새 메시지 서버에 전송
+  //✅새 메시지 서버에 전송
   const handleSend = (
     content: string,
     tags: string[],
@@ -60,7 +50,7 @@ export default function ChatRoom() {
       content,
       tags,
       sender: "jihye",
-      replyTo: replyTo ? replyTo.content : undefined,
+      replyToId: replyTo?.id || null,
     };
     socketRef.current?.emit("sendMessage", message);
   };

@@ -1,7 +1,5 @@
-/* Footer.css */
-
 /* 메인 박스 컴포넌트 스타일 */
-.footer-container {
+.footerContainer {
   width: 100%;
   height: 10vh;
   display: flex;
@@ -21,7 +19,7 @@
 }
 
 /* 컨테이너 컴포넌트 스타일 */
-.footer-content-wrapper {
+.footerContentWrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -30,38 +28,38 @@
 }
 
 /* 왼쪽 섹션: 로고 및 텍스트 */
-.footer-left-section {
+.footerLeftSection {
   display: flex;
   align-items: center;
-  gap: 500px;
+  gap: 500px; /* 원본 값 유지—너무 크면 적당히 조절하세요 */
 }
 
 /* 로고 이미지 */
-.footer-logo img {
+.footerLogo img {
   height: 50px;
   width: auto;
   display: block;
 }
 
-/* 푸터 텍스트 영역*/
-.footer-links {
+/* 푸터 텍스트 영역 */
+.footerLinks {
   display: flex;
   flex-direction: column;
 }
 
 /* 푸터 텍스트 */
-.footer-text {
+.footerText {
   font-weight: normal;
-  margin-bottom: 0;
+  margin: 0;
   white-space: nowrap;
   line-height: 1.5;
-  margin-top: 0;
   color: #000;
   font-weight: bold;
   font-size: 0.7rem;
 }
 
-.social-icons {
+/* 소셜 아이콘 리스트 */
+.socialIcons {
   display: flex;
   list-style: none;
   padding: 0;
@@ -70,7 +68,7 @@
 }
 
 /* 소셜 아이콘 이미지 */
-.social-icons li a img {
+.socialIcons li a img {
   height: 30px;
   width: 30px;
   display: block;
@@ -78,13 +76,13 @@
   transition: opacity 0.3s ease;
 }
 
-.social-icons li a img:hover {
+.socialIcons li a img:hover {
   opacity: 1;
 }
 
 /* 화면 축소시 적용 */
 @media (max-width: 768px) {
-  .footer-content-wrapper {
+  .footerContentWrapper {
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -92,25 +90,23 @@
     padding: 0 16px;
   }
 
-  .footer-left-section {
-    /* 로고와 텍스트를 나란히 유지하기 위해 flex-direction: row 유지 */
-    flex-direction: row;
-    gap: 100px; /* 나란히 있는 항목을 위한 간격 조정 */
-    align-items: center; /* 항목들을 세로 중앙에 정렬 */
+  .footerLeftSection {
+    flex-direction: row; /* 로고와 텍스트를 나란히 유지 */
+    gap: 100px;
+    align-items: center;
   }
 
-  .footer-links {
+  .footerLinks {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  /* 소셜 아이콘 */
-  .social-icons {
+  .socialIcons {
     justify-content: center;
   }
 
-  /* 매우 작은 화면의 경우 필요하다면 글꼴 크기 추가로 줄이기 */
-  .footer-text {
+  /* 글꼴 더 줄이기 */
+  .footerText {
     font-size: 0.6rem;
   }
 }
