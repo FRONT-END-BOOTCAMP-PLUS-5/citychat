@@ -1,13 +1,4 @@
-interface Message {
-  content: string;
-  tags?: string[];
-  sender: string;
-}
-
-interface ChatReplyProps {
-  msg: Message;
-  onCancel: () => void;
-}
+import { ChatReplyProps } from "../types";
 
 export function ChatReply({ msg, onCancel }: ChatReplyProps) {
   if (!msg.content || msg.content.length === 0) {
