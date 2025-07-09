@@ -1,12 +1,16 @@
-import React from 'react';
-import './shared-page-layout.css';
+import React from "react";
+import "./shared-page-layout.css";
+import "./globals.css"; // 전역 스타일
 
 interface SharedPageLayoutProps {
   children: React.ReactNode;
   title: string;
 }
 
-export default function SharedPageLayout({ children, title }: SharedPageLayoutProps) {
+export default function SharedPageLayout({
+  children,
+  title,
+}: SharedPageLayoutProps) {
   return (
     <div className="layout-container">
       <div className="fixed-background"></div>

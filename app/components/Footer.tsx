@@ -1,5 +1,5 @@
 "use client";
-import "./footer.css"; // Import your CSS file for styling
+import "./footer.css";
 
 import Image from "next/image";
 
@@ -13,10 +13,10 @@ export default function Footer() {
         <div className="footer-left-section">
           <div className="footer-logo">
             <Image
-              src="/assets/CityChat.png"
+              src="/assets/citychat2.png"
               alt="CityChat"
-              width={100}
-              height={100}
+              width={50}
+              height={50}
             />
             {/* Replace with your logo path */}
           </div>

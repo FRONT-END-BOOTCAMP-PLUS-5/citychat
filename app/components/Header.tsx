@@ -1,8 +1,10 @@
 "use client";
 import * as React from "react";
+import Image from "next/image";
+
 import "./header.css"; // CSS 파일을 import
 
-const pages = ["Home", "About", "Seoul", "Jeju", "Mypage"];
+const pages = ["Home", "Citys", "Landmark", "About", "Mypage"];
 
 function Header() {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
@@ -24,14 +26,15 @@ function Header() {
       <div className="container-wrapper">
         <div className="toolbar">
           {/* 로고/타이틀 부분 */}
-          {/* <a href="/" className="logo-link">
-            <img
-              src="/logo.png"
+          <a href="#" className="logo-link">
+            <Image
+              src="/assets/citychat.png"
               alt="CityChat Logo"
               className="logo-image"
-              style={{ height: "40px" }}
+              width={100}
+              height={30}
             />
-          </a> */}
+          </a>
 
           {/* 모바일 메뉴 아이콘 (햄버거 메뉴) */}
           <div className="mobile-menu-icon-wrapper">

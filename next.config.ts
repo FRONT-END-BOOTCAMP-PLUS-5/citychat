@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  images: {
+    domains: ["miro.medium.com", "via.placeholder.com"], // 도메인 추가
+  },
+};
 
 export default nextConfig;
