@@ -1,165 +1,54 @@
+"use client";
 import React from 'react';
-import './page.module.css';
+import styles from './page.module.css';
 import SharedPageLayout from '@/app/SharedPageLayout';
+
+const {
+  ["form-container"]: formContainer,
+  ["login-form"]: loginForm,
+  ["form-title"]: formTitle,
+  ["form-group"]: formGroup,
+  ["form-label"]: formLabel,
+  ["form-input"]: formInput,
+  ["form-button"]: formButton,
+} = styles;
 
 export default function LoginPage() {
   return (
     <SharedPageLayout title="Login">
-      <div className="login-page">
-        <div className="login-container">
-          
-          <form className="login-form" style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
-            maxWidth: '400px',
-            margin: '0 auto',
-            padding: '2rem',
-            backgroundColor: '#f9f9f9',
-            borderRadius: '8px',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-          }}>
-            <div className="form-group">
-              <label htmlFor="username" className="form-label">username</label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                className="form-input"
-                placeholder="ID"
-                required
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="form-input"
-                placeholder="Enter Password"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="form-input"
-                placeholder="Enter Password"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="form-input"
-                placeholder="Enter Password"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="form-input"
-                placeholder="Enter Password"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="form-input"
-                placeholder="Enter Password"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="form-input"
-                placeholder="Enter Password"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="form-input"
-                placeholder="Enter Password"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="form-input"
-                placeholder="Enter Password"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="form-input"
-                placeholder="Enter Password"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="form-input"
-                placeholder="Enter Password"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="form-input"
-                placeholder="Enter Password"
-                required
-              />
-            </div>
-            
-            <button type="submit" className="login-button">
-              inscrever-se
-            </button>
-          </form>
-        </div>
-      </div>
-    </SharedPageLayout>
+          <div className={formContainer}>
+            <h3 className={formTitle}>Login</h3>
+            <form className={loginForm}>
+              
+              <div className={formGroup}>
+                <label htmlFor="userid" className={formLabel}>ID</label>
+                <input
+                  type="text"
+                  id="userid"
+                  name="userid"
+                  className={formInput}
+                  placeholder="Enter ID"
+                  required
+                />
+              </div>
     
+              <div className={formGroup}>
+                <label htmlFor="password" className={formLabel}>Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  className={formInput}
+                  placeholder="Enter Password"
+                  required
+                />
+              </div>
+    
+              <button type="submit" className={formButton}>
+                Login
+              </button>
+            </form>
+          </div>
+        </SharedPageLayout>
   );
 }
