@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Image from "next/image"; // img태그 사용시 경고
+import QueryProvider from "./components/QueryProvider";
+
 
 export const metadata: Metadata = {
   title: "CityChat",
@@ -20,8 +23,10 @@ export default function MainLayout({
       </head>
       <title>Title</title>
       <body>
-        <Header />
-        {children}
+        <Header />  
+        <QueryProvider>
+          {children}
+        </QueryProvider>
         <Footer />
       </body>
     </html>
