@@ -21,14 +21,14 @@ export default function Footer() {
           </Link>
 
           <div className={styles.footerLinks}>
-            <p className={styles.footerText}>6조 1차 프로젝트</p>
+            <p className={styles.footerText}>6조 1차 프로젝트</p>
             <p className={styles.footerText}>
               <Link
                 href="https://배포‑사이트‑주소"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                배포 사이트 주소 링크
+                배포 사이트 주소 링크
               </Link>
             </p>
           </div>
@@ -38,7 +38,7 @@ export default function Footer() {
         <ul className={styles.socialIcons}>
           <li>
             <Link
-              href="https://github.com/your‑repo"
+              href="https://github.com/your-repo"
               target="_blank"
               rel="noopener noreferrer"
             >

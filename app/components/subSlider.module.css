@@ -1,3 +1,19 @@
+.subSliderContainer {
+  position: absolute; /* 'relative'에서 'absolute'로 변경. 부모 요소를 기준으로 정밀한 위치 지정 가능 */
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 1000px;
+  height: 90%;
+  max-height: 450px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 /* app-container: 전체 앱을 감싸는 컨테이너 */
 .appContainer {
   display: flex;
@@ -27,6 +43,8 @@
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   min-height: 500px;
+  position: relative;
+  overflow: hidden;
 }
 
 /* vertical-nav-container: 세로 네비게이션 컨테이너 */
@@ -48,6 +66,8 @@
   display: flex !important;
   flex-direction: column !important;
   height: 100% !important;
+  /* left 설정이유 : mainContentArea 영역에서 이탈 */
+  left: 60px;
 }
 
 .verticalNavContainer :global(.slick-slider.slick-vertical .slick-slide) {
@@ -114,6 +134,8 @@
   flex-direction: column;
   align-items: flex-start;
   padding-left: 50px;
+  position: relative;
+  z-index: 2;
 }
 
 /* welcome-section h1: 환영 문구 제목 */
