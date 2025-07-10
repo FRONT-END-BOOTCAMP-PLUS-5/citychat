@@ -1,12 +1,14 @@
 import { UserRepository } from "@/backend/domain/repositories/UserRepository";
 import { SigninRequestDto, SigninResponseDto } from "../dtos/SigninDto";
+import { useStyleRegistry } from "styled-jsx";
 import { generateAccessToken, generateRefreshToken } from "@/utils/jwt/tokenManager";
 
 export class NSigninUsecase {
-    constructor(private userRepository: UserRepository) {}
+  constructor(private userRepository: UserRepository) {}
 
-    async execute(request: SigninRequestDto): Promise<SigninResponseDto> {
-        const { userId, password } = request;
+  async execute(request: SigninRequestDto): Promise<SigninResponseDto> {
+    const { userId, password } = request;
+
 
         // 사용자 조회
         const user = await this.userRepository.findByUserId(userId);
