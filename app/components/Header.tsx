@@ -3,12 +3,23 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./header.module.css";
+// import Avatar from "./Avatar";
 
 // ─────── 페이지 목록 ───────
-const pages = ["Home", "Citys", "Landmark", "About", "Mypage"];
+const pages = [
+  // { name: "Home", path: "/" },
+  // { name: "CITIES", path: "/cities" },
+  // { name: "LANDMARK", path: "/landmark" },
+  // { name: "ABOUT", path: "/about" },
+  { name: "Home", path: "/" },
+  { name: "Cities", path: "/cities" },
+  { name: "Landmark", path: "/landmark" },
+  { name: "About", path: "/about" },
+];
 
 function Header() {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [isMypageDropdownOpen, setIsMypageDropdownOpen] = React.useState(false); // MYPAGE 드롭다운 상태 추가
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -20,7 +31,37 @@ function Header() {
         return;
       }
       setIsDrawerOpen(open);
+      if (open) {
+        setIsMypageDropdownOpen(false); // 드로어가 열리면 마이페이지 드롭다운 닫기
+      }
     };
+
+  // MYPAGE 드롭다운 토글 함수
+  const toggleMypageDropdown = () => {
+    setIsMypageDropdownOpen((prev) => !prev);
+  };
+
+  // 문서 클릭 시 드롭다운 닫기 (클릭 이벤트 버블링 방지)
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const mypageButton = document.getElementById("mypage-button");
+      const mypageDropdown = document.getElementById("mypage-dropdown");
+
+      if (
+        mypageButton &&
+        !mypageButton.contains(event.target as Node) &&
+        mypageDropdown &&
+        !mypageDropdown.contains(event.target as Node)
+      ) {
+        setIsMypageDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className={styles.appBar}>
@@ -52,14 +93,49 @@ function Header() {
           {/* ─────── 데스크톱 내비게이션 ─────── */}
           <nav className={styles.navDesktop}>
             {pages.map((page) => (
-              <a
-                href={`/${page.toLowerCase()}`}
-                key={page}
-                className={styles.navItem}
-              >
-                {page}
-              </a>
+              <Link href={page.path} key={page.name} className={styles.navItem}>
+                {page.name}
+              </Link>
             ))}
+
+            {/* MYPAGE 아이콘 및 드롭다운 */}
+            <div className={styles.mypageContainer}>
+              <button
+                id="mypage-button"
+                className={styles.mypageIconButton}
+                onClick={toggleMypageDropdown}
+                aria-haspopup="true" // 접근성을 위해 추가
+                aria-expanded={isMypageDropdownOpen} // 접근성을 위해 추가
+              >
+                <Image
+                  src="/assets/login-profile.png"
+                  alt="MYPAGE"
+                  width={30}
+                  height={30}
+                  className={styles.mypageIcon}
+                />
+                {/* <Avatar name="유상현" /> */}
+              </button>
+              {/* 프로필 테스트 */}
+              {isMypageDropdownOpen && (
+                <div id="mypage-dropdown" className={styles.mypageDropdown}>
+                  <Link
+                    href="/signin"
+                    className={styles.dropdownItem}
+                    onClick={toggleMypageDropdown}
+                  >
+                    회원가입
+                  </Link>
+                  <Link
+                    href="/login"
+                    className={styles.dropdownItem}
+                    onClick={toggleMypageDropdown}
+                  >
+                    로그인
+                  </Link>
+                </div>
+              )}
+            </div>
           </nav>
         </div>
       </div>
@@ -81,16 +157,48 @@ function Header() {
 
           <ul className={styles.drawerList}>
             {pages.map((page) => (
-              <li key={page} className={styles.drawerListItem}>
-                <a
-                  href={`/${page.toLowerCase()}`}
+              <li key={page.name} className={styles.drawerListItem}>
+                <Link
+                  href={page.path}
                   className={styles.drawerLink}
                   onClick={toggleDrawer(false)}
                 >
-                  {page}
-                </a>
+                  {page.name}
+                </Link>
               </li>
             ))}
+            <li className={styles.drawerListItem}>
+              <Link
+                href="/#"
+                className={styles.drawerLink}
+                onClick={toggleDrawer(false)}
+              >
+                <Image
+                  src="/assets/login-profile.png"
+                  alt="MYPAGE"
+                  width={24}
+                  height={24}
+                  className={styles.drawerIcon}
+                />
+                회원가입
+              </Link>
+            </li>
+            <li className={styles.drawerListItem}>
+              <Link
+                href="/#"
+                className={styles.drawerLink}
+                onClick={toggleDrawer(false)}
+              >
+                <Image
+                  src="/assets/login-profile.png"
+                  alt="MYPAGE"
+                  width={24}
+                  height={24}
+                  className={styles.drawerIcon}
+                />
+                로그인
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

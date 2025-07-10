@@ -6,7 +6,12 @@ export interface SigninRequestDto {
 }
 
 export interface SigninResponseDto {
-  success: boolean;
-  message: string;
-  user?: Pick<User, "id" | "nickname">;
+
+    success: boolean;
+    message: string;
+    
+    // Optional fields for tokens and user info
+    accessToken?: string;
+    refreshToken?: string; 
+    user?: Pick<User, "id" | "nickname">;
 }

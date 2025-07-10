@@ -20,11 +20,19 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const userId = (e.target as HTMLFormElement).userid.value;
-    const password = (e.target as HTMLFormElement).password.value;
+    const userId = (e.target as HTMLFormElement).userid.value.trim();
+    const password = (e.target as HTMLFormElement).password.value.trim();
     
     // useSignin 훅 호출
-    signin({ userId, password });
+    signin({ userId, password },
+      {
+        onSuccess: (data) => {
+          console.log('Login successful:', data.user);
+        },
+        onError: (error) => {
+          console.error('Login failed:', error);},
+      }
+    );
   };
 
   return (

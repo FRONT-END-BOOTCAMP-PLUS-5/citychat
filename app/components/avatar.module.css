@@ -1,0 +1,11 @@
+/* components/Avatar.module.css */
+
+.avatarContainer {
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  user-select: none;
+  flex-shrink: 0;
+}

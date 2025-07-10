@@ -9,7 +9,7 @@ interface UserTable {
     nickname: string;
     email: string;
     language: "ko" | "en";
-    deleted_flag: "Y" | "N";
+    deleted_flag: boolean;
     user_role: "user" | "admin";
 }
 
@@ -17,19 +17,19 @@ export class SbUserRepository implements UserRepository {
 
     constructor(private supabase: SupabaseClient) {}
 
-    private toUserTable(user: User): Omit<UserTable, 'id'> {
+    private mapToUserTable(user: User): Omit<UserTable, 'id'> {
         return {
             user_id: user.userId,
             password: user.password,
             nickname: user.nickname,
             email: user.email,
             language: user.language,
-            deleted_flag: user.deletedFlag ? "Y" : "N",
+            deleted_flag: user.deletedFlag,
             user_role: user.userRole,
         };
     }
 
-    private toUser(userTable: UserTable): User {
+    private mapToUser(userTable: UserTable): User {
         return new User(
             userTable.id,
             userTable.user_id,
@@ -37,13 +37,13 @@ export class SbUserRepository implements UserRepository {
             userTable.nickname,
             userTable.email,
             userTable.language,
-            userTable.deleted_flag === "Y",
+            userTable.deleted_flag,
             userTable.user_role
         );
     }
 
     async create(user: User): Promise<User> {
-        const userTableData = this.toUserTable(user);
+        const userTableData = this.mapToUserTable(user);
         
         const { data, error } = await this.supabase
             .from('users')
@@ -52,7 +52,7 @@ export class SbUserRepository implements UserRepository {
             .single();
             
         if (error) throw new Error(error.message);
-        return this.toUser(data as UserTable);
+        return this.mapToUser(data as UserTable);
     }
 
     update(user: User): Promise<User> {
@@ -73,10 +73,10 @@ export class SbUserRepository implements UserRepository {
             .from("users")
             .select()
             .eq("user_id", userId)
-            .eq('deleted_flag', "N")
+            .eq('deleted_flag', false)
             .maybeSingle();
         if (error) throw new Error(error.message);
         if (!data) return null;
-        return this.toUser(data as UserTable);
+        return this.mapToUser(data as UserTable);
     }
 }

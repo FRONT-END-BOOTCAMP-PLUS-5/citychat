@@ -23,6 +23,7 @@ export const useSignin = () => {
         console.log("zustand user", user);
       }
       router.push("/");
+
     },
     onError: (error) => {
       // 로그인 실패 시 처리
