@@ -1,3 +1,12 @@
+/* 폰트 수정해야 하는 부분 1▼ */
+@font-face {
+  font-family: "Paperlogy-8ExtraBold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2")
+    format("woff2");
+  font-weight: 1000;
+  font-style: normal;
+}
+
 :root {
   --background: #ffffff;
   /* --foreground: #171717; */
@@ -23,7 +32,8 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  /* 폰트 수정해야 하는 부분 2▼ */
+  font-family: "Paperlogy-8ExtraBold", arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
