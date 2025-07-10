@@ -27,7 +27,7 @@ export default function Home() {
 
       setTimeout(() => {
         isScrolling.current = false;
-      }, 1000);
+      }, 1500);
     };
 
     container.addEventListener("wheel", handleWheel, { passive: false });
@@ -41,51 +41,23 @@ export default function Home() {
       ref={mainScrollContainerRef}
       style={{
         width: "100vw",
-        height: "90vh",
+        height: "100vh",
         overflowY: "scroll",
         scrollSnapType: "y mandatory",
       }}
     >
       <Section
         bgImageUrl="https://miro.medium.com/v2/resize:fit:2000/1*nf5RvOUHclJqEYIljcNmEw.jpeg"
-        style={{ height: "90vh", scrollSnapAlign: "start" }}
+        style={{ height: "100vh", scrollSnapAlign: "start" }}
       >
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            left: "25%",
-            top: "26%",
-            width: 1000,
-            height: 450,
-            backgroundColor: "rgba(255, 255, 255, 0.3)",
-            borderRadius: "10px",
-            overflow: "hidden",
-          }}
-        >
-          <Slider />
-        </div>
+        <Slider />
       </Section>
 
       <Section
         bgImageUrl="https://uofhorang.com/wp-content/uploads/2024/08/Population-by-Age-Group-in-South-Korea-for-2023.jpg"
-        style={{ height: "90vh", scrollSnapAlign: "start" }}
+        style={{ height: "100vh", scrollSnapAlign: "start" }}
       >
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            left: "25%",
-            top: "26%",
-            width: 1000,
-            height: 450,
-            backgroundColor: "rgba(255, 255, 255, 0.3)",
-            borderRadius: "10px",
-            overflow: "hidden",
-          }}
-        >
-          <SubSlider />
-        </div>
+        <SubSlider />
       </Section>
     </div>
   );

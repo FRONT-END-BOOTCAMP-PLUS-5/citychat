@@ -8,11 +8,10 @@
   background-color: #777777;
   color: #000;
   font-weight: bold;
-
-  /* position: fixed; */
+  /* fixed 걸어야 하는 이유 : 스크롤이 딱 떨어짐ㅎ */
+  position: fixed;
   bottom: 0;
   left: 0;
-
   z-index: 10;
   box-sizing: border-box;
   padding: 20px 16px;
@@ -31,7 +30,7 @@
 .footerLeftSection {
   display: flex;
   align-items: center;
-  gap: 500px; /* 원본 값 유지—너무 크면 적당히 조절하세요 */
+  gap: 500px;
 }
 
 /* 로고 이미지 */
@@ -91,7 +90,7 @@
   }
 
   .footerLeftSection {
-    flex-direction: row; /* 로고와 텍스트를 나란히 유지 */
+    flex-direction: row;
     gap: 100px;
     align-items: center;
   }
@@ -105,7 +104,6 @@
     justify-content: center;
   }
 
-  /* 글꼴 더 줄이기 */
   .footerText {
     font-size: 0.6rem;
   }

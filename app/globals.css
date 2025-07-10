@@ -44,3 +44,16 @@ a {
     color-scheme: dark;
   }
 }
+
+/* 웹킷 기반 브라우저 (Chrome, Safari, Edge) */
+/* 이 코드는 스크롤바 전체 트랙을 숨김 */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background: transparent;
+}
+
+/* 스크롤바 엄지 (잡고 움직이는 부분) */
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}

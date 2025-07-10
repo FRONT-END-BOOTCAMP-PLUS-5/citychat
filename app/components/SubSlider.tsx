@@ -6,12 +6,15 @@ import "slick-carousel/slick/slick-theme.css";
 import styles from "./subSlider.module.css";
 import Image from "next/image";
 
+// City 인터페이스 타입 정의
 interface City {
   name: string;
   image: string;
   description: string;
 }
 
+// City 데이터 배열
+// 이 데이터는 실제 API나 데이터베이스에서 가져오기 가능
 const cityData: City[] = [
   {
     name: "Seoul",
@@ -42,7 +45,6 @@ const cityData: City[] = [
 const SubSlider: React.FC = () => {
   const [activeCityIndex, setActiveCityIndex] = useState<number>(0);
   const cityNavSliderRef = useRef<Slider | null>(null);
-
   const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // 마우스 드래그를 위한 상태
@@ -137,6 +139,7 @@ const SubSlider: React.FC = () => {
     };
   }, [handleMouseDown, handleMouseMove, handleMouseUp]);
 
+  // react-slick 라이브러리를 이용한 슬라이더 설정
   const navSettings: Settings = {
     dots: false,
     infinite: true,
@@ -172,40 +175,52 @@ const SubSlider: React.FC = () => {
   const currentCity = cityData[activeCityIndex];
 
   return (
-    <div className={styles.appContainer}>
-      <div className={styles.brickBackground}>
-        <div className={styles.mainContentArea}>
-          <div className={styles.verticalNavContainer} ref={sliderContainerRef}>
-            {" "}
-            {/* 여기에 ref 추가 */}
-            <Slider {...navSettings} ref={cityNavSliderRef}>
-              {cityData.map((city, index) => (
-                <div
-                  key={city.name}
-                  className={`${styles.cityNavItem} ${
-                    activeCityIndex === index ? styles.active : ""
-                  }`}
-                  onClick={() => handleCityNavClick(index)}
-                >
-                  {city.name}
+    <div
+      className="subSliderContainer"
+      style={{
+        backgroundColor: "rgba(255, 255, 255, 0.3)",
+        borderRadius: "10px",
+        overflow: "hidden",
+      }}
+    >
+      <div className={styles.appContainer}>
+        <div className={styles.brickBackground}>
+          <div className={styles.mainContentArea}>
+            <div
+              className={styles.verticalNavContainer}
+              ref={sliderContainerRef}
+            >
+              {" "}
+              {/* 여기에 ref 추가 */}
+              <Slider {...navSettings} ref={cityNavSliderRef}>
+                {cityData.map((city, index) => (
+                  <div
+                    key={city.name}
+                    className={`${styles.cityNavItem} ${
+                      activeCityIndex === index ? styles.active : ""
+                    }`}
+                    onClick={() => handleCityNavClick(index)}
+                  >
+                    {city.name}
+                  </div>
+                ))}
+              </Slider>
+            </div>
+            <div className={styles.welcomeSection}>
+              <h1>{currentCity.name}에 오신 것을 환영합니다!</h1>
+              <div className={styles.contentCard}>
+                <Image
+                  src={currentCity.image}
+                  alt={currentCity.name}
+                  className={styles.cardImage}
+                  width={400}
+                  height={300}
+                  priority
+                />
+                <div className={styles.cardTextContainer}>
+                  <p>{currentCity.description}</p>
+                  <button className={styles.exploreButton}>탐색하기</button>
                 </div>
-              ))}
-            </Slider>
-          </div>
-          <div className={styles.welcomeSection}>
-            <h1>{currentCity.name}에 오신 것을 환영합니다!</h1>
-            <div className={styles.contentCard}>
-              <Image
-                src={currentCity.image}
-                alt={currentCity.name}
-                className={styles.cardImage}
-                width={400}
-                height={300}
-                priority
-              />
-              <div className={styles.cardTextContainer}>
-                <p>{currentCity.description}</p>
-                <button className={styles.exploreButton}>탐색하기</button>
               </div>
             </div>
           </div>

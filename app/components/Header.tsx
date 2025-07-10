@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./header.module.css";
 
+// ─────── 페이지 목록 ───────
 const pages = ["Home", "Citys", "Landmark", "About", "Mypage"];
 
 function Header() {

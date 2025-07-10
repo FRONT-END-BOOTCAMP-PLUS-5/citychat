@@ -51,16 +51,30 @@ export default function CenterModeCarousel() {
   };
 
   return (
-    <div className={styles.sliderContainer}>
-      <Slider {...settings}>
-        {/* h3 대신 이미지 사용 예 */}
-        {[1, 2, 3, 4, 5, 6].map((n) => (
-          <div key={n}>
-            <h3>{n}</h3>
-            {/* <Image src={`/assets/slide-${n}.jpg`} alt={`slide ${n}`} fill /> */}
-          </div>
-        ))}
-      </Slider>
+    <div
+      style={{
+        position: "relative",
+        zIndex: 1,
+        left: "25%",
+        top: "26%",
+        width: 1000,
+        height: 450,
+        backgroundColor: "rgba(255, 255, 255, 0.3)",
+        borderRadius: "10px",
+        overflow: "hidden",
+      }}
+    >
+      <div className={styles.sliderContainer}>
+        <Slider {...settings}>
+          {/* h3 대신 이미지 사용 예 */}
+          {[1, 2, 3, 4, 5, 6].map((n) => (
+            <div key={n}>
+              <h3>{n}</h3>
+              {/* <Image src={`/assets/slide-${n}.jpg`} alt={`slide ${n}`} fill /> */}
+            </div>
+          ))}
+        </Slider>
+      </div>
     </div>
   );
 }
