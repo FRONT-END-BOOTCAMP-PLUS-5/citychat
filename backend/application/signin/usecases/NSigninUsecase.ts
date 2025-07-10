@@ -1,5 +1,6 @@
 import { UserRepository } from "@/backend/domain/repositories/UserRepository";
 import { SigninRequestDto, SigninResponseDto } from "../dtos/SigninDto";
+import { generateAccessToken, generateRefreshToken } from "@/utils/jwt/tokenManager";
 
 export class NSigninUsecase {
     constructor(private userRepository: UserRepository) {}
@@ -9,28 +10,26 @@ export class NSigninUsecase {
 
         // 사용자 조회
         const user = await this.userRepository.findByUserId(userId);
-        if (!user) {
+        if (!user || user.password !== password) {
             return {
                 success: false,
-                message: "사용자를 찾을 수 없습니다.",
-            };
-        }
-
-        // 비밀번호 확인
-        if (user.password !== password) {
-            return {
-                success: false,
-                message: "비밀번호가 일치하지 않습니다.",
+                message: "로그인 정보가 올바르지 않습니다.",
             };
         }
 
         // 비밀번호를 제외한 사용자 정보 반환
-        const { password: _, ...userWithoutPassword } = user;
+        const { id, nickname } = user;
+        const userInfo = { id, nickname }
+
+        const accessToken = generateAccessToken(userInfo);
+        const refreshToken = generateRefreshToken(user.id);
 
         return {
             success: true,
             message: "로그인 성공",
-            user: userWithoutPassword,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+            user: userInfo,
         };
     }
 }
