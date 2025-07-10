@@ -20,9 +20,10 @@ export default function ChatInput({
     const tags = parseTags(input);
     onSend(input, tags, replyTo);
     setInput("");
-    console.log("input", input);
-    console.log("tags", tags);
-    console.log("replyTo", replyTo);
+    if (replyTo) {
+      onCancelReply(); // 답글 보낸 후 초기화
+    }
+
     setTimeout(() => {
       textareaRef.current?.scrollIntoView({ behavior: "smooth" }); // 최근 채팅으로 스크롤 이동
     }, 0);
