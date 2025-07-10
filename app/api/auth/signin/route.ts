@@ -1,14 +1,16 @@
 import { NSigninUsecase } from "@/backend/application/signin/usecases/NSigninUsecase";
 import { SbUserRepository } from "@/backend/infrastructure/repositories/SbUserRepository";
 import { createClient } from "@/utils/supabase/server";
-import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     try {
         const { userId, password } = await request.json();
 
+        // id 또는 password가 비어있는지 확인
         if (!userId || !password) {
-            return new Response(JSON.stringify({ success: false, message: "Invalid input" }), {
+            return new Response(JSON.stringify({ success: false, message: "ID와 비밀번호를 필수로 입력하세요." }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" }
             });
@@ -26,8 +28,23 @@ export async function POST(request: Request) {
                 { status: 401 }
             );
         }
+
+        // 로그인 성공 시 쿠키에 access token 저장
+        const cookieStore = await cookies();
+        if(result.success && result.accessToken) cookieStore.set('access-token', result.accessToken, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 3600, // 1시간
+        });
+        if(result.success && result.refreshToken) cookieStore.set('refresh-token', result.refreshToken, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 604800, // 7일
+        });
+
         return NextResponse.json({
             user: result.user,
+            message: result.message || "Login Successful",
         });
 
     } catch (error: unknown) {

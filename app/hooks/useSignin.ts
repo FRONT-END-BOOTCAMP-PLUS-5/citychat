@@ -15,13 +15,12 @@ export const useSignin = () => {
     },
     onSuccess: (data) => {
       // 로그인 성공 시 처리
-      console.log("Login successful:", data.user);
-
-      // 사용자 정보를 로컬 스토리지에 저장
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      // 홈 페이지로 리다이렉트
-      router.push("/");
+      if(data.user) {
+        console.log("User Info:", data.user);
+        router.push('/'); // 로그인 성공시 홈 페이지로 리다이렉트
+      } else {
+        console.log("failed",data);
+      }
     },
     onError: (error) => {
       // 로그인 실패 시 처리
