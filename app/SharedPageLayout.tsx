@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import "./shared-page-layout.css";
 import "./globals.css"; // 전역 스타일

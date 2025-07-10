@@ -2,6 +2,7 @@
 import React from 'react';
 import styles from './page.module.css';
 import SharedPageLayout from '@/app/SharedPageLayout';
+import { useSignin } from '@/app/hooks/useSignin';
 
 const {
   ["form-container"]: formContainer,
@@ -14,11 +15,23 @@ const {
 } = styles;
 
 export default function LoginPage() {
+
+  const { mutate: signin, isPending, error } = useSignin();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const userId = (e.target as HTMLFormElement).userid.value;
+    const password = (e.target as HTMLFormElement).password.value;
+    
+    // useSignin 훅 호출
+    signin({ userId, password });
+  };
+
   return (
     <SharedPageLayout title="Login">
           <div className={formContainer}>
             <h3 className={formTitle}>Login</h3>
-            <form className={loginForm}>
+            <form className={loginForm} onSubmit={handleSubmit}>
               
               <div className={formGroup}>
                 <label htmlFor="userid" className={formLabel}>ID</label>
@@ -44,7 +57,10 @@ export default function LoginPage() {
                 />
               </div>
     
-              <button type="submit" className={formButton}>
+              <button 
+                type="submit" 
+                className={formButton}
+                disabled={isPending}>
                 Login
               </button>
             </form>
