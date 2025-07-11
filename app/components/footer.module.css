@@ -7,8 +7,7 @@
   justify-content: center;
   background-color: #777777;
   color: #000;
-  font-weight: bold;
-  /* fixed 걸어야 하는 이유 : 스크롤이 딱 떨어짐ㅎ */
+  /* fixed 걸어야 하는 이유 : 스크롤이 딱 떨어짐 */
   position: fixed;
   bottom: 0;
   left: 0;
@@ -53,7 +52,6 @@
   white-space: nowrap;
   line-height: 1.5;
   color: #000;
-  font-weight: bold;
   font-size: 0.7rem;
 }
 

@@ -18,7 +18,7 @@ const Avatar: React.FC<AvatarProps> = ({
   const initial = name ? name.charAt(0).toUpperCase() : "";
 
   // 배경 색 목록 배열
-  const avatarColors = ["#8ECAE6", "#219EBC", "#023047", "#FFB703", "FB8500"];
+  const avatarColors = ["#8ECAE6", "#219EBC", "#023047", "#FFB703", "#FB8500"];
 
   // 배경 색 랜덤
   const randomBackgroundColor =

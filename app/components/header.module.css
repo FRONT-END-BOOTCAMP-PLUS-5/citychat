@@ -73,7 +73,6 @@
 .navItem {
   margin: 0px 20px;
   font-size: 18px;
-  font-weight: bold;
   color: #ffbb00;
   display: block;
   text-decoration: none;
@@ -203,7 +202,6 @@
   text-decoration: none;
   padding: 12px 16px;
   font-size: 16px;
-  font-weight: bold;
   transition: background-color 0.3s ease, color 0.3s ease;
   border-radius: 4px;
   color: #ffffff; /* 기본 글자색 */
