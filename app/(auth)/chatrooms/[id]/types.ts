@@ -26,4 +26,5 @@ export interface ChatInputProps {
 export interface ChatLogProps {
   messages: Message[]; // 렌더링할 메시지 리스트
   onReply: (msg: Message) => void; // 메시지 클릭 시 답글 시작
+  currentUserId: number | null; //유저 id
 }
