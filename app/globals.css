@@ -1,9 +1,9 @@
 /* 폰트 수정해야 하는 부분 1▼ */
 @font-face {
-  font-family: "Paperlogy-8ExtraBold";
+  font-family: "Paperlogy-4reguler";
   src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2")
     format("woff2");
-  font-weight: 1000;
+  /* font-weight: 100; */
   font-style: normal;
 }
 
