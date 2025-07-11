@@ -1,9 +1,10 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./header.module.css";
 import Avatar from "./Avatar";
+import { useUserStore } from "@/app/stores/useUserStore";
 
 // ─────── 페이지 목록 ───────
 const pages = [
@@ -13,59 +14,23 @@ const pages = [
   { name: "About", path: "/about" },
 ];
 
-interface UserInfo {
-  email: string;
-  nickname: string;
-  language: string;
-  userRole: string;
-  deletedFlag: boolean;
-}
-
 function Header() {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
   const [isMypageDropdownOpen, setIsMypageDropdownOpen] = React.useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
-  useEffect(() => {
-    const handleUpdate = () => {
-      const token = localStorage.getItem("userToken");
-      const user = localStorage.getItem("user");
+  // Zustand 스토어에서 상태와 액션
+  const user = useUserStore((state) => state.user); // 유저 정보 데이터
+  const clearUser = useUserStore((state) => state.clearUser); // 로그아웃 액션
 
-      if (token && user) {
-        try {
-          const parsedUser: UserInfo = JSON.parse(user);
-          // ─── 여기에 console.log 추가 ───
-          console.log("파싱된 사용자 데이터:", parsedUser);
-          console.log("파싱된 닉네임:", parsedUser.nickname);
-          // ────────────────────────────────
-          setUserInfo(parsedUser);
-          setIsLoggedIn(true);
-        } catch (err) {
-          console.error("user 파싱 실패:", err);
-          setIsLoggedIn(false);
-          setUserInfo(null);
-        }
-      } else {
-        setIsLoggedIn(false);
-        setUserInfo(null);
-      }
-    };
+  // 로그인 여부 확인
+  const isLoggedIn = !!user;
 
-    handleUpdate();
-    window.addEventListener("storageUpdate", handleUpdate);
-    return () => window.removeEventListener("storageUpdate", handleUpdate);
-  }, []);
-
-  // ... (나머지 코드는 동일)
-
+  // 로그아웃 이벤트
   const handleLogout = () => {
-    localStorage.removeItem("userToken");
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    setUserInfo(null);
+    clearUser();
   };
 
+  // 드로어 상태 변경을 막기 위해 예외 처리(키보드 이벤트인 경우 :Tap 과 Shift키 작동 막기)
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -81,25 +46,28 @@ function Header() {
       }
     };
 
+  // 토글로 드롭다운을 열고 닫는 기능
   const toggleMypageDropdown = () => {
     setIsMypageDropdownOpen((prev) => !prev);
   };
 
+  // 마우스 클릭시 드롭다운과 안에 있는 요소들(회원가입,로그인 등..)(한번만 실행 :,[])
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const mypageButton = document.getElementById("mypage-button");
       const mypageDropdown = document.getElementById("mypage-dropdown");
 
+      // 클릭된 버튼과 드롭다운 요소 포함 여부 확인
       if (
         mypageButton &&
         !mypageButton.contains(event.target as Node) &&
         mypageDropdown &&
         !mypageDropdown.contains(event.target as Node)
       ) {
-        setIsMypageDropdownOpen(false);
+        setIsMypageDropdownOpen(false); // 드롭다운 자동 닫힘
       }
     };
-
+    // 드롭다운 실행 후 이벤트 제거
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -137,7 +105,7 @@ function Header() {
                 {page.name}
               </Link>
             ))}
-
+            {/* 아이콘 버튼 */}
             <div className={styles.mypageContainer}>
               <button
                 id="mypage-button"
@@ -146,8 +114,8 @@ function Header() {
                 aria-haspopup="true"
                 aria-expanded={isMypageDropdownOpen}
               >
-                {isLoggedIn && userInfo?.nickname ? (
-                  <Avatar name={userInfo.nickname} />
+                {isLoggedIn && user?.nickname ? (
+                  <Avatar name={user.nickname} />
                 ) : (
                   <Image
                     src="/assets/login-profile.png"
@@ -158,6 +126,7 @@ function Header() {
                   />
                 )}
               </button>
+              {/* 드롭다운 내용 변경 */}
               {isMypageDropdownOpen && (
                 <div id="mypage-dropdown" className={styles.mypageDropdown}>
                   {isLoggedIn ? (
@@ -169,7 +138,8 @@ function Header() {
                       >
                         마이페이지
                       </Link>
-                      <button
+                      <Link
+                        href="#"
                         className={styles.dropdownItem}
                         onClick={() => {
                           handleLogout();
@@ -177,7 +147,7 @@ function Header() {
                         }}
                       >
                         로그아웃
-                      </button>
+                      </Link>
                     </>
                   ) : (
                     <>
@@ -203,7 +173,7 @@ function Header() {
           </nav>
         </div>
       </div>
-
+      {/* 반응형 영역 */}
       <div
         className={`${styles.drawer} ${isDrawerOpen ? styles.open : ""}`.trim()}
       >

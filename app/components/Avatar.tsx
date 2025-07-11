@@ -1,11 +1,10 @@
 // components/Avatar.tsx
-import React from "react";
+import React, { useState } from "react";
 import styles from "./avatar.module.css";
 // Avatar 컴포넌트가 받을 props의 타입을 정의
 interface AvatarProps {
   name?: string; // 사용자 이름
   size?: number; // 아바타 크기
-  backgroundColor?: string; // 배경색
   textColor?: string; // 글자색
 }
 
@@ -20,17 +19,19 @@ const Avatar: React.FC<AvatarProps> = ({
   // 배경 색 목록 배열
   const avatarColors = ["#8ECAE6", "#219EBC", "#023047", "#FFB703", "#FB8500"];
 
-  // 배경 색 랜덤
-  const randomBackgroundColor =
-    avatarColors[Math.floor(Math.random() * avatarColors.length)];
-
+  // 배경색을 저장하고, 초기 렌더링 시에만 랜덤으로 설정
+  const [backgroundColor] = useState(() => {
+    // 처음 렌더링될 때 한 번만 실행
+    return avatarColors[Math.floor(Math.random() * avatarColors.length)];
+  });
   return (
     <div
       className={styles.avatarContainer}
       style={{
+        marginLeft: "15px",
         width: size,
         height: size,
-        backgroundColor: randomBackgroundColor,
+        backgroundColor: backgroundColor,
         color: textColor,
         fontSize: size / 2,
       }}
@@ -42,5 +43,3 @@ const Avatar: React.FC<AvatarProps> = ({
 };
 
 export default Avatar;
-
-// 원 배경 랜덤으로 보이게(구글처럼 랜덤함수 이용,피그마 색상 팔레트 참조 흰색을 제외한, 나머지 팔레트 색깔)
