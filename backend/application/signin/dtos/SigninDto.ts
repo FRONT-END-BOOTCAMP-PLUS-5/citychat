@@ -6,12 +6,9 @@ export interface SigninRequestDto {
 }
 
 export interface SigninResponseDto {
-
-    success: boolean;
-    message: string;
-    
-    // Optional fields for tokens and user info
-    accessToken?: string;
-    refreshToken?: string; 
-    user?: Omit<User, "password">;
+  success: boolean;
+  message: string;
+  accessToken?: string;
+  refreshToken?: string;
+  user?: Omit<User, "password">;
 }
