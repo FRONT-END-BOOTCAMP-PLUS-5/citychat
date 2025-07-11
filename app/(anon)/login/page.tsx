@@ -1,9 +1,9 @@
 "use client";
-import React from 'react';
-import styles from './page.module.css';
-import SharedPageLayout from '@/app/SharedPageLayout';
-import { useSignin } from '@/app/hooks/useSignin';
-
+import React from "react";
+import styles from "./page.module.css";
+import SharedPageLayout from "@/app/SharedPageLayout";
+import { useSignin } from "@/app/hooks/useSignin";
+import { useUserStore } from "@/app/stores/useUserStore";
 const {
   ["form-container"]: formContainer,
   ["login-form"]: loginForm,
@@ -15,64 +15,69 @@ const {
 } = styles;
 
 export default function LoginPage() {
-
   const { mutate: signin, isPending, error } = useSignin();
+  const setUser = useUserStore((state) => state.setUser); // ✅ 상태 설정 함수 가져오기
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const userId = (e.target as HTMLFormElement).userid.value.trim();
     const password = (e.target as HTMLFormElement).password.value.trim();
-    
+
     // useSignin 훅 호출
-    signin({ userId, password },
+    signin(
+      { userId, password },
       {
         onSuccess: (data) => {
-          console.log('Login successful:', data.user);
+          console.log("Login successful:", data.user);
+          if (data.user) {
+            setUser(data.user); // useUserStore에 정보 저장
+          }
         },
         onError: (error) => {
-          console.error('Login failed:', error);},
+          console.error("Login failed:", error);
+        },
       }
     );
   };
 
   return (
     <SharedPageLayout title="Login">
-          <div className={formContainer}>
-            <h3 className={formTitle}>Login</h3>
-            <form className={loginForm} onSubmit={handleSubmit}>
-              
-              <div className={formGroup}>
-                <label htmlFor="userid" className={formLabel}>ID</label>
-                <input
-                  type="text"
-                  id="userid"
-                  name="userid"
-                  className={formInput}
-                  placeholder="Enter ID"
-                  required
-                />
-              </div>
-    
-              <div className={formGroup}>
-                <label htmlFor="password" className={formLabel}>Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  className={formInput}
-                  placeholder="Enter Password"
-                  required
-                />
-              </div>
-    
-              <button 
-                type="submit" 
-                className={formButton}
-                disabled={isPending}>
-                Login
-              </button>
-            </form>
+      <div className={formContainer}>
+        <h3 className={formTitle}>Login</h3>
+        <form className={loginForm} onSubmit={handleSubmit}>
+          <div className={formGroup}>
+            <label htmlFor="userid" className={formLabel}>
+              ID
+            </label>
+            <input
+              type="text"
+              id="userid"
+              name="userid"
+              className={formInput}
+              placeholder="Enter ID"
+              required
+            />
           </div>
-        </SharedPageLayout>
+
+          <div className={formGroup}>
+            <label htmlFor="password" className={formLabel}>
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              className={formInput}
+              placeholder="Enter Password"
+              required
+            />
+          </div>
+
+          <button type="submit" className={formButton} disabled={isPending}>
+            Login
+          </button>
+        </form>
+      </div>
+    </SharedPageLayout>
   );
 }

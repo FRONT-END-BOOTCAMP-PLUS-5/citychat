@@ -1,6 +1,5 @@
 import { UserRepository } from "@/backend/domain/repositories/UserRepository";
 import { SigninRequestDto, SigninResponseDto } from "../dtos/SigninDto";
-import { useStyleRegistry } from "styled-jsx";
 import { generateAccessToken, generateRefreshToken } from "@/utils/jwt/tokenManager";
 
 export class NSigninUsecase {
@@ -20,18 +19,17 @@ export class NSigninUsecase {
         }
 
         // 비밀번호를 제외한 사용자 정보 반환
-        const { id, nickname } = user;
-        const userInfo = { id, nickname }
+        const { password:_, ...userWithoutPassword } = user;
 
-        const accessToken = generateAccessToken(userInfo);
-        const refreshToken = generateRefreshToken(user.id);
+        const accessToken = generateAccessToken({ userInfo: userWithoutPassword });
+        const refreshToken = generateRefreshToken({ id: user.id });
 
         return {
             success: true,
             message: "로그인 성공",
             accessToken: accessToken,
             refreshToken: refreshToken,
-            user: userInfo,
+            user: userWithoutPassword,
         };
     }
 }
