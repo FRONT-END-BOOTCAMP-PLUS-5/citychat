@@ -13,5 +13,5 @@ export interface SigninResponseDto {
     // Optional fields for tokens and user info
     accessToken?: string;
     refreshToken?: string; 
-    user?: Pick<User, "id" | "nickname">;
+    user?: Omit<User, "password">;
 }
