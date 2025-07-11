@@ -1,7 +1,6 @@
 // Home.tsx
 "use client";
 import { useEffect, useRef } from "react";
-import "./globals.css";
 import Slider from "./components/Slider";
 import SubSlider from "./components/SubSlider";
 import Section from "./components/Section";
