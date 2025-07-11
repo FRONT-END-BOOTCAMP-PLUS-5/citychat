@@ -14,7 +14,7 @@ const Avatar: React.FC<AvatarProps> = ({
   size = 30,
   textColor = "#fff",
 }) => {
-  // 이름에서 첫 글자를 추출
+  // 닉네임에서 한글이면 한글로 앞글자, 영어면 영어로 앞글자
   const initial = name ? name.charAt(0).toUpperCase() : "";
 
   // 배경 색 목록 배열
@@ -42,3 +42,5 @@ const Avatar: React.FC<AvatarProps> = ({
 };
 
 export default Avatar;
+
+// 원 배경 랜덤으로 보이게(구글처럼 랜덤함수 이용,피그마 색상 팔레트 참조 흰색을 제외한, 나머지 팔레트 색깔)
