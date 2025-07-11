@@ -9,21 +9,19 @@ import { useUserStore } from "../stores/useUserStore";
 
 export const useSignin = () => {
   const router = useRouter();
-  const { user, setUser } = useUserStore();
+  // const setUser = useUserStore((state) => state.setUser);
 
   return useMutation({
     mutationFn: (params: SigninRequestDto) => {
       return signin(params);
     },
     onSuccess: (data) => {
-      // 로그인 성공 시 처리
-      console.log(data.user);
+      // 로그인 성공 시
       if (data.user) {
-        setUser(data.user); //zustand 스토어에 user 정보 저장
-        console.log("zustand user", user);
+        // setUser(data.user); // ✅ 전역 상태에 유저 저장
+        console.log("hook에서 정보", data.user);
       }
       router.push("/");
-
     },
     onError: (error) => {
       // 로그인 실패 시 처리
