@@ -1,11 +1,12 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import ChatLog from "./components/ChatLog";
 import ChatInput from "./components/ChatInput";
 import { Message } from "./types";
+import { useUserStore } from "@/app/stores/useUserStore";
 
 export default function ChatRoom() {
   const params = useParams();
@@ -14,6 +15,7 @@ export default function ChatRoom() {
   const [replyTo, setReplyTo] = useState<Message | null>(null);
   const [isSending, setIsSending] = useState(false);
   const socketRef = useRef<Socket | null>(null);
+  const user = useUserStore((state) => state.user);
 
   //✅소켓 연결
   useEffect(() => {
@@ -49,7 +51,8 @@ export default function ChatRoom() {
     const message: Message = {
       content,
       tags,
-      sender: "jihye",
+      sender: user?.nickname ?? "",
+      senderId: user?.id,
       replyToId: replyTo?.id || null,
     };
     socketRef.current?.emit("sendMessage", message);
