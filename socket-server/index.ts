@@ -30,7 +30,7 @@ io.on("connection", (socket) => {
   console.log(`✅ User connected to room ${roomId}`);
 
   socket.on("sendMessage", async (msg: Chat) => {
-    const { content, tags, sender, replyToId } = msg;
+    const { content, tags, sender, senderId, replyToId } = msg;
     // 서버에서 데이터베이스로 정보 저장 시작
     // 1. chats 테이블에 저장
     const { data: chatData, error: chatError } = await supabase
@@ -38,7 +38,7 @@ io.on("connection", (socket) => {
       .insert({
         content,
         content_type: "text",
-        user_id: 5, // 임시 user ID
+        user_id: senderId,
         chat_room_id: parseInt(roomId),
         parent_chat_id: replyToId ?? null,
       })

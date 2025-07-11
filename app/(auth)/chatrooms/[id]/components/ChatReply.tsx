@@ -1,3 +1,5 @@
+"use client";
+
 import { ChatReplyProps } from "../types";
 
 export function ChatReply({ msg, onCancel }: ChatReplyProps) {
