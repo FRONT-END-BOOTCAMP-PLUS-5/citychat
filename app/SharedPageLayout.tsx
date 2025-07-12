@@ -16,6 +16,8 @@ export default function SharedPageLayout({
     <div className="layout-container">
       <div className="fixed-background"></div>
       <main className="content-wrapper">
+        <div style={{ height: "10vh", backgroundColor: "transparent", position: "sticky", top: 0, zIndex: 5 }}></div>
+        <div style={{ height: "10vh", backgroundColor: "transparent" }}></div>
         <div className="content-box">
           <h1 className="page-title">{title}</h1>
           {children}
