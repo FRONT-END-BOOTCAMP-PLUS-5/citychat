@@ -1,20 +1,14 @@
 "use client";
-import React, { useState, useRef, useEffect, useCallback } from "react"; // useCallback 추가
-import Slider, { Settings } from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./subSlider.module.css";
 import Image from "next/image";
 
-// City 인터페이스 타입 정의
 interface City {
   name: string;
   image: string;
   description: string;
 }
 
-// City 데이터 배열
-// 이 데이터는 실제 API나 데이터베이스에서 가져오기 가능
 const cityData: City[] = [
   {
     name: "Seoul",
@@ -43,184 +37,108 @@ const cityData: City[] = [
 ];
 
 const SubSlider: React.FC = () => {
-  const [activeCityIndex, setActiveCityIndex] = useState<number>(0);
-  const cityNavSliderRef = useRef<Slider | null>(null);
-  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  // 마우스 드래그를 위한 상태
-  const isDragging = useRef(false);
-  const startY = useRef(0);
-  const sliderContainerRef = useRef<HTMLDivElement>(null); // 슬라이더 컨테이너 참조
-
-  // 휠 이벤트 핸들러
   useEffect(() => {
-    const handleWheel = (event: WheelEvent) => {
-      if (!cityNavSliderRef.current) return;
+    const container = scrollRef.current;
+    if (!container) return;
 
-      if (scrollTimeout.current) return;
-      scrollTimeout.current = setTimeout(() => {
-        scrollTimeout.current = null;
-      }, 700);
+    const handleScroll = () => {
+      const children = Array.from(container.children);
+      const scrollTop = container.scrollTop;
 
-      if (event.deltaY > 0) {
-        const nextIndex = (activeCityIndex + 1) % cityData.length;
-        setActiveCityIndex(nextIndex);
-        cityNavSliderRef.current.slickGoTo(nextIndex);
-      } else {
-        const prevIndex =
-          (activeCityIndex - 1 + cityData.length) % cityData.length;
-        setActiveCityIndex(prevIndex);
-        cityNavSliderRef.current.slickGoTo(prevIndex);
+      const active = children.findIndex((child) => {
+        const el = child as HTMLElement;
+        return el.offsetTop - scrollTop >= -10;
+      });
+
+      if (active >= 0 && active !== activeIndex) {
+        setActiveIndex(active);
       }
     };
 
-    window.addEventListener("wheel", handleWheel);
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      if (scrollTimeout.current) {
-        clearTimeout(scrollTimeout.current);
-      }
-    };
-  }, [activeCityIndex]);
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, [activeIndex]);
 
-  // 마우스 드래그 이벤트 핸들러
-  const handleMouseDown = useCallback((e: MouseEvent) => {
-    if (
-      sliderContainerRef.current &&
-      sliderContainerRef.current.contains(e.target as Node)
-    ) {
-      isDragging.current = true;
-      startY.current = e.clientY;
-      e.preventDefault(); // 기본 드래그 방지
+  // 마우스 휠로 도시 전환
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    let wheelTimeout: NodeJS.Timeout | null = null;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+
+      if (wheelTimeout) return;
+
+      if (e.deltaY > 0 && activeIndex < cityData.length - 1) {
+        setActiveIndex((prev) => prev + 1);
+      } else if (e.deltaY < 0 && activeIndex > 0) {
+        setActiveIndex((prev) => prev - 1);
+      }
+
+      wheelTimeout = setTimeout(() => {
+        wheelTimeout = null;
+      }, 500);
+    };
+
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    return () => container.removeEventListener("wheel", handleWheel);
+  }, [activeIndex]);
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    const target = container?.children[activeIndex] as HTMLElement | undefined;
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, []);
+  }, [activeIndex]);
 
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
-      if (!isDragging.current || !cityNavSliderRef.current) return;
-
-      const deltaY = e.clientY - startY.current;
-      const dragThreshold = 50; // 이 값 이상 드래그해야 슬라이드 전환 (조절 가능)
-
-      if (Math.abs(deltaY) > dragThreshold) {
-        if (deltaY < 0) {
-          // 위로 드래그 (다음 슬라이드)
-          const nextIndex = (activeCityIndex + 1) % cityData.length;
-          setActiveCityIndex(nextIndex);
-          cityNavSliderRef.current.slickGoTo(nextIndex);
-        } else {
-          // 아래로 드래그 (이전 슬라이드)
-          const prevIndex =
-            (activeCityIndex - 1 + cityData.length) % cityData.length;
-          setActiveCityIndex(prevIndex);
-          cityNavSliderRef.current.slickGoTo(prevIndex);
-        }
-        isDragging.current = false; // 한 번 슬라이드 전환 후 드래그 상태 해제
-        // startY.current = e.clientY; // 연속 드래그를 원하면 이 주석 해제
-      }
-    },
-    [activeCityIndex]
-  ); // activeCityIndex가 변경될 때마다 함수 재생성
-
-  const handleMouseUp = useCallback(() => {
-    isDragging.current = false;
-  }, []);
-
-  // 마우스 이벤트 리스너 등록 및 해제
-  useEffect(() => {
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-      window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [handleMouseDown, handleMouseMove, handleMouseUp]);
-
-  // react-slick 라이브러리를 이용한 슬라이더 설정
-  const navSettings: Settings = {
-    dots: false,
-    infinite: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    vertical: true,
-    verticalSwiping: true, // 이 설정은 터치 스크린에 더 효과적
-    swipeToSlide: true, // 이 설정은 터치 스크린에 더 효과적
-    centerMode: true,
-    centerPadding: "0px",
-    initialSlide: 0,
-    beforeChange: (_c, n) => setActiveCityIndex(n),
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          vertical: true,
-          verticalSwiping: true,
-          centerMode: false,
-        },
-      },
-    ],
+  const handleNavClick = (index: number) => {
+    setActiveIndex(index);
   };
 
-  const handleCityNavClick = (index: number) => {
-    if (cityNavSliderRef.current) {
-      cityNavSliderRef.current.slickGoTo(index);
-    }
-  };
-
-  const currentCity = cityData[activeCityIndex];
+  const currentCity = cityData[activeIndex];
 
   return (
-    <div
-      className="subSliderContainer"
-      style={{
-        backgroundColor: "rgba(255, 255, 255, 0.3)",
-        borderRadius: "10px",
-        overflow: "hidden",
-      }}
-    >
-      <div className={styles.appContainer}>
-        <div className={styles.brickBackground}>
-          <div className={styles.mainContentArea}>
-            <div
-              className={styles.verticalNavContainer}
-              ref={sliderContainerRef}
-            >
-              {" "}
-              {/* 여기에 ref 추가 */}
-              <Slider {...navSettings} ref={cityNavSliderRef}>
-                {cityData.map((city, index) => (
-                  <div
-                    key={city.name}
-                    className={`${styles.cityNavItem} ${
-                      activeCityIndex === index ? styles.active : ""
-                    }`}
-                    onClick={() => handleCityNavClick(index)}
-                  >
-                    {city.name}
-                  </div>
-                ))}
-              </Slider>
+    <div className={styles.appContainer}>
+      <div className={styles.brickBackground}>
+        <div className={styles.mainContentArea}>
+          <div className={styles.verticalNavContainer}>
+            <div ref={scrollRef} className={styles.scrollSnapContainer}>
+              {cityData.map((city, index) => (
+                <div
+                  key={city.name}
+                  className={`${styles.cityNavItem} ${
+                    index === activeIndex ? styles.active : ""
+                  }`}
+                  onClick={() => handleNavClick(index)}
+                >
+                  {city.name}
+                </div>
+              ))}
             </div>
-            <div className={styles.welcomeSection}>
-              <h1>{currentCity.name}에 오신 것을 환영합니다!</h1>
-              <div className={styles.contentCard}>
+          </div>
+          <div className={styles.welcomeSection}>
+            <div className={styles.contentCard}>
+              <div className={styles.imageWrapper}>
                 <Image
                   src={currentCity.image}
                   alt={currentCity.name}
                   className={styles.cardImage}
-                  width={400}
-                  height={300}
+                  width={300}
+                  height={400}
                   priority
+                  unoptimized
                 />
-                <div className={styles.cardTextContainer}>
-                  <p>{currentCity.description}</p>
-                  <button className={styles.exploreButton}>탐색하기</button>
-                </div>
+              </div>
+              <div className={styles.cardTextContainer}>
+                <h1>{currentCity.name}에 오신 것을 환영합니다!</h1>
+                <p>{currentCity.description}</p>
+                <button className={styles.exploreButton}>Explore</button>
               </div>
             </div>
           </div>

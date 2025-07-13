@@ -1,30 +1,15 @@
-.subSliderContainer {
-  position: absolute; /* 'relative'에서 'absolute'로 변경. 부모 요소를 기준으로 정밀한 위치 지정 가능 */
-  z-index: 1;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 1000px;
-  height: 90%;
-  max-height: 450px;
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
 /* app-container: 전체 앱을 감싸는 컨테이너 */
 .appContainer {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   background-color: #f0f0f0;
   padding: 20px;
   box-sizing: border-box;
+  height: 80vh;
+  margin: 10vh 20vh;
+  border-radius: 10px;
 }
-
 /* brick-background: 배경 이미지 또는 색상 */
 .brickBackground {
   width: 100%;
@@ -35,7 +20,7 @@
   box-sizing: border-box;
 }
 
-/* main-content-area: 주요 콘텐츠 영역 (네비게이션 + 환영 섹션) */
+/* main-content-area: 주요 콘텐츠 영역 */
 .mainContentArea {
   display: flex;
   background-color: rgba(255, 255, 255, 0.8);
@@ -47,7 +32,7 @@
   overflow: hidden;
 }
 
-/* vertical-nav-container: 세로 네비게이션 컨테이너 */
+/*세로 네비게이션 컨테이너 영역*/
 .verticalNavContainer {
   width: 150px;
   margin-right: 30px;
@@ -57,30 +42,21 @@
   height: 100%;
 }
 
-/* react-slick 오버라이드 (세로 네비게이션용) */
-.verticalNavContainer :global(.slick-slider.slick-vertical .slick-list) {
-  height: 100% !important;
+/* 스크롤 가능한 snap 컨테이너 */
+.scrollSnapContainer {
+  height: 100%;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
 }
 
-.verticalNavContainer :global(.slick-slider.slick-vertical .slick-track) {
-  display: flex !important;
-  flex-direction: column !important;
-  height: 100% !important;
-  /* left 설정이유 : mainContentArea 영역에서 이탈 */
-  left: 60px;
-}
-
-.verticalNavContainer :global(.slick-slider.slick-vertical .slick-slide) {
-  height: auto !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  padding: 20px 0;
-  box-sizing: border-box;
-}
-
-/* city-nav-item: 도시 네비게이션 각 항목 */
+/* city-nav-item: 도시 항목 */
 .cityNavItem {
+  scroll-snap-align: start;
   font-size: 24px;
   font-weight: bold;
   color: #555;
@@ -92,14 +68,9 @@
   width: 100%;
   white-space: nowrap;
   line-height: 3.5;
+  min-height: 100px;
 }
 
-/* city-nav-item: 활성 상태 */
-.active {
-  color: #000;
-}
-
-/* city-nav-item::before: 구분선 */
 .cityNavItem::before {
   content: "";
   position: absolute;
@@ -111,79 +82,77 @@
   transition: background-color 0.3s ease;
 }
 
-/* city-nav-item.active::before: 활성 상태의 구분선 */
+/* city배열중 선택된 name */
+.active {
+  color: #219ebc;
+}
+
+/* name 옆에 선 부분 */
 .active::before {
-  background-color: #000;
+  background-color: #219ebc;
 }
 
-/* slick-current, slick-active, slick-center: 현재 활성화된 중앙 아이템 강조 */
-.verticalNavContainer
-  :global(
-    .slick-slider.slick-vertical
-      .slick-slide.slick-current.slick-active.slick-center
-  )
-  .cityNavItem {
-  color: #007bff;
-  transform: scale(1.1);
-}
-
-/* welcome-section: 환영 섹션 (이미지 + 텍스트) */
+/* welcome-section: 우측 콘텐츠 영역 */
 .welcomeSection {
-  flex-grow: 1;
+  flex: 1;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  min-height: 400px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-left: 50px;
-  position: relative;
-  z-index: 2;
+  align-items: center; /* 중앙정렬 */
 }
 
-/* welcome-section h1: 환영 문구 제목 */
 .welcomeSection h1 {
-  font-size: 36px;
+  font-size: 30px;
   color: #333;
   margin-bottom: 30px;
   font-weight: bold;
 }
 
-/* content-card: 콘텐츠 카드 (이미지 + 설명) */
+/* 이미지 + 내용 텍스트 영역 */
 .contentCard {
   display: flex;
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
+  gap: 24px;
+  align-items: center;
+  min-height: 40px;
+  padding: 24px;
+  flex-wrap: nowrap;
   max-width: 800px;
-  width: 100%;
 }
 
-/* card-image: 카드 내 이미지 */
+/* 이미지 들어가는 영역 */
+.imageWrapper {
+  flex-shrink: 0;
+  width: 300px;
+  height: 400px;
+  overflow: hidden;
+}
+
 .cardImage {
-  width: 50%;
-  height: auto;
   object-fit: cover;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
+  border-radius: 8px;
 }
 
-/* card-text-container: 카드 내 텍스트 컨테이너 */
 .cardTextContainer {
-  padding: 30px;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 50%;
+  min-height: 300px;
+  width: 100%;
 }
 
-/* card-text-container p: 카드 내 설명 텍스트 */
 .cardTextContainer p {
+  display: block;
   font-size: 18px;
   line-height: 1.6;
   color: #666;
   margin-bottom: 20px;
+  min-height: 150px;
 }
 
-/* explore-button: 탐색하기 버튼 */
 .exploreButton {
   background-color: #ffd700;
   color: #333;
@@ -198,15 +167,12 @@
   white-space: nowrap;
 }
 
-/* explore-button: 호버 상태 */
 .exploreButton:hover {
   background-color: #ffc107;
   transform: translateY(-2px);
 }
 
-/* --- 반응형 디자인 --- */
-
-/* 태블릿 및 모바일 (768px 이하) */
+/* --- 반응형 --- */
 @media (max-width: 768px) {
   .mainContentArea {
     flex-direction: column;
@@ -217,44 +183,12 @@
     width: 100%;
     margin-right: 0;
     margin-bottom: 30px;
-    height: 200px; /* 모바일 세로 레이아웃에 맞게 높이 조절 */
+    height: 200px;
     justify-content: flex-start;
   }
 
-  /* react-slick 오버라이드 (가로 슬라이더처럼 동작하도록 변경) */
-  .verticalNavContainer :global(.slick-slider.slick-vertical) {
-    /* 기존 transform 및 관련 속성 제거 */
-    overflow: hidden; /* overflow hidden 유지 */
-  }
-
-  .verticalNavContainer :global(.slick-slider.slick-vertical .slick-list) {
-    height: 100% !important; /* 새로운 verticalNavContainer 높이에 맞게 조절 */
-    width: 100% !important;
-  }
-
-  .verticalNavContainer :global(.slick-slider.slick-vertical .slick-track) {
-    flex-direction: column !important; /* 세로 유지를 위해 column 유지 */
-    height: 100% !important;
-  }
-
-  .verticalNavContainer :global(.slick-slider.slick-vertical .slick-slide) {
-    /* 기존 transform 제거 */
-    width: 100% !important; /* 슬라이드가 전체 너비 차지하도록 */
-    padding: 10px 0; /* 세로 패딩 조절 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  /* .cityNavItem {
-    font-size: 20px;
-    padding-left: 0;
-    text-align: center;
-    line-height: 1.5;
-  } */
-
   .cityNavItem::before {
-    display: none; /* 모바일에서 세로선이 필요 없으면 유지 */
+    display: none;
   }
 
   .welcomeSection {
@@ -264,13 +198,15 @@
   }
 
   .welcomeSection h1 {
-    font-size: 36px;
+    font-size: 32px;
     margin-bottom: 20px;
   }
 
   .contentCard {
     flex-direction: column;
     max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .cardImage {
@@ -284,6 +220,8 @@
     padding: 20px;
     text-align: center;
     align-items: center;
+    min-width: 100%;
+    box-sizing: border-box;
   }
 
   .cardTextContainer p {
@@ -297,7 +235,6 @@
   }
 }
 
-/* 작은 모바일 장치 (480px 이하) */
 @media (max-width: 480px) {
   .brickBackground {
     padding: 20px;
@@ -308,11 +245,7 @@
   }
 
   .verticalNavContainer {
-    height: 150px; /* 더 작은 모바일 기기를 위한 높이 조절 */
-  }
-
-  .verticalNavContainer :global(.slick-slider.slick-vertical .slick-list) {
-    height: 100% !important;
+    height: 150px;
   }
 
   .cityNavItem {
