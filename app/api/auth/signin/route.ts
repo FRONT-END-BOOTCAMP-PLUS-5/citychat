@@ -1,4 +1,4 @@
-import { NSigninUsecase } from "@/backend/application/signin/usecases/NSigninUsecase";
+import { SigninUsecase } from "@/backend/application/auth/usecases/SigninUsecase";
 import { SbUserRepository } from "@/backend/infrastructure/repositories/SbUserRepository";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
         const supabase = await createClient();
         const userRepository = new SbUserRepository(supabase);
-        const signinUsecase = new NSigninUsecase(userRepository);
+        const signinUsecase = new SigninUsecase(userRepository);
 
         const result = await signinUsecase.execute({ userId, password });
 
@@ -31,12 +31,12 @@ export async function POST(request: NextRequest) {
 
         // 로그인 성공 시 쿠키에 access token 저장
         const cookieStore = await cookies();
-        if(result.success && result.accessToken) cookieStore.set('access-token', result.accessToken, {
+        if(result.success && result.accessToken) cookieStore.set("access-token", result.accessToken, {
             httpOnly: true,
             secure: true,
             maxAge: 3600, // 1시간
         });
-        if(result.success && result.refreshToken) cookieStore.set('refresh-token', result.refreshToken, {
+        if(result.success && result.refreshToken) cookieStore.set("refresh-token", result.refreshToken, {
             httpOnly: true,
             secure: true,
             maxAge: 604800, // 7일
@@ -55,4 +55,3 @@ export async function POST(request: NextRequest) {
         );
     }
 }
-
