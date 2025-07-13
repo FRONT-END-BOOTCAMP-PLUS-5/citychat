@@ -84,6 +84,17 @@
     color: red;
 }
 
+.error-message {
+    color: red;
+    font-size: 12px;
+    text-align: center;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 80%;
+}
+
 @media (min-width: 480px) {
     .signup-form {
         border: 0.1px solid #ccc;

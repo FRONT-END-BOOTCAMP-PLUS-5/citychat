@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import styles from "./page.module.css";
 import SharedPageLayout from "@/app/SharedPageLayout";
+import { useSignup } from "@/app/hooks/useSignup";
 
 const {
   ["form-container"]: formContainer,
@@ -16,9 +17,12 @@ const {
   ["duplicate-message"]: duplicateMessage,
   ["duplicate-message-success"]: duplicateMessageSuccess,
   ["duplicate-message-error"]: duplicateMessageError,
+  ["error-message"]: errorMessage,
 } = styles;
 
 export default function SignupPage() {
+  const { mutate: signup, isPending, error } = useSignup();
+  const [validationError, setValidationError] = useState<string>("");
   const [duplicateStatus, setDuplicateStatus] = useState<{
     userId: { checked: boolean; isDuplicate: boolean; message: string };
     nickname: { checked: boolean; isDuplicate: boolean; message: string };
@@ -31,7 +35,7 @@ export default function SignupPage() {
 
   async function checkDuplicate(field: "userId" | "nickname" | "email", value: string) {
     if (!value.trim()) {
-      alert(`${field}를 입력해주세요.`);
+      setValidationError(`${field}를 입력해주세요.`);
       return;
     }
 
@@ -48,8 +52,46 @@ export default function SignupPage() {
         }
       }));
     } catch (error) {
-
+      setValidationError("중복 확인 중 오류가 발생했습니다.");
     }
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
+    event.preventDefault();
+    setValidationError(""); // 에러 초기화
+    
+    const formData = new FormData(event.currentTarget);
+    const data = {
+      nickname: formData.get("nickname") as string,
+      userId: formData.get("userid") as string,
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+      confirmPassword: formData.get("confirm-password") as string,
+    };
+
+    if (data.password !== data.confirmPassword) {
+      setValidationError("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    if (!duplicateStatus.userId.checked || duplicateStatus.userId.isDuplicate) {
+      setValidationError("아이디 중복 확인을 해주세요.");
+      return;
+    }
+
+    if (!duplicateStatus.nickname.checked || duplicateStatus.nickname.isDuplicate) {
+      setValidationError("닉네임 중복 확인을 해주세요.");
+      return;
+    }
+
+    if (!duplicateStatus.email.checked || duplicateStatus.email.isDuplicate) {
+      setValidationError("이메일 중복 확인을 해주세요.");
+      return;
+    }
+
+    // confirmPassword 제외하고 회원가입 데이터 전달
+    const { confirmPassword, ...signupData } = data;
+    signup(signupData);
   }
 
   return (
@@ -171,9 +213,19 @@ export default function SignupPage() {
             />
           </div>
 
-          <button type="submit" className={formButton} style={{ width: "80%" }}>
-            Sign Up
-          </button>
+          <div className={formGroup} style={{ minHeight: "1rem"}}>
+            {(error || validationError) && (
+              <p className={errorMessage}>
+                {error?.message || validationError}
+              </p>
+            )}
+          </div>
+
+          <div className={formGroup}>
+            <button type="submit" className={formButton} style={{ width: "100%" }} disabled={isPending}>
+              Sign Up
+            </button>
+          </div>
         </form>
       </div>
     </SharedPageLayout>
