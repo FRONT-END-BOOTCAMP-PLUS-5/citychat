@@ -1,8 +1,9 @@
 "use client";
-import React from 'react';
-import styles from './page.module.css';
-import SharedPageLayout from '@/app/SharedPageLayout';
-import { useSignin } from '@/app/hooks/useSignin';
+import React from "react";
+import styles from "./page.module.css";
+import SharedPageLayout from "@/app/SharedPageLayout";
+import { useSignin } from "@/app/hooks/useSignin";
+import { useUserStore } from "@/app/stores/useUserStore";
 
 const {
   ["form-container"]: formContainer,
@@ -12,11 +13,12 @@ const {
   ["form-label"]: formLabel,
   ["form-input"]: formInput,
   ["form-button"]: formButton,
+  ["error-message"]: errorMessage,
 } = styles;
 
 export default function LoginPage() {
-
   const { mutate: signin, isPending, error } = useSignin();
+  const setUser = useUserStore((state) => state.setUser); // ✅ 상태 설정 함수 가져오기
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,52 +29,65 @@ export default function LoginPage() {
     signin({ userId, password },
       {
         onSuccess: (data) => {
-          console.log('Login successful:', data.user);
+          if (data.user) {
+            setUser(data.user); // useUserStore에 정보 저장
+          }
         },
-        onError: (error) => {
-          console.error('Login failed:', error);},
       }
     );
   };
 
   return (
     <SharedPageLayout title="Login">
-          <div className={formContainer}>
-            <h3 className={formTitle}>Login</h3>
-            <form className={loginForm} onSubmit={handleSubmit}>
-              
-              <div className={formGroup}>
-                <label htmlFor="userid" className={formLabel}>ID</label>
-                <input
-                  type="text"
-                  id="userid"
-                  name="userid"
-                  className={formInput}
-                  placeholder="Enter ID"
-                  required
-                />
-              </div>
-    
-              <div className={formGroup}>
-                <label htmlFor="password" className={formLabel}>Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  className={formInput}
-                  placeholder="Enter Password"
-                  required
-                />
-              </div>
-    
-              <button 
-                type="submit" 
-                className={formButton}
-                disabled={isPending}>
-                Login
-              </button>
-            </form>
+      <div className={formContainer}>
+        {/* <h3 className={formTitle}>Login</h3> */}
+        <form className={loginForm} onSubmit={handleSubmit}>
+          <div className={formGroup}>
+            <label htmlFor="userid" className={formLabel}>
+              ID
+            </label>
+            <input
+              type="text"
+              id="userid"
+              name="userid"
+              className={formInput}
+              placeholder="Enter ID"
+              disabled={isPending}
+              required
+            />
           </div>
-        </SharedPageLayout>
+
+          <div className={formGroup}>
+            <label htmlFor="password" className={formLabel}>
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              className={formInput}
+              placeholder="Enter Password"
+              disabled={isPending}
+              required
+            />
+          </div>
+          
+          <div className={formGroup} style={{ minHeight: "1rem"}}>
+            {error && (
+              <p className={errorMessage}>
+                아이디와 비밀번호를 확인해주세요.
+              </p>
+            )}
+          </div>
+
+          <div className={formGroup}>
+            <button type="submit" className={formButton} disabled={isPending}>
+              Login
+            </button>
+
+          </div>
+        </form>
+      </div>
+    </SharedPageLayout>
   );
 }
