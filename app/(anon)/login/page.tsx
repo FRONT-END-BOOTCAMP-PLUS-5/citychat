@@ -56,10 +56,7 @@ export default function LoginPage() {
               name="userid"
               className={formInput}
               placeholder="Enter ID"
-<<<<<<< HEAD
               disabled={isPending}
-=======
->>>>>>> develop
               required
             />
           </div>
@@ -74,17 +71,14 @@ export default function LoginPage() {
               name="password"
               className={formInput}
               placeholder="Enter Password"
-<<<<<<< HEAD
               disabled={isPending}
               required
             />
           </div>
-          
-          <div className={formGroup} style={{ minHeight: "1rem"}}>
+
+          <div className={formGroup} style={{ minHeight: "1rem" }}>
             {error && (
-              <p className={errorMessage}>
-                아이디와 비밀번호를 확인해주세요.
-              </p>
+              <p className={errorMessage}>아이디와 비밀번호를 확인해주세요.</p>
             )}
           </div>
 
@@ -92,17 +86,7 @@ export default function LoginPage() {
             <button type="submit" className={formButton} disabled={isPending}>
               Login
             </button>
-
           </div>
-=======
-              required
-            />
-          </div>
-
-          <button type="submit" className={formButton} disabled={isPending}>
-            Login
-          </button>
->>>>>>> develop
         </form>
       </div>
     </SharedPageLayout>
