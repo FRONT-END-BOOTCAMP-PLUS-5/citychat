@@ -21,7 +21,7 @@ export const signin = async (data: SigninRequestDto): Promise<SigninResponseDto>
 };
 
 export const signup = async (data: SignupRequestDto): Promise<SignupResponseDto> => {
-  const response = await fetch("/api/users/signup", {
+  const response = await fetch("/api/users", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
