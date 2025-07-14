@@ -1,4 +1,4 @@
-import { SigninUsecase } from "@/backend/application/signin/usecases/SigninUsecase";
+import { SigninUsecase } from "@/backend/application/auth/usecases/SigninUsecase";
 import { SbUserRepository } from "@/backend/infrastructure/repositories/SbUserRepository";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
