@@ -61,7 +61,11 @@ export default function ChatRoom() {
   return (
     <div style={{ padding: "20px" }}>
       <h2>🗨️ Chat Room: {roomId}</h2>
-      <ChatLog messages={messages} onReply={setReplyTo} />
+      <ChatLog
+        messages={messages}
+        onReply={setReplyTo}
+        currentUserId={user?.id ?? null}
+      />
       <ChatInput
         onSend={handleSend}
         replyTo={replyTo}

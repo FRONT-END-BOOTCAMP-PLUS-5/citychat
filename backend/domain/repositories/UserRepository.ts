@@ -1,3 +1,4 @@
+import { GetUserCriteria } from "@/backend/infrastructure/repositories/criteria/GetUserCriteria";
 import { User } from "../entities/User";
 
 export interface UserRepository {
@@ -7,6 +8,9 @@ export interface UserRepository {
     update(user: User): Promise<User>;
     // 사용자 삭제
     delete(id: number): Promise<User>;
+
+    // 사용자 단일 조회 (조건 이용)
+    findOneByCriteria(criteria: GetUserCriteria): Promise<User | null>;
 
     // 전체 조회
     findAll(): Promise<User[]>;

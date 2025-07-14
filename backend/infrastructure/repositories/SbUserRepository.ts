@@ -1,6 +1,7 @@
 import { User } from "@/backend/domain/entities/User";
 import { UserRepository } from "@/backend/domain/repositories/UserRepository";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { GetUserCriteria } from "./criteria/GetUserCriteria";
 
 interface UserTable {
     id: number;
@@ -15,9 +16,9 @@ interface UserTable {
 
 export class SbUserRepository implements UserRepository {
 
-    constructor(private supabase: SupabaseClient) {}
+    constructor(private supabase: SupabaseClient) { }
 
-    private mapToUserTable(user: User): Omit<UserTable, 'id'> {
+    private mapToUserTable(user: User): Omit<UserTable, "id"> {
         return {
             user_id: user.userId,
             password: user.password,
@@ -42,15 +43,47 @@ export class SbUserRepository implements UserRepository {
         );
     }
 
+    private buildUserQuery(
+        base: string,
+        selectStr: string,
+        criteria: GetUserCriteria,
+    ) {
+        let query = this.supabase
+            .from(base)
+            .select(selectStr);
+
+        if (!criteria) {
+            return query;
+        }
+
+        if (criteria.id) {
+            query = query.eq("id", criteria.id);
+        }
+
+        if (criteria.email) {
+            query = query.eq("email", criteria.email);
+        }
+
+        if (criteria.userid) {
+            query = query.eq("user_id", criteria.userid);
+        }
+
+        if (criteria.nickname) {
+            query = query.eq("nickname", criteria.nickname);
+        }
+
+        return query;
+    }
+
     async create(user: User): Promise<User> {
         const userTableData = this.mapToUserTable(user);
-        
+
         const { data, error } = await this.supabase
-            .from('users')
+            .from("users")
             .insert([userTableData])
             .select()
             .single();
-            
+
         if (error) throw new Error(error.message);
         return this.mapToUser(data as UserTable);
     }
@@ -64,6 +97,18 @@ export class SbUserRepository implements UserRepository {
     findAll(): Promise<User[]> {
         throw new Error("Method not implemented.");
     }
+
+    async findOneByCriteria(criteria: GetUserCriteria): Promise<User | null> {
+        const { data, error } = await this.buildUserQuery("users", "*", criteria)
+            .eq("deleted_flag", false)
+            .maybeSingle();
+
+        if (error) throw new Error(error.message);
+        if (!data) return null;
+
+        return this.mapToUser(data as unknown as UserTable);
+    }
+
     findById(id: number): Promise<User | null> {
         throw new Error("Method not implemented.");
     }
@@ -73,7 +118,7 @@ export class SbUserRepository implements UserRepository {
             .from("users")
             .select()
             .eq("user_id", userId)
-            .eq('deleted_flag', false)
+            .eq("deleted_flag", false)
             .maybeSingle();
         if (error) throw new Error(error.message);
         if (!data) return null;

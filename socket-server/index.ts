@@ -87,6 +87,7 @@ io.on("connection", (socket) => {
         content,
         tags,
         sender,
+        senderId,
         sent_at: savedChat.sent_at,
         replyToId,
       });
