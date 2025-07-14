@@ -5,25 +5,25 @@ import { SignupUsecase } from "@/backend/application/user/usecases/SignupUsecase
 import { SignupRequestDto } from "@/backend/application/user/dtos/SignupDto";
 
 export async function POST(request: NextRequest) {
-    try {
-        const body: SignupRequestDto = await request.json();
+  try {
+    const body: SignupRequestDto = await request.json();
         
-        const supabase = await createClient();
-        const userRepository = new SbUserRepository(supabase);
-        const signupUsecase = new SignupUsecase(userRepository);
+    const supabase = await createClient();
+    const userRepository = new SbUserRepository(supabase);
+    const signupUsecase = new SignupUsecase(userRepository);
         
-        const result = await signupUsecase.execute(body);
+    const result = await signupUsecase.execute(body);
         
-        return NextResponse.json(result, { 
-            status: result.success ? 201 : 400 
-        });
-    } catch (error) {
-        return NextResponse.json(
-            { 
-                success: false, 
-                message: "서버 오류가 발생했습니다." 
-            },
-            { status: 500 }
-        );
-    }
+    return NextResponse.json(result, { 
+      status: result.success ? 201 : 400 
+    });
+  } catch (error) {
+    return NextResponse.json(
+      { 
+        success: false, 
+        message: "서버 오류가 발생했습니다." 
+      },
+      { status: 500 }
+    );
+  }
 }
