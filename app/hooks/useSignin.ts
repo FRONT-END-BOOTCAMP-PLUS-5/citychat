@@ -1,4 +1,4 @@
-import { SigninRequestDto } from "@/backend/application/auth/dtos/SigninDto";
+import { SigninRequestDto } from "@/backend/application/auth/dtos/SigninRequestDto";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { signin } from "../apis/authApi";

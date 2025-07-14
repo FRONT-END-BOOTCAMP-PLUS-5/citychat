@@ -1,5 +1,7 @@
-import { SigninRequestDto, SigninResponseDto } from "@/backend/application/auth/dtos/SigninDto";
-import { SignupRequestDto, SignupResponseDto } from "@/backend/application/user/dtos/SignupDto";
+import { SigninRequestDto } from "@/backend/application/auth/dtos/SigninRequestDto";
+import { SigninResponseDto } from "@/backend/application/auth/dtos/SigninResponseDto";
+import { SignupRequestDto } from "@/backend/application/users/dtos/SignupRequestDto";
+import { SignupResponseDto } from "@/backend/application/users/dtos/SignupResponseDto";
 
 export const signin = async (data: SigninRequestDto): Promise<SigninResponseDto> => {
   const response = await fetch("/api/auth/signin", {

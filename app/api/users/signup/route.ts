@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { SbUserRepository } from "@/backend/infrastructure/repositories/SbUserRepository";
-import { SignupUsecase } from "@/backend/application/user/usecases/SignupUsecase";
-import { SignupRequestDto } from "@/backend/application/user/dtos/SignupDto";
+import { SignupUsecase } from "@/backend/application/users/usecases/SignupUsecase";
+import { SignupRequestDto } from "@/backend/application/users/dtos/SignupRequestDto";
 
 export async function POST(request: NextRequest) {
   try {

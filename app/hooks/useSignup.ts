@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { signup } from "../apis/authApi";
-import { SignupRequestDto } from "@/backend/application/user/dtos/SignupDto";
+import { SignupRequestDto } from "@/backend/application/users/dtos/SignupRequestDto";
 
 export const useSignup = () => {
   const router = useRouter();
