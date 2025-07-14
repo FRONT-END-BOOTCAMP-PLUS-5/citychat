@@ -10,8 +10,6 @@
     color: #000;
     background-color: #fff;
     padding: 2rem;
-    border: 0.1px solid #ccc;
-    border-radius: 8px;
     min-width: 400px;
     display: flex;
     flex-direction: column;
@@ -30,6 +28,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
 }
 
 .form-label {
@@ -57,4 +56,22 @@
     border-radius: 4px;
     cursor: pointer;
     width: 80%;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    text-align: center;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 80%;
+}
+
+@media (min-width: 480px) {
+    .login-form {
+        border: 0.1px solid #ccc;
+        border-radius: 8px;
+    }
 }
