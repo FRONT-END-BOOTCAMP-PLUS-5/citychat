@@ -1,5 +1,5 @@
-import SharedPageLayout from '@/app/SharedPageLayout'
-import React from 'react'
+import SharedPageLayout from "@/app/SharedPageLayout";
+import React from "react";
 
 const page = () => {
   return (
@@ -8,7 +8,7 @@ const page = () => {
         page
       </div>
     </SharedPageLayout>
-  )
-}
+  );
+};
 
-export default page
+export default page;

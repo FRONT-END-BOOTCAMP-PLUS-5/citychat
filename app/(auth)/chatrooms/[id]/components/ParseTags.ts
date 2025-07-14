@@ -17,6 +17,6 @@ export function highlightTags(content: string): string {
   const tagPattern = /#([a-zA-Z0-9가-힣]+)/g; // # + 한글과 영문, 숫자 + shiftbar
   return content.replace(
     tagPattern,
-    '<span style="background-color: #cce4ff; color: #0066cc; padding: 2px 4px; border-radius: 4px; font-weight: bold;">#$1</span>'
+    "<span style=\"background-color: #cce4ff; color: #0066cc; padding: 2px 4px; border-radius: 4px; font-weight: bold;\">#$1</span>"
   );
 }
