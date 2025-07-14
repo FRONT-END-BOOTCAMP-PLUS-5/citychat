@@ -19,7 +19,7 @@ export const useSignin = () => {
     },
     onError: (error) => {
       // 로그인 실패 시 처리
-      console.error("Login failed:", error);
+      console.error("Sign in failed:", error);
     },
   });
 };

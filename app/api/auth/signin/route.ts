@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     if (!result.success) {
       return NextResponse.json(
-        { error: result.message || "Login Failed" },
+        { error: result.message || "Sign in Failed" },
         { status: 401 }
       );
     }
@@ -52,10 +52,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       user: result.user,
-      message: result.message || "Login Successful",
+      message: result.message || "Sign in Successful",
     });
   } catch (error: unknown) {
     console.error("Signin error:", error);
-    return NextResponse.json({ error: "Login Failed" }, { status: 500 });
+    return NextResponse.json({ error: "Sign in Failed" }, { status: 500 });
   }
 }

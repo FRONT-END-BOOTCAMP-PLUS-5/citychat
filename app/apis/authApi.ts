@@ -14,7 +14,7 @@ export const signin = async (data: SigninRequestDto): Promise<SigninResponseDto>
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.message || errorData.error || "Login failed");
+    throw new Error(errorData.message || errorData.error || "Signin failed");
   }
 
   return response.json();
