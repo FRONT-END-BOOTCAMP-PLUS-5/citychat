@@ -4,6 +4,7 @@ export interface Message {
   content: string; // 메시지 본문
   tags?: string[]; // 해시태그 목록
   sender: string; // 작성자 이름
+  senderId?: number; //작성자 id
   sent_at?: string; // 메시지 전송 시간 (ISO 8601 형식)
   replyToId?: number | null; // 답글 대상 메시지 ID (없으면 null)
 }
@@ -25,4 +26,5 @@ export interface ChatInputProps {
 export interface ChatLogProps {
   messages: Message[]; // 렌더링할 메시지 리스트
   onReply: (msg: Message) => void; // 메시지 클릭 시 답글 시작
+  currentUserId: number | null; //유저 id
 }

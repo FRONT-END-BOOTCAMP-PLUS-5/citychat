@@ -55,8 +55,10 @@ export default function CenterModeCarousel() {
       style={{
         position: "relative",
         zIndex: 1,
+        // right& bottom
         left: "25%",
         top: "26%",
+        // 영역을 px대신 %로
         width: 1000,
         height: 450,
         backgroundColor: "rgba(255, 255, 255, 0.3)",

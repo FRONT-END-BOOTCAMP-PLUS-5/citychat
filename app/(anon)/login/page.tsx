@@ -24,14 +24,18 @@ export default function LoginPage() {
     e.preventDefault();
     const userId = (e.target as HTMLFormElement).userid.value.trim();
     const password = (e.target as HTMLFormElement).password.value.trim();
-    
+
     // useSignin 훅 호출
-    signin({ userId, password },
+    signin(
+      { userId, password },
       {
         onSuccess: (data) => {
           if (data.user) {
             setUser(data.user); // useUserStore에 정보 저장
           }
+        },
+        onError: (error) => {
+          console.error("Login failed:", error);
         },
       }
     );
@@ -71,12 +75,10 @@ export default function LoginPage() {
               required
             />
           </div>
-          
-          <div className={formGroup} style={{ minHeight: "1rem"}}>
+
+          <div className={formGroup} style={{ minHeight: "1rem" }}>
             {error && (
-              <p className={errorMessage}>
-                아이디와 비밀번호를 확인해주세요.
-              </p>
+              <p className={errorMessage}>아이디와 비밀번호를 확인해주세요.</p>
             )}
           </div>
 
@@ -84,7 +86,6 @@ export default function LoginPage() {
             <button type="submit" className={formButton} disabled={isPending}>
               Login
             </button>
-
           </div>
         </form>
       </div>
