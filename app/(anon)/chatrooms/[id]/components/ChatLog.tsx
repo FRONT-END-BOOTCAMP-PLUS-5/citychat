@@ -23,7 +23,7 @@ export default function ChatLog({
     } else {
       if (!translated[index]) {
         const targetLang = /[가-힣]/.test(content) ? "en" : "ko";
-        const res = await fetch("/api/translate", {
+        const res = await fetch("/api/chats/translate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text: content, targetLang }),
