@@ -19,7 +19,7 @@ export default function ChatRoom() {
 
   //✅소켓 연결
   useEffect(() => {
-    const socket = io("http://localhost:4000", {
+    const socket = io("https://citychat-server-l070.onrender.com", {
       query: { roomId },
     });
 
