@@ -1,13 +1,14 @@
 import { UserRepository } from "@/backend/domain/repositories/UserRepository";
-import { SigninRequestDto, SigninResponseDto } from "../dtos/SigninDto";
+import { SigninRequestDto } from "../dtos/SigninRequestDto";
+import { SigninResponseDto } from "../dtos/SigninResponseDto";
 import {
   generateAccessToken,
   generateRefreshToken,
-} from "@/utils/jwt/tokenManager";
+} from "@/utils/auth/tokenManager";
 import bcrypt from "bcryptjs";
 
 export class SigninUsecase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private userRepository: UserRepository) { }
 
   async execute(request: SigninRequestDto): Promise<SigninResponseDto> {
     const { userId, password } = request;

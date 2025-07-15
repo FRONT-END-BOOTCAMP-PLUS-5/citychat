@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import type { SigninResponseDto } from "@/backend/application/signin/dtos/SigninDto";
+import type { SigninResponseDto } from "@/backend/application/auth/dtos/SigninResponseDto";
 
 type User = NonNullable<SigninResponseDto["user"]>;
 

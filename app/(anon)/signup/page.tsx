@@ -40,7 +40,7 @@ export default function SignupPage() {
     }
 
     try {
-      const response = await fetch(`/api/users/check?field=${field}&value=${encodeURIComponent(value)}`);
+      const response = await fetch(`/api/user/duplicate?field=${field}&value=${encodeURIComponent(value)}`);
       const result = await response.json();
 
       setDuplicateStatus(prev => ({
