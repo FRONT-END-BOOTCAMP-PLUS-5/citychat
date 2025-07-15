@@ -19,7 +19,7 @@ export default function ChatRoom() {
 
   //✅소켓 연결
   useEffect(() => {
-    const socket = io("https://citychat-server-l070.onrender.com", {
+    const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL!, {
       query: { roomId },
     });
 
