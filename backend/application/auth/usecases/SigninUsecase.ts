@@ -4,7 +4,7 @@ import { SigninResponseDto } from "../dtos/SigninResponseDto";
 import {
   generateAccessToken,
   generateRefreshToken,
-} from "@/utils/auth/tokenManager";
+} from "@/utils/auth/tokenUtils";
 import bcrypt from "bcryptjs";
 
 export class SigninUsecase {
