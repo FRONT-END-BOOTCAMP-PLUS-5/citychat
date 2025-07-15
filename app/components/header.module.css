@@ -1,23 +1,22 @@
 /* 전체 앱 바 스타일 */
 .appBar {
-  background-color: rgba(255, 255, 255, 0.3); /* 임시 투명 배경 */
-  min-height: 10vh; /* 최소 높이 */
-  position: sticky; /* 위치 고정 (원래 MUI와 동일) */
+  min-height: 10vh; 
+  position: sticky; 
   width: 100%;
-  box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+  box-sizing: border-box; 
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 10; /* 메인페이지에서 이미지보다 높은 인덱스값 부여 */
+  z-index: 10; 
 }
 
-/* 컨테이너 Wrapper (MUI Container maxWidth="xl" 역할) */
+/* 컨테이너 Wrapper */
 .containerWrapper {
-  max-width: 1280px; /* 'xl'은 보통 1280px 정도, 필요에 따라 조절해줘 */
+  max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 16px; /* MUI 기본 패딩 */
-  padding-right: 16px; /* MUI 기본 패딩 */
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 /* 툴바 (내부 요소 정렬) */
@@ -42,8 +41,8 @@
   border: none;
   cursor: pointer;
   padding: 8px;
-  color: #ffffff; /* 흰색 아이콘 */
-  font-size: 24px; /* 아이콘 크기 */
+  color: #ffffff;
+  font-size: 24px; 
   display: flex;
   align-items: center;
   justify-content: center;

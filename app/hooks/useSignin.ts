@@ -1,4 +1,4 @@
-import { SigninRequestDto } from "@/backend/application/auth/dtos/SigninDto";
+import { SigninRequestDto } from "@/backend/application/auth/dtos/SigninRequestDto";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { signin } from "../apis/authApi";
@@ -19,7 +19,7 @@ export const useSignin = () => {
     },
     onError: (error) => {
       // 로그인 실패 시 처리
-      console.error("Login failed:", error);
+      console.error("Sign in failed:", error);
     },
   });
 };

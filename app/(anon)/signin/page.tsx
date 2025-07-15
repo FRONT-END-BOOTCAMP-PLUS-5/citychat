@@ -7,7 +7,7 @@ import { useUserStore } from "@/app/stores/useUserStore";
 
 const {
   ["form-container"]: formContainer,
-  ["login-form"]: loginForm,
+  ["signin-form"]: signinForm,
   ["form-title"]: formTitle,
   ["form-group"]: formGroup,
   ["form-label"]: formLabel,
@@ -16,7 +16,7 @@ const {
   ["error-message"]: errorMessage,
 } = styles;
 
-export default function LoginPage() {
+export default function SigninPage() {
   const { mutate: signin, isPending, error } = useSignin();
   const setUser = useUserStore((state) => state.setUser); // ✅ 상태 설정 함수 가져오기
 
@@ -35,17 +35,17 @@ export default function LoginPage() {
           }
         },
         onError: (error) => {
-          console.error("Login failed:", error);
+          console.error("Sign in failed:", error);
         },
       }
     );
   };
 
   return (
-    <SharedPageLayout title="Login">
+    <SharedPageLayout title="Sign in">
       <div className={formContainer}>
-        {/* <h3 className={formTitle}>Login</h3> */}
-        <form className={loginForm} onSubmit={handleSubmit}>
+        {/* <h3 className={formTitle}>Sign in</h3> */}
+        <form className={signinForm} onSubmit={handleSubmit}>
           <div className={formGroup}>
             <label htmlFor="userid" className={formLabel}>
               ID
@@ -84,7 +84,7 @@ export default function LoginPage() {
 
           <div className={formGroup}>
             <button type="submit" className={formButton} disabled={isPending}>
-              Login
+              Signin
             </button>
           </div>
         </form>

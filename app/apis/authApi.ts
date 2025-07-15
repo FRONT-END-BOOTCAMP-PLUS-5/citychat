@@ -1,5 +1,7 @@
-import { SigninRequestDto, SigninResponseDto } from "@/backend/application/auth/dtos/SigninDto";
-import { SignupRequestDto, SignupResponseDto } from "@/backend/application/user/dtos/SignupDto";
+import { SigninRequestDto } from "@/backend/application/auth/dtos/SigninRequestDto";
+import { SigninResponseDto } from "@/backend/application/auth/dtos/SigninResponseDto";
+import { SignupRequestDto } from "@/backend/application/users/dtos/SignupRequestDto";
+import { SignupResponseDto } from "@/backend/application/users/dtos/SignupResponseDto";
 
 export const signin = async (data: SigninRequestDto): Promise<SigninResponseDto> => {
   const response = await fetch("/api/auth/signin", {
@@ -12,14 +14,14 @@ export const signin = async (data: SigninRequestDto): Promise<SigninResponseDto>
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.message || errorData.error || "Login failed");
+    throw new Error(errorData.message || errorData.error || "Signin failed");
   }
 
   return response.json();
 };
 
 export const signup = async (data: SignupRequestDto): Promise<SignupResponseDto> => {
-  const response = await fetch("/api/users/signup", {
+  const response = await fetch("/api/users", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
