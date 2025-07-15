@@ -58,13 +58,11 @@ export async function GET() {
   }) => {
     let imageUrl = "";
     if (city.image && city.image.length > 0) {
-      // --- 변경된 부분 시작 ---
       const fullPath = city.image[0].storage_path;
       const bucketName = "citychat-img"; // 버킷 이름을 명시
       let relativePath = fullPath;
 
-      // 만약 storage_path가 "버킷이름/실제경로" 형태로 되어 있다면, 버킷 이름을 제거
-      if (fullPath.startsWith(bucketName + "/")) {
+      if (fullPath.startsWith(bucketName)) {
         relativePath = fullPath.substring(bucketName.length + 1);
       }
       imageUrl = getPublicImageUrl(bucketName, relativePath);
