@@ -75,7 +75,7 @@
 
 
 /* 반응형 */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   :global(.slick-list) {
     margin: 0 -20px;
   }
@@ -86,4 +86,4 @@
     font-size: 28px;
     line-height: 80px;
   }
-}
+} */
