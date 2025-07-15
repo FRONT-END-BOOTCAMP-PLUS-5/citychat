@@ -43,10 +43,9 @@ export async function GET() {
   }
     
   const getPublicImageUrl = (bucket: string, path: string) => {
-    // 이미지 경로가 유효한지 여기서 한번 더 확인하는 것도 좋습니다.
     if (!path) {
       console.warn("이미지 경로가 비어 있습니다.");
-      return ""; // 또는 기본 이미지 URL
+      return "";
     }
     return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
   };
@@ -59,6 +58,7 @@ export async function GET() {
   }) => {
     let imageUrl = "";
     if (city.image && city.image.length > 0) {
+      // --- 변경된 부분 시작 ---
       const fullPath = city.image[0].storage_path;
       const bucketName = "citychat-img"; // 버킷 이름을 명시
       let relativePath = fullPath;

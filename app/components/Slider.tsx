@@ -3,9 +3,11 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from "./slider.module.css";
+import type { CustomArrowProps } from "react-slick";
 
 
-const NextArrow = (props: any) => {
+
+const NextArrow = (props: CustomArrowProps) => {
   const { className, onClick } = props;
   return (
     <div className={`${className} ${styles.arrow} ${styles.next}`} onClick={onClick}>
@@ -14,7 +16,7 @@ const NextArrow = (props: any) => {
   );
 };
 
-const PrevArrow = (props: any) => {
+const PrevArrow = (props: CustomArrowProps) => {
   const { className, onClick } = props;
   return (
     <div className={`${className} ${styles.arrow} ${styles.prev}`} onClick={onClick}>
@@ -27,12 +29,14 @@ export default function CenterModeCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const settings = {
+    autoplay: true,
+    autoplaySpeed: 4000,
     centerMode: true,
-    centerPadding: "30px",
+    centerPadding: "20px",
     slidesToShow: 3,
     infinite: true,
     arrows: true,
-    speed: 500,
+    speed: 400,
     afterChange: (current: number) => setActiveIndex(current),
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
