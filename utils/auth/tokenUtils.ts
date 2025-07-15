@@ -34,10 +34,10 @@ export function verifyAccessToken(token: string) {
       ok: true,
       payload: decoded,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       ok: false,
-      message: error.message,
+      message: error instanceof Error ? error.message : String(error),
     };
   }
 }

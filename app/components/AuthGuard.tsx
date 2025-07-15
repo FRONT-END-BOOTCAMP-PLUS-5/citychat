@@ -30,6 +30,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
       // 로그인/회원가입 페이지인데 이미 로그인한 경우
       router.push("/");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, pathname, router]);
 
   return <>{children}</>;
