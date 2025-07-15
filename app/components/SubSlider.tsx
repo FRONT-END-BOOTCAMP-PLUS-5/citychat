@@ -2,7 +2,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./subSlider.module.css";
 import Image from "next/image";
-import { supabase } from "@/utils/supabase/client";
 
 interface City {
   name: string;
@@ -14,25 +13,31 @@ const SubSlider: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [cities, setCities] = useState<City[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
-  const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const getPublicImageUrl = (bucket: string, path: string) =>
-    `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
-
 
   // Supabase에서 도시 목록 불러오기
+  // Fetch cities from the API route
   useEffect(() => {
     const fetchCities = async () => {
-      const { data, error } = await supabase.from("cities").select("*");
-      if (error) {
-        console.error("도시 데이터를 불러오는 중 오류 발생:", error);
-      } else {
+      try {
+        const response = await fetch("/api/cities"); 
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data: City[] = await response.json();
         setCities(data);
+      } catch (err: any) {
+        console.error("도시 데이터를 불러오는 중 오류 발생:", err);
+        setError("도시 데이터를 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchCities();
-  }, []);
+  }, []); // Empty dependency array means this runs once on mount
 
   useEffect(() => {
     const container = scrollRef.current;
@@ -54,7 +59,31 @@ const SubSlider: React.FC = () => {
 
     container.addEventListener("scroll", handleScroll);
     return () => container.removeEventListener("scroll", handleScroll);
-  }, [activeIndex,cities]);
+  }, [activeIndex, cities]);
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const children = Array.from(container.children);
+      const scrollTop = container.scrollTop;
+
+      const active = children.findIndex((child) => {
+        const el = child as HTMLElement;
+        return el.offsetTop - scrollTop >= -10;
+      });
+
+      if (active >= 0 && active !== activeIndex) {
+        setActiveIndex(active);
+      }
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, [activeIndex, cities]);
+  
+  
 
   // 마우스 휠로 도시 전환
   useEffect(() => {
@@ -96,6 +125,18 @@ const SubSlider: React.FC = () => {
   };
 
 
+  if (loading) {
+    return <div>도시를 불러오는 중...</div>;
+  }
+
+  if (error) {
+    return <div>오류: {error}</div>;
+  }
+
+  if (cities.length === 0) {
+    return <div>도시를 찾을 수 없습니다.</div>;
+  }
+
   
   const currentCity = cities[activeIndex];
 
@@ -124,7 +165,7 @@ const SubSlider: React.FC = () => {
                 {/* 조건부 랜더링으로 에러를 막고 이미지가 없더라도 동작 */}
                 {currentCity?.image && (
                   <Image
-                    src={getPublicImageUrl("citychat-img", currentCity.image)}
+                    src={currentCity.image} // 전체 URL을 직접 사용
                     alt={currentCity.name}
                     width={300}
                     height={400}
