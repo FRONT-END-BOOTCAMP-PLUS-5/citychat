@@ -17,6 +17,7 @@ export function generateAccessToken(payload: AccessTokenPayload) {
   return jwt.sign(payload, ACCESS_SECRET, {
     expiresIn: "1h", // 유효 기간
   });
+}
 
 // refresh Token 발급
 export function generateRefreshToken(payload: RefreshTokenPayload) {
