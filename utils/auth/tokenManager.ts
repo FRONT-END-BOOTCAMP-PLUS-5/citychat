@@ -5,7 +5,7 @@ const ACCESS_SECRET: Secret = process.env.JWT_SECRET_KEY || "";
 const REFRESH_SECRET: Secret = process.env.JWT_REFRESH_SECRET_KEY || "";
 
 interface AccessTokenPayload {
-    userInfo : Omit<User, "password">;
+    userInfo: Omit<User, "password">;
 }
 
 interface RefreshTokenPayload {
@@ -13,7 +13,7 @@ interface RefreshTokenPayload {
 }
 
 // access Token 발급
-export function generateAccessToken( payload: AccessTokenPayload) {
+export function generateAccessToken(payload: AccessTokenPayload) {
   return jwt.sign(payload, ACCESS_SECRET, {
     expiresIn: "1h", // 유효 기간
   });

@@ -1,6 +1,7 @@
 import { User } from "@/backend/domain/entities/User";
 import { UserRepository } from "@/backend/domain/repositories/UserRepository";
-import { SignupRequestDto, SignupResponseDto } from "../dtos/SignupDto";
+import { SignupRequestDto } from "../dtos/SignupRequestDto";
+import { SignupResponseDto } from "../dtos/SignupResponseDto";
 import bcrypt from "bcryptjs";
 
 export class SignupUsecase {
