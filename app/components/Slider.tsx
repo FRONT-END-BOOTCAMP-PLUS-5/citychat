@@ -51,7 +51,7 @@ export default function CenterModeCarousel() {
   };
 
   return (
-    <div
+    <div className="sliderWrap"
       style={{
         position: "relative",
         zIndex: 1,

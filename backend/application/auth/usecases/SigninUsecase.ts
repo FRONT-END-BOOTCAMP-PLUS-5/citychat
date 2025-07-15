@@ -3,7 +3,7 @@ import { SigninRequestDto, SigninResponseDto } from "../dtos/SigninDto";
 import {
   generateAccessToken,
   generateRefreshToken,
-} from "@/utils/jwt/tokenManager";
+} from "@/utils/auth/tokenManager";
 import bcrypt from "bcryptjs";
 
 export class SigninUsecase {
