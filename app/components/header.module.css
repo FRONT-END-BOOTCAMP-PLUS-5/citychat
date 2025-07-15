@@ -1,0 +1,236 @@
+/* 전체 앱 바 스타일 */
+.appBar {
+  background-color: rgba(255, 255, 255, 0.3); /* 임시 투명 배경 */
+  min-height: 10vh; /* 최소 높이 */
+  position: sticky; /* 위치 고정 (원래 MUI와 동일) */
+  width: 100%;
+  box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10; /* 메인페이지에서 이미지보다 높은 인덱스값 부여 */
+}
+
+/* 컨테이너 Wrapper (MUI Container maxWidth="xl" 역할) */
+.containerWrapper {
+  max-width: 1280px; /* 'xl'은 보통 1280px 정도, 필요에 따라 조절해줘 */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px; /* MUI 기본 패딩 */
+  padding-right: 16px; /* MUI 기본 패딩 */
+}
+
+/* 툴바 (내부 요소 정렬) */
+.toolbar {
+  display: flex;
+  align-items: center;
+  /* padding-top: 2.5vh; */
+  min-height: 10vh;
+  justify-content: space-between; /* 로고와 메뉴를 양 끝으로 정렬 */
+  flex-wrap: wrap; /* 작은 화면에서 요소들이 줄바꿈되도록 */
+}
+
+/* 로고 링크 스타일 */
+.logoLink {
+  text-decoration: none;
+  flex-shrink: 0; /* 공간이 부족해도 줄어들지 않도록 */
+}
+
+/* 햄버거 버튼, 닫기 스타일 */
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #ffffff; /* 흰색 아이콘 */
+  font-size: 24px; /* 아이콘 크기 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logoImage {
+  margin-left: 10px; /* 왼쪽 여백 */
+  width: auto; /* 로고 이미지 너비 */
+  height: 30px; /* 로고 이미지 높이 */
+}
+
+/* 데스크톱 내비게이션 (모바일에서는 숨김) */
+.navDesktop {
+  flex-grow: 1;
+  display: none; /* 기본적으로 모바일에서 숨김 */
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 10px;
+}
+
+/* 데스크톱 내비게이션 아이콘(MYPAGE) */
+.navIcon {
+  vertical-align: middle;
+  width: 45px;
+}
+
+/* 데스크톱 내비게이션 아이템 */
+.navItem {
+  margin: 0px 20px;
+  font-size: 18px;
+  color: #ffbb00;
+  display: block;
+  text-decoration: none;
+  transition: color 0.3s ease; /* 호버 효과 부드럽게 */
+}
+
+/* 네비게이션에 마우스를 올릴 시 */
+.navItem:hover {
+  color: rgba(255, 255, 255, 0.7); /* 호버 시 색상 변경 */
+}
+
+/* 마이페이지(로그인 & 비로그인) 이미지 */
+.mypageIcon {
+  vertical-align: middle; /* 필요한 경우 텍스트와 아이콘을 수직으로 정렬 */
+  margin-left: 5px; /* 근처에 텍스트가 있는 경우 공간 추가 */
+  width: 45px; /* 아이콘 너비 */
+}
+
+/* 마이페이지 아이콘 버튼 컨테이너 */
+.mypageContainer {
+  position: relative; /* 드롭다운을 위한 기준점 설정 */
+  display: flex;
+  align-items: center;
+  margin-left: 20px; /* 다른 메뉴 항목과의 간격 */
+}
+
+/* 마이페이지 아이콘 버튼 자체 */
+.mypageIconButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* MYPAGE 드롭다운 메뉴 */
+.mypageDropdown {
+  position: absolute;
+  top: 160%; /* 아이콘 바로 아래에 위치 */
+  left: -60%;
+  background-color: rgba(255, 255, 255, 0.3); /* 배경색 */
+  /* border: 1px solid #ddd;  */
+  border-radius: 4px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  z-index: 1000; /* 다른 요소 위에 표시 */
+  min-width: 120px; /* 최소 너비 */
+  padding: 8px 0; /* 내부 여백 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* 드롭다운 메뉴의 각 항목 */
+.dropdownItem {
+  padding: 8px 15px;
+  text-decoration: none;
+  color: #333;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.dropdownItem:hover {
+  background-color: #f0f0f0; /* 호버 시 배경색 변경 */
+}
+
+/* ---------------- 모바일 영역(반응형) ----------------- */
+
+/* 모바일 메뉴 아이콘 Wrapper (데스크톱에서는 숨김) */
+.mobileMenuIconWrapper {
+  display: flex; /* 기본적으로 모바일에서 보임 */
+  justify-content: flex-end;
+  flex-grow: 1; /* 오른쪽으로 밀어내기 */
+}
+
+/* 사이드바 (Drawer) */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: -200px; /* 초기에는 화면 밖으로 숨김 */
+  width: 200px;
+  height: 100vh;
+  background-color: #ffbb00; /* 사이드바 배경색 */
+  transition: right 0.3s ease-in-out; /* 부드러운 슬라이드 효과 */
+  z-index: 10; /* AppBar보다 위에 오도록 */
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+}
+
+.drawerIcon {
+  margin-right: 10px;
+}
+
+.drawer.open {
+  right: 0px; /* 열렸을 때 화면 안으로 */
+}
+
+/* 사이드바 내용 */
+.drawerContent {
+  width: 100%;
+  height: 100%;
+  padding: 16px; /* 내부 패딩 */
+  box-sizing: border-box;
+}
+
+/* 사이드바 닫기 버튼 Wrapper */
+.drawerCloseButtonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}
+
+/* 사이드바 리스트 */
+.drawerList {
+  list-style: none; /* 리스트 마커 제거 */
+  padding: 0;
+  margin: 0;
+}
+
+/* 사이드바 리스트 아이템 */
+.drawerListItem {
+  margin-bottom: 8px;
+}
+
+/* 사이드바 링크 */
+.drawerLink {
+  display: block;
+  text-decoration: none;
+  padding: 12px 16px;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 4px;
+  color: #ffffff; /* 기본 글자색 */
+}
+
+/* 사이드바 버튼 호버 */
+.drawerLink:hover {
+  background-color: #ffffff; /* 호버 시 배경색 */
+  color: #ffbb00; /* 호버 시 글자색 */
+}
+
+/* 미디어 쿼리: 데스크톱 화면에서만 적용 */
+@media (min-width: 900px) {
+  /* MUI 'md' breakpoint가 900px, 이 이상에서 데스크톱 내비게이션 보임 */
+  .navDesktop {
+    display: flex; /* 데스크톱에서 보임 */
+  }
+
+  .mobileMenuIconWrapper {
+    display: none; /* 데스크톱에서 숨김 */
+  }
+}
+
+/* 모바일 화면에서만 적용 (Optional: 명시적으로 모바일 스타일 지정) */
+@media (max-width: 768px) {
+  .toolbar {
+    justify-content: space-between; /* 로고와 햄버거 아이콘만 양 끝으로 */
+  }
+
+  .logoText {
+    margin-left: 10px; /* 모바일에서 로고 왼쪽 여백 줄이기 */
+  }
+}

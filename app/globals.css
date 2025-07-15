@@ -1,11 +1,30 @@
+/* 폰트 수정해야 하는 부분 1▼ */
+@font-face {
+  font-family: "Paperlogy";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-4regular.woff2")
+    format("woff2");
+  font-style: normal;
+  unicode-range: U+0041-005A, U+0061-007A;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-style: normal;
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF;
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  /* --foreground: #171717; */
+  --foreground: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    /* --background: #0a0a0a; */
+    --background: #ffffff;
     --foreground: #ededed;
   }
 }
@@ -14,12 +33,15 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  /* 폰트 수정해야 하는 부분 2▼ */
+  font-family: "Paperlogy", "Pretendard", arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -39,4 +61,17 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+/* 웹킷 기반 브라우저 (Chrome, Safari, Edge) */
+/* 이 코드는 스크롤바 전체 트랙을 숨김 */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background: transparent;
+}
+
+/* 스크롤바 엄지 (잡고 움직이는 부분) */
+::-webkit-scrollbar-thumb {
+  background: transparent;
 }
