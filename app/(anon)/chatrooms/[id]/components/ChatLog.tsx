@@ -34,12 +34,9 @@ export default function ChatLog({
       setIsTranslated((prev) => ({ ...prev, [index]: true }));
     }
   };
-
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    console.log(currentUserId);
-    console.log(messages);
-  }, [messages]);
+  }, [bottomRef]);
 
   return (
     <ul className={styles.chatContainer}>

@@ -13,7 +13,6 @@ export default function ChatRoom() {
   const roomId = params.id as string;
   const [messages, setMessages] = useState<Message[]>([]);
   const [replyTo, setReplyTo] = useState<Message | null>(null);
-  const [isSending, setIsSending] = useState(false);
   const socketRef = useRef<Socket | null>(null);
   const user = useUserStore((state) => state.user);
 
@@ -47,7 +46,6 @@ export default function ChatRoom() {
     tags: string[],
     replyTo?: Message | null
   ) => {
-    if (isSending) return;
     const message: Message = {
       content,
       tags,

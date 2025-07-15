@@ -36,9 +36,10 @@
 } */
 
 .sliderWrap{
-  width: 900; 
+  width: 800; 
   height: 450;
-  background-color: rgba(0, 0, 0, 0.3);
+  margin-top: 120px;
+  margin-left: 35%;
 }
 
 .sliderContainer {
@@ -63,6 +64,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  right: 37px;
 }
 
 .cardActive {
@@ -71,8 +73,33 @@
   background: #007bff;
   color: #fff;
   opacity: 1;
+  position: relative;
 }
 
+.card,
+.cardActive {
+  position: relative;
+}
+
+/* 화살표 */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  color: white;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.prev {
+  left: -40px;
+}
+
+.next {
+  right: -20px;
+}
 
 /* 반응형 */
 /* @media (max-width: 768px) {
