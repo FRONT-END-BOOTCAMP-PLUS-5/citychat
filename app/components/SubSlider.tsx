@@ -28,7 +28,7 @@ const SubSlider: React.FC = () => {
         }
         const data: City[] = await response.json();
         setCities(data);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("도시 데이터를 불러오는 중 오류 발생:", err);
         setError("도시 데이터를 불러오는 데 실패했습니다.");
       } finally {
