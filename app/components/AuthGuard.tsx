@@ -39,7 +39,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
       router.push("/");
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, pathname, router]);
+  }, [user, pathname, router, isHydrated]);
 
   return <>{children}</>;
 }
