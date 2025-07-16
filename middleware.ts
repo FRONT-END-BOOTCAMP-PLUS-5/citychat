@@ -13,6 +13,7 @@ export async function middleware(request: NextRequest) {
       "/api/user/duplicate", // 중복 체크
       "/api/weather", // 날씨 정보
       "/api/translate", // 번역
+      "/api/cities",
     ];
 
     // 공개 API 경로는 통과

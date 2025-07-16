@@ -1,5 +1,5 @@
 // api/city/route.ts
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 // 서버에서 반환될 조인된 이미지 데이터의 실제 형태를 반영하는 인터페이스 추가
@@ -17,14 +17,9 @@ interface FormattedCity {
 
 export async function GET() {
   const supabase = await createClient();
-  const { data, error } = await supabase.from("cities").select(`
-    id,
-    name,
-    description,
-    image:images (
-    storage_path
-    )
-  `);
+  const { data, error } = await supabase
+    .from("cities")
+    .select("id, name, description, images(storage_path)");
 
   // 에러 처리
   if (error) {
@@ -41,7 +36,7 @@ export async function GET() {
       { status: 500 }
     );
   }
-    
+
   const getPublicImageUrl = (bucket: string, path: string) => {
     if (!path) {
       console.warn("이미지 경로가 비어 있습니다.");
@@ -54,20 +49,19 @@ export async function GET() {
       id: string;
       name: string;
       description: string;
-      image: ImageRecord[] | null;
+      images: ImageRecord[];
   }) => {
     let imageUrl = "";
-    if (city.image && city.image.length > 0) {
-      const fullPath = city.image[0].storage_path;
-      const bucketName = "citychat-img"; 
+    if (city.images) {
+      const fullPath = city.images.storage_path;
+      const bucketName = "citychat-img";
       let relativePath = fullPath;
-
       if (fullPath.startsWith(bucketName)) {
         relativePath = fullPath.substring(bucketName.length + 1);
       }
       imageUrl = getPublicImageUrl(bucketName, relativePath);
     }
-      
+
     return {
       id: city.id,
       name: city.name,

@@ -22,7 +22,7 @@ const SubSlider: React.FC = () => {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await fetch("//api/cities"); 
+        const response = await fetch("/api/cities"); 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -35,7 +35,7 @@ const SubSlider: React.FC = () => {
         setLoading(false);
       }
     };
-
+    
     fetchCities();
   }, []); // 컴포넌트 마운트 시 한 번만 실행
 
@@ -60,7 +60,6 @@ const SubSlider: React.FC = () => {
         setActiveIndex(active);
       }
     };
-
     // 휠 이벤트 핸들러 (debouncing 적용)
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault(); // 기본 스크롤 동작 방지
@@ -95,7 +94,7 @@ const SubSlider: React.FC = () => {
     if (container && cities.length > 0) {
       const target = container.children[activeIndex] as HTMLElement | undefined;
       if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        target.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }
   }, [activeIndex, cities]);
@@ -144,7 +143,7 @@ const SubSlider: React.FC = () => {
                     src={currentCity.image}
                     alt={currentCity.name}
                     width={300}
-                    height={400}
+                    height={340}
                     priority 
                     unoptimized 
                   />
