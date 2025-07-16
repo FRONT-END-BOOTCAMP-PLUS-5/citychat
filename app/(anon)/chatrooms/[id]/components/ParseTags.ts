@@ -1,5 +1,3 @@
-import { ClientPageRoot } from "next/dist/client/components/client-page";
-
 //태그 추출 함수
 export function parseTags(content: string): string[] {
   const tagPattern = /#([a-zA-Z0-9가-힣]+)/g; // # + 한글과 영문, 숫자 + shiftbar
