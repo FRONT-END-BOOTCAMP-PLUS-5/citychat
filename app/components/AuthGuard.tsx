@@ -2,7 +2,7 @@
 
 import { useUserStore } from "@/app/stores/useUserStore";
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface AuthGuardProps { children: React.ReactNode }
 
@@ -10,6 +10,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   const user = useUserStore((state) => state.user);
   const router = useRouter();
   const pathname = usePathname();
+  const [isHydrated, setIsHydrated] = useState(false);
 
   // 로그인이 필요한 페이지들
   const protectedPaths = ["/me", "/chatrooms"];
@@ -18,11 +19,18 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   const authPaths = ["/signin", "/signup"];
 
   useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+
+    if(!isHydrated) return;
+
     const isProtectedPath = protectedPaths.some((path) =>
       pathname.startsWith(path)
     );
     const isAuthPath = authPaths.some((path) => pathname.startsWith(path));
-
+    
     if (isProtectedPath && !user) {
       // 보호된 페이지인데 로그인하지 않은 경우
       router.push("/signin");
