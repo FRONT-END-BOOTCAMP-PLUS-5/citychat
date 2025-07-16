@@ -1,4 +1,4 @@
-
+// api/city/route.ts
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
@@ -12,7 +12,7 @@ interface FormattedCity {
   id: string; // 데이터 아이디
   name: string; // 지역 명
   description: string; // 내용
-  image: string; // 이미지 URL 문자열이 될 것입니다.
+  image: string; // 이미지 URL
 }
 
 export async function GET() {
@@ -59,7 +59,7 @@ export async function GET() {
     let imageUrl = "";
     if (city.image && city.image.length > 0) {
       const fullPath = city.image[0].storage_path;
-      const bucketName = "citychat-img"; // 버킷 이름을 명시
+      const bucketName = "citychat-img"; 
       let relativePath = fullPath;
 
       if (fullPath.startsWith(bucketName)) {

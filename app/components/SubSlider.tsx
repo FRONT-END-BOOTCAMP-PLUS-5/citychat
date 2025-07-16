@@ -37,8 +37,8 @@ const SubSlider: React.FC = () => {
     };
 
     fetchCities();
-  }, []); // Empty dependency array means this runs once on mount
-
+  }, []);
+  
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
