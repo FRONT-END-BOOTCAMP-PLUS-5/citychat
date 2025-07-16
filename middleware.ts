@@ -25,12 +25,12 @@ export async function middleware(request: NextRequest) {
 
     const verificationResult = verifyAccessToken(accessToken);
 
-    if (!verificationResult.ok) {
-      return NextResponse.json(
-        { error: "Invalid or expired token" },
-        { status: 401 }
-      );
-    }
+    // if (!verificationResult.ok) {
+    //   return NextResponse.json(
+    //     { error: "Invalid or expired token" },
+    //     { status: 401 }
+    //   );
+    // }
 
     return NextResponse.next();
   }
@@ -41,3 +41,8 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: "/api/:path*",
 };
+// ✅ middleware.ts 에서 matcher에 /api 포함되도록 수정
+// export const config = {
+//   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+// };
+

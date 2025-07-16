@@ -1,63 +1,56 @@
-.chatContainer {
-  min-height: 200px;
-  max-height: 300px;
-  overflow-y: auto;
-  padding: 0;
-}
+/* ChatLog.module.css */
 
-.messageItem {
-  margin-bottom: 8px;
-  list-style: none;
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
+  gap: 12px;
 }
 
-.sender {
-  font-weight: 300;
-}
-
-.replyBox {
-  margin-bottom: 4px;
-  padding: 4px 8px;
-  background-color: #e0e0e0;
-  border-left: 4px solid #999;
-  font-size: 0.85rem;
-  color: #333;
-}
-
-.messageContent {
-  margin: 2%;
-  padding: 2%;
-  border-radius: 4px;
-  height: fit-content;
-  display: inline-block;
-  cursor: pointer;
-  max-width: 60%;
+.messageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .myMessage {
-  align-self: flex-end;
-  background-color: #dcf8c6;
+  align-items: flex-end;
+}
+
+.senderName {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.bubble {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background-color: #f1f1f1;
+  position: relative;
+  word-break: break-word;
+}
+
+.myBubble {
+  background-color: #d1e7dd;
+}
+
+.time {
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 4px;
   text-align: right;
 }
 
-.otherMessage {
-  align-self: flex-start;
-  background-color: #f0f0f0;
-  text-align: left;
-}
-
-.timestamp {
-  margin-left: 8px;
-  font-size: 12px;
-  color: #888;
-}
-
 .translateButton {
-  font-size: 0.8rem;
-  margin-top: 4px;
-  color: #8ecae6;
+  font-size: 0.75rem;
+  color: #007bff;
   background: none;
   border: none;
   cursor: pointer;
+  padding: 4px;
+  margin-left: 8px;
 }

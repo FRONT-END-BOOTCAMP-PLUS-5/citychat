@@ -20,9 +20,13 @@ export default function ChatRoom() {
   // ✅ 기존 채팅 불러오기 (로그 초기 로딩)
   useEffect(() => {
     const fetchInitialMessages = async () => {
-      const res = await fetch(`/api/chats/logs?roomId=${roomId}&days=7`);
+      const res = await fetch(`/api/chat/logs?roomId=${roomId}&days=7`, {
+        method: "GET",
+        credentials: "include",
+      });
       const data: Message[] = await res.json();
       setMessages(data);
+      console.log("data",data);
     };
 
     fetchInitialMessages();

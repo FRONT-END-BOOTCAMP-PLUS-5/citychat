@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SbChatLogRepository } from "@/backend/infrastructure/repositories/SbChatLogRepository";
 import { GetRecentChatsUseCase } from "@/backend/application/chats/usecases/GetRecentChatUseCase";
+import { createClient } from "@/utils/supabase/server";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -24,9 +25,11 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const useCase = new GetRecentChatsUseCase(new SbChatLogRepository());
 
   try {
+    const supabase = await createClient();
+    console.log("supabase", supabase);
+    const useCase = new GetRecentChatsUseCase(new SbChatLogRepository(supabase));
     const messages = await useCase.execute({ chatRoomId, days: dayCount });
     return NextResponse.json(messages);
   } catch (error) {

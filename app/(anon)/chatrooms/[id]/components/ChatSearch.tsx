@@ -31,6 +31,7 @@ export default function ChatSearch() {
     } else {
       setResults(data || []);
     }
+    console.log("검색결과",results);
     setLoading(false);
   };
 
