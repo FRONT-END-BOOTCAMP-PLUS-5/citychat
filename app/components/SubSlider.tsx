@@ -35,7 +35,6 @@ const SubSlider: React.FC = () => {
         setLoading(false);
       }
     };
-
     fetchCities();
   }, []); // Empty dependency array means this runs once on mount
 

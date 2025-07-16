@@ -17,7 +17,18 @@ export default function ChatRoom() {
   const socketRef = useRef<Socket | null>(null);
   const user = useUserStore((state) => state.user);
 
-  //✅소켓 연결
+  // ✅ 기존 채팅 불러오기 (로그 초기 로딩)
+  useEffect(() => {
+    const fetchInitialMessages = async () => {
+      const res = await fetch(`/api/chats/logs?roomId=${roomId}&days=7`);
+      const data: Message[] = await res.json();
+      setMessages(data);
+    };
+
+    fetchInitialMessages();
+  }, [roomId]);
+
+  // ✅ 소켓 연결
   useEffect(() => {
     const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL!, {
       query: { roomId },
@@ -25,11 +36,11 @@ export default function ChatRoom() {
 
     socketRef.current = socket;
 
-    //✅채팅방 입장
     socket.on("connect", () => {
+      console.log("✅ Connected to socket");
     });
 
-    //✅서버로부터 메세지 받기
+    // ✅ 새 메시지 수신 → 이전 메시지 유지하고 하나만 추가
     socket.on("receiveMessage", (msg: Message) => {
       setMessages((prev) => [...prev, msg]);
     });
@@ -39,7 +50,7 @@ export default function ChatRoom() {
     };
   }, [roomId]);
 
-  //✅새 메시지 서버에 전송
+  // ✅ 새 메시지 서버 전송
   const handleSend = (
     content: string,
     tags: string[],
@@ -50,7 +61,7 @@ export default function ChatRoom() {
       tags,
       sender: user?.nickname ?? "",
       senderId: user?.id,
-      replyToId: replyTo?.id || null,
+      replyToId: replyTo?.id ?? null,
     };
     socketRef.current?.emit("sendMessage", message);
   };
