@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
   );
 
   try {
-    const chatRoomId = parseInt(roomId, 10);
+    const chatRoomId = parseInt(roomId, 10);// 문자열을 정수로 변환s
     const result = await useCase.execute({ chat: keyword, chatRoomId });
     return NextResponse.json(result);
   } catch (error) {

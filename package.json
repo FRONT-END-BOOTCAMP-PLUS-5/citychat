@@ -18,10 +18,13 @@
     "date-fns": "^4.1.0",
     "dotenv": "^17.1.0",
     "express": "^5.1.0",
+    "i18next": "^25.3.2",
     "jsonwebtoken": "^9.0.2",
     "next": "15.3.5",
+    "next-i18next": "^15.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-i18next": "^15.6.0",
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1",
     "socket.io": "^4.8.1",
@@ -38,5 +41,4 @@
     "eslint-config-next": "15.3.5",
     "typescript": "^5"
   }
-
 }

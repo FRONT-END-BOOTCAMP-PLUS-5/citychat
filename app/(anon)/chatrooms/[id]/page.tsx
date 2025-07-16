@@ -7,6 +7,7 @@ import ChatLog from "./components/ChatLog";
 import ChatInput from "./components/ChatInput";
 import { Message } from "./types";
 import { useUserStore } from "@/app/stores/useUserStore";
+import ChatSearch from "./components/ChatSearch";
 
 export default function ChatRoom() {
   const params = useParams();
@@ -59,6 +60,7 @@ export default function ChatRoom() {
   return (
     <div style={{ padding: "20px" }}>
       <h2>🗨️ Chat Room: {roomId}</h2>
+      <ChatSearch />
       <ChatLog
         messages={messages}
         onReply={setReplyTo}
