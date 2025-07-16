@@ -1,82 +1,74 @@
-// app/api/tour/route.ts
-
 import { NextRequest, NextResponse } from "next/server";
-import { ApiResponse } from "@/types/api";
 
-const TOUR_API_URL = process.env.TOUR_API_URL;
-const TOUR_API_AUTH_KEY = process.env.TOUR_API_AUTH_KEY;
+// 요청에서 넘어오는 데이터 타입 정의
+type RequestData = {
+  baseYm: string;
+  areaCd: string;
+  signguCd: string;
+};
 
-// .env에서 가져오지 않고 직접 값을 설정
-const TOUR_MOBILE_OS = "WEB"; // 원하는 OS 구분 값으로 직접 설정
-const TOUR_MOBILE_APP = "CityChat"; // 원하는 서비스명(어플명)으로 직접 설정
+// API 응답 item의 필드 타입 정의
+type ApiItem = {
+  baseYm: string;
+  tAtsCd: string;
+  tAtsNm: string;
+  areaCd: string;
+  areaNm: string;
+  signguCd: string;
+  signguNm: string;
+  rlteTatsCd: string;
+  rlteTatsNm: string;
+  rlteRegnCd: string;
+  rlteRegnNm: string;
+  rlteSignguCd: string;
+  rlteSignguNm: string;
+  rlteCtgryLclsNm: string;
+  rlteCtgryMclsNm: string;
+  rlteCtgrySclsNm: string;
+  rlteRank: string;
+};
 
-// POST 요청 처리 함수
+// 전체 API 응답 타입 정의
+type ApiResponse = {
+  response: {
+    header: {
+      resultCode: string;
+      resultMsg: string;
+    };
+    body: {
+      items: {
+        item: ApiItem[];
+      };
+      numOfRows: number;
+      pageNo: number;
+      totalCount: number;
+    };
+  };
+};
+
+// POST 메서드 핸들러
 export async function POST(req: NextRequest) {
-  // 클라이언트에서 pageNo, numOfRows, baseYm, areaCd, signguCd를 받음
-  const {
-    pageNo = "1",
-    numOfRows = "10",
-    baseYm,     // ✨ 추가된 필수 파라미터
-    areaCd,     // ✨ 추가된 필수 파라미터
-    signguCd    // ✨ 추가된 필수 파라미터
-  } = await req.json();
+  const { baseYm, areaCd, signguCd }: RequestData = await req.json();
 
-  // 필수 파라미터 누락 체크 (서버 단에서 유효성 검사)
-  if (!TOUR_API_AUTH_KEY) {
-    console.error("환경 변수 TOUR_API_AUTH_KEY가 설정되지 않았습니다.");
-    return NextResponse.json(
-      { message: "서버 설정 오류: API 인증키가 누락되었습니다." },
-      { status: 500 }
-    );
+  const serviceKey = process.env.TOUR_API_AUTH_KEY;
+  if (!serviceKey) {
+    return NextResponse.json({ message: "인증키가 설정되지 않았습니다." }, { status: 500 });
   }
 
-  //
-  if (!baseYm || !areaCd || !signguCd) {
-    return NextResponse.json(
-      { message: "필수 파라미터 (baseYm, areaCd, signguCd)가 누락되었습니다." },
-      { status: 400 } // Bad Request
-    );
-  }
-
-  // 모든 필수 파라미터를 포함하여 fetchUrl 구성
-  const fetchUrl = `${TOUR_API_URL}?serviceKey=${TOUR_API_AUTH_KEY}&pageNo=${pageNo}&numOfRows=${numOfRows}&MobileOS=${TOUR_MOBILE_OS}&MobileApp=${TOUR_MOBILE_APP}&baseYm=${baseYm}&areaCd=${areaCd}&signguCd=${signguCd}&_type=json`;
-
-  console.log(`최종 API 호출 URL: ${fetchUrl}`);
-
-  try {
-    const response = await fetch(
-      fetchUrl,
-      {
-        method: "GET", // 공공데이터포털 API는 대부분 GET 방식
-        cache: "no-store",
-      }
-    );
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`공공데이터 API 호출 실패: ${response.status} - ${errorText}`);
-      return NextResponse.json(
-        { message: "외부 API 호출에 실패했습니다.", details: errorText },
-        { status: response.status }
-      );
-    }
-
+  const encodedKey = encodeURIComponent(serviceKey);
+  const fetchUrl = `https://apis.data.go.kr/B551011/TarRlteTarService1/getTarRlteTarList?baseYm=${baseYm}&areaCd=${areaCd}&signguCd=${signguCd}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&serviceKey=${encodedKey}`;  try {
+    const response = await fetch(fetchUrl);
     const data: ApiResponse = await response.json();
 
-    if (data.header.resultCode !== "00") {
-      console.error(`공공데이터 API 응답 오류: ${data.header.resultMsg}`);
-      return NextResponse.json(
-        { message: "공공데이터 API에서 오류 응답을 받았습니다.", details: data.header.resultMsg },
-        { status: 500 }
-      );
+    // 응답코드 확인 후 조건 처리 (예: 실패 시 메시지 전달)
+    if (data.response.header.resultCode !== "0000") {
+      return NextResponse.json({ message: data.response.header.resultMsg }, { status: 400 });
     }
 
-    return NextResponse.json(data.body.items.item);
+    const items: ApiItem[] = data.response.body.items.item;
+    return NextResponse.json(items);
   } catch (error) {
-    console.error("API 처리 중 오류 발생:", error);
-    return NextResponse.json(
-      { message: "서버 내부 오류가 발생했습니다." },
-      { status: 500 }
-    );
+    console.error("API 호출 오류:", error);
+    return NextResponse.json({ message: "요청 실패" }, { status: 500 });
   }
 }

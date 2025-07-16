@@ -2,14 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+        port: "",
+        pathname: "/storage/v1/object/public/**",
+      },
+    ],
     domains: ["miro.medium.com", "via.placeholder.com", "uofhorang.com"], // 도메인 추가
   },
-  remotePatterns: [
-    {
-      protocol: "https",
-      hostname: process.env.NEXT_PUBLIC_SUPABASE_HOST || "",
-    },
-  ],
 };
 
 export default nextConfig;

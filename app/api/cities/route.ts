@@ -1,5 +1,5 @@
 // api/city/route.ts
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 import { NextResponse } from "next/server";
 
 // 서버에서 반환될 조인된 이미지 데이터의 실제 형태를 반영하는 인터페이스 추가
