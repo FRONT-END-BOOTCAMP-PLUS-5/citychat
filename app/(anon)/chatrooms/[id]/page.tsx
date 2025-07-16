@@ -27,13 +27,11 @@ export default function ChatRoom() {
 
     //✅채팅방 입장
     socket.on("connect", () => {
-      console.log(`Connected to room ${roomId}`);
     });
 
     //✅서버로부터 메세지 받기
     socket.on("receiveMessage", (msg: Message) => {
       setMessages((prev) => [...prev, msg]);
-      console.log("서버로부터 받은 메세지:", msg);
     });
 
     return () => {

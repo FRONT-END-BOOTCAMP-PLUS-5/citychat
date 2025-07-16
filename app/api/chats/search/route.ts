@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SbChatRepository } from "@/backend/infrastructure/repositories/SbChatRepository";
 import { SbTagRepository } from "@/backend/infrastructure/repositories/SbTagRepository";
-import { SearchByChatUseCase } from "@/backend/application/search-keyword/chats/usecases/SearchByChatUseCase";
+import { SearchByChatUseCase } from "@/backend/application/chats/usecases/SearchByChatUseCase";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
