@@ -1,3 +1,4 @@
+// api/tour
 import { NextRequest, NextResponse } from "next/server";
 
 // 요청에서 넘어오는 데이터 타입 정의
@@ -47,6 +48,7 @@ type ApiResponse = {
 };
 
 
+// GET 메서드 핸들러 추가
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const baseYm = searchParams.get("baseYm");
