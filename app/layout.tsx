@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import QueryProvider from "./components/QueryProvider";
+import QueryProvider from "./providers/QueryProvider";
 import "./globals.css";
-import AuthGuard from "./components/AuthGuard";
+import AuthGuard from "./providers/AuthGuard";
 
 export const metadata: Metadata = {
   title: "CityChat",
@@ -23,9 +23,9 @@ export default function MainLayout({
       </head>
       <title>Title</title>
       <body>
-        <Header />
         <QueryProvider>
           <AuthGuard>
+            <Header />
             {children}
           </AuthGuard>
         </QueryProvider>
