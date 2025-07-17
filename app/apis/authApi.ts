@@ -36,3 +36,19 @@ export const signup = async (data: SignupRequestDto): Promise<SignupResponseDto>
 
   return response.json();
 };
+
+export const signout = async (): Promise<{ success: boolean; message: string }> => {
+  const response = await fetch("/api/auth/signout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || errorData.error || "Sign out failed");
+  }
+
+  return response.json();
+};
