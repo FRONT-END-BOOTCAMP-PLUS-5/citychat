@@ -6,8 +6,10 @@ type User = NonNullable<SigninResponseDto["user"]>;
 
 type UserStore = {
   user: User | null;
+  isLoggingOut: boolean; // 로그아웃 시, AuthGuard 우회용
   setUser: (user: User) => void;
   clearUser: () => void;
+  setLoggingOut: (value: boolean) => void;
 };
 
 export const useUserStore = create<UserStore>()(
@@ -15,8 +17,10 @@ export const useUserStore = create<UserStore>()(
     persist(
       (set) => ({
         user: null,
+        isLoggingOut: false,
         setUser: (user) => set({ user }),
         clearUser: () => set({ user: null }),
+        setLoggingOut: (value: boolean) => set({ isLoggingOut: value }),
       }),
       {
         name: "user-storage",

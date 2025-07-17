@@ -33,6 +33,7 @@
   display: inline-block;
   cursor: pointer;
   max-width: 60%;
+  color: #333;
 }
 
 .myMessage {

@@ -5,6 +5,7 @@ import Link from "next/link";
 import styles from "./header.module.css";
 import Avatar from "./Avatar";
 import { useUserStore } from "@/app/stores/useUserStore";
+import { useSignout } from "@/app/hooks/useSignout";
 
 // ─────── 페이지 목록 ───────
 const pages = [
@@ -20,14 +21,14 @@ function Header() {
 
   // Zustand 스토어에서 상태와 액션
   const user = useUserStore((state) => state.user); // 유저 정보 데이터
-  const clearUser = useUserStore((state) => state.clearUser); // 로그아웃 액션
+  const { mutate: signout } = useSignout();
 
   // 로그인 여부 확인
   const isLoggedIn = !!user;
 
   // 로그아웃 이벤트
   const handleLogout = () => {
-    clearUser();
+    signout();
   };
 
   // 드로어 상태 변경을 막기 위해 예외 처리(키보드 이벤트인 경우 :Tap 과 Shift키 작동 막기)

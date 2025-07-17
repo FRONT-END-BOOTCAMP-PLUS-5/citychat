@@ -42,7 +42,7 @@ export async function GET() {
       console.warn("이미지 경로가 비어 있습니다.");
       return "";
     }
-    return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
+    return ${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path};
   };
 
   const citiesWithImageUrls: FormattedCity[] = data.map((city: {

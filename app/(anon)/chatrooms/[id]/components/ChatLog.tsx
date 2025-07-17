@@ -8,15 +8,29 @@ import { ko } from "date-fns/locale";
 import styles from "./ChatLog.module.css";
 
 export default function ChatLog({
-  messages,
+  messages: incomingMessages,
   onReply,
   currentUserId,
 }: ChatLogProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
+  const [renderedMessages, setRenderedMessages] = useState(incomingMessages); 
   const [translated, setTranslated] = useState<Record<number, string>>({});
   const [isTranslated, setIsTranslated] = useState<Record<number, boolean>>({});
 
-  // 번역 버튼 핸들링
+  // ✅ 새로운 메시지 감지하여 추가
+  useEffect(() => {
+    if (incomingMessages.length > renderedMessages.length) {
+      const newMessages = incomingMessages.slice(renderedMessages.length);
+      setRenderedMessages((prev) => [...prev, ...newMessages]);
+      console.log("incomingMessage", incomingMessages);
+    }
+  }, [incomingMessages]);
+
+  // ✅ 새 메시지 추가 시 맨 아래로 스크롤
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [renderedMessages]);
+
   const handleTranslateToggle = async (index: number, content: string) => {
     if (isTranslated[index]) {
       setIsTranslated((prev) => ({ ...prev, [index]: false }));
@@ -34,29 +48,26 @@ export default function ChatLog({
       setIsTranslated((prev) => ({ ...prev, [index]: true }));
     }
   };
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [bottomRef]);
 
   return (
     <ul className={styles.chatContainer}>
-      {messages.map((msg, i) => {
+      {renderedMessages.map((msg, i) => {
         const isMe = msg.senderId === currentUserId;
-        const formattedTime = msg.sent_at
-          ? format(new Date(msg.sent_at), "a h:mm", { locale: ko })
+        const formattedTime = msg.sentAt
+          ? format(new Date(msg.sentAt), "a h:mm", { locale: ko })
           : "";
 
         const repliedTo = msg.replyToId
-          ? messages.find((m) => m.id === msg.replyToId)
+          ? renderedMessages.find((m) => m.id === msg.replyToId)
           : null;
 
         return (
-          <li key={i} className={styles.messageItem}>
-            <span className={styles.sender}>{isMe ? "나" : msg.sender}</span>
+          <li key={msg.id} className={styles.messageItem}>
+            <span className={styles.sender}>{isMe ? "나" : msg.senderNickname}</span>
 
             {repliedTo && (
               <div className={styles.replyBox}>
-                <div>↪ {repliedTo.sender}</div>
+                <div>↪ {repliedTo.senderNickname}</div>
                 <div>{repliedTo.content}</div>
               </div>
             )}

@@ -36,7 +36,6 @@ const SubSlider: React.FC = () => {
         setLoading(false);
       }
     };
-    
     fetchCities();
   }, []); // 컴포넌트 마운트 시 한 번만 실행
 
