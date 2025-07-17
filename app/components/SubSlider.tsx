@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import styles from "./subSlider.module.css";
 import Image from "next/image";
+import Link from "next/link";
 
 interface City {
   id: string; 
@@ -75,7 +76,7 @@ const SubSlider: React.FC = () => {
       // 휠 이벤트 발생 후 500ms 동안 추가 이벤트 무시
       wheelTimeout = setTimeout(() => {
         wheelTimeout = null;
-      }, 500);
+      }, 700);
     };
 
     container.addEventListener("scroll", handleScroll);
@@ -89,13 +90,25 @@ const SubSlider: React.FC = () => {
   }, [activeIndex, cities]); 
 
   // activeIndex 변경 시 해당 도시로 부드럽게 스크롤
+  // useEffect(() => {
+  //   const container = scrollRef.current;
+  //   if (container && cities.length > 0) {
+  //     const target = container.children[activeIndex] as HTMLElement | undefined;
+  //     if (target) {
+  //       target.scrollIntoView({ behavior: "smooth", block: "center" });
+  //     }
+  //   }
+  // }, [activeIndex, cities]);
   useEffect(() => {
     const container = scrollRef.current;
-    if (container && cities.length > 0) {
-      const target = container.children[activeIndex] as HTMLElement | undefined;
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
+    if (!container || cities.length === 0) return;
+
+    const target = container.children[activeIndex] as HTMLElement | undefined;
+    if (target) {
+      container.scrollTo({
+        top: target.offsetTop,
+        behavior: "smooth",
+      });
     }
   }, [activeIndex, cities]);
 
@@ -118,42 +131,40 @@ const SubSlider: React.FC = () => {
 
   return (
     <div className={styles.appContainer}>
-      <div className={styles.brickBackground}>
-        <div className={styles.mainContentArea}>
-          <div className={styles.verticalNavContainer}>
-            <div ref={scrollRef} className={styles.scrollSnapContainer}>
-              {cities.map((city, index) => (
-                <div
-                  key={city.id || city.name} // id가 있다면 id를 key로 사용, 없으면 name
-                  className={`${styles.cityNavItem} ${
-                    index === activeIndex ? styles.active : ""
-                  }`}
-                  onClick={() => handleNavClick(index)}
-                >
-                  {city.name}
-                </div>
-              ))}
-            </div>
+      <div className={styles.mainContentArea}>
+        <div className={styles.verticalNavContainer}>
+          <div ref={scrollRef} className={styles.scrollSnapContainer}>
+            {cities.map((city, index) => (
+              <div
+                key={city.id || city.name} // id가 있다면 id를 key로 사용, 없으면 name
+                className={`${styles.cityNavItem} ${
+                  index === activeIndex ? styles.active : ""
+                }`}
+                onClick={() => handleNavClick(index)}
+              >
+                {city.name}
+              </div>
+            ))}
           </div>
-          <div className={styles.welcomeSection}>
-            <div className={styles.contentCard}>
-              <div className={styles.imageWrapper}>
-                {currentCity?.image && (
-                  <Image
-                    src={currentCity.image}
-                    alt={currentCity.name}
-                    width={300}
-                    height={340}
-                    priority 
-                    unoptimized 
-                  />
-                )}
-              </div>
-              <div className={styles.cardTextContainer}>
-                <h1>{currentCity.name}에 오신 것을 환영합니다!</h1>
-                <p>{currentCity.description}</p>
-                <button className={styles.exploreButton}>Explore</button>
-              </div>
+        </div>
+        <div className={styles.welcomeSection}>
+          <div className={styles.contentCard}>
+            <div className={styles.imageWrapper}>
+              {currentCity?.image && (
+                <Image
+                  src={currentCity.image}
+                  alt={currentCity.name}
+                  width={250}
+                  height={320}
+                  priority 
+                  unoptimized 
+                />
+              )}
+            </div>
+            <div className={styles.cardTextContainer}>
+              <h1>{currentCity.name}에 오신 것을 환영합니다!</h1>
+              <p>{currentCity.description}</p>
+              <Link href="" className={styles.exploreButton}>Explore</Link>
             </div>
           </div>
         </div>

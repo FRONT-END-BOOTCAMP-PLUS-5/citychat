@@ -119,7 +119,7 @@ function Header() {
                 ) : (
                   <Image
                     src="/assets/login-profile.png"
-                    alt="MYPAGE"
+                    alt="ME"
                     width={30}
                     height={30}
                     className={styles.mypageIcon}
@@ -132,7 +132,7 @@ function Header() {
                   {isLoggedIn ? (
                     <>
                       <Link
-                        href="/mypage"
+                        href="/me"
                         className={styles.dropdownItem}
                         onClick={toggleMypageDropdown}
                       >
@@ -159,7 +159,7 @@ function Header() {
                         회원가입
                       </Link>
                       <Link
-                        href="/login"
+                        href="/signin"
                         className={styles.dropdownItem}
                         onClick={toggleMypageDropdown}
                       >

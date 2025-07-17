@@ -35,11 +35,18 @@
   border-radius: 20px;
 } */
 
+/* Section컴포넌트 relative */
+/* .customWrapper{
+  position: absolute;
+  right: 0;
+  bottom: -10px;
+} */
+
 .sliderWrap{
   width: 800; 
   height: 450;
-  margin-top: 120px;
-  margin-left: 35%;
+  /* margin-top: 120px; */
+  /* margin-left: 35%; */
 }
 
 .sliderContainer {
@@ -47,7 +54,6 @@
 }
 
 .card {
-  background: #9bc7f6;
   color: #333;
   font-size: 36px;
   line-height: 100px;
@@ -57,8 +63,7 @@
   transition: transform 0.3s ease, z-index 0.3s ease, background 0.3s,
     color 0.3s, opacity 0.3s;
   z-index: 1;
-  opacity: 0.5;
-  width: 300px;
+  width: 350px;
   height: 380px;
   border-radius: 20px;
   display: flex;
@@ -67,10 +72,16 @@
   right: 37px;
 }
 
+.cityImage{
+  border-radius: 20px;
+}
+
+
+
 .cardActive {
   transform: scale(1.1);
   z-index: 10;
-  background: #007bff;
+  /* background: #007bff; */
   color: #fff;
   opacity: 1;
   position: relative;
@@ -100,6 +111,23 @@
 .next {
   right: -20px;
 }
+
+.cityName {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  text-align: center;
+  width: 90%;
+  box-sizing: border-box;
+}
+
 
 /* 반응형 */
 /* @media (max-width: 768px) {
