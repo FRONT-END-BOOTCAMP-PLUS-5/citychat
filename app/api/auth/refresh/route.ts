@@ -1,7 +1,6 @@
 import { SbUserRepository } from "@/backend/infrastructure/repositories/SbUserRepository";
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "@/utils/auth/tokenUtils";
 import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -47,19 +46,6 @@ export async function POST(request: NextRequest) {
     // 새로운 access 토큰과 refresh 토큰 발급
     const newAccessToken = generateAccessToken({ userInfo: user });
     const newRefreshToken = generateRefreshToken({ id: verification.payload.id });
-
-    // 쿠키에 새로운 토큰들 저장
-    const cookieStore = await cookies();
-    cookieStore.set("access-token", newAccessToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 3600, // 1시간
-    });
-    cookieStore.set("refresh-token", newRefreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 604800 // 7일
-    });
 
     return NextResponse.json({
       success: true,
