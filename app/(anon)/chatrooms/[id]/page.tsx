@@ -8,6 +8,7 @@ import ChatInput from "./components/ChatInput";
 import { Message } from "./types";
 import { useUserStore } from "@/app/stores/useUserStore";
 import ChatSearch from "./components/ChatSearch";
+import styles from "./page.module.css";
 
 export default function ChatRoom() {
   const params = useParams();
@@ -71,19 +72,25 @@ export default function ChatRoom() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>🗨️ Chat Room: {roomId}</h2>
+    <div>
       <ChatSearch />
-      <ChatLog
-        messages={messages}
-        onReply={setReplyTo}
-        currentUserId={user?.id ?? null}
-      />
-      <ChatInput
-        onSend={handleSend}
-        replyTo={replyTo}
-        onCancelReply={() => setReplyTo(null)}
-      />
+      <div className={styles.chatRoomContainer}>
+        
+        <div className={styles.chatSection}>
+          <ChatLog
+            messages={messages}
+            onReply={setReplyTo}
+            currentUserId={user?.id ?? null}
+          />
+          <div className={styles.chatInputWrapper}>
+            <ChatInput
+              onSend={handleSend}
+              replyTo={replyTo}
+              onCancelReply={() => setReplyTo(null)}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

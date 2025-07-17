@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
 import QueryProvider from "./providers/QueryProvider";
 import "./globals.css";
 import AuthGuard from "./providers/AuthGuard";
+
 
 export const metadata: Metadata = {
   title: "CityChat",
@@ -29,8 +29,7 @@ export default function MainLayout({
             {children}
           </AuthGuard>
         </QueryProvider>
-        <Footer />
-      </body>
+ss      </body>
     </html>
   );
 }
