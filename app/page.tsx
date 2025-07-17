@@ -39,7 +39,6 @@ export default function Home() {
     <div
       ref={mainScrollContainerRef}
       style={{
-        width: "100vw",
         height: "100vh",
         overflowY: "scroll",
         scrollSnapType: "y mandatory",
@@ -47,14 +46,17 @@ export default function Home() {
     >
       <Section
         bgImageUrl="https://miro.medium.com/v2/resize:fit:2000/1*nf5RvOUHclJqEYIljcNmEw.jpeg"
-        style={{ height: "100vh", scrollSnapAlign: "start" }}
+        style={{
+          height: "100vh", scrollSnapAlign: "start",
+          position: "relative"
+        }}
       >
         <Slider />
       </Section>
 
       <Section
         bgImageUrl="https://uofhorang.com/wp-content/uploads/2024/08/Population-by-Age-Group-in-South-Korea-for-2023.jpg"
-        style={{ height: "100vh", scrollSnapAlign: "start" }}
+        style={{ height: "100vh", scrollSnapAlign: "start"}}
       >
         <SubSlider />
       </Section>

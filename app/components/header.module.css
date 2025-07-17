@@ -139,16 +139,16 @@
 }
 
 .dropdownItem:hover {
-  background-color: #f0f0f0; /* 호버 시 배경색 변경 */
+  background-color: #f0f0f0;
 }
 
 /* ---------------- 모바일 영역(반응형) ----------------- */
 
 /* 모바일 메뉴 아이콘 Wrapper (데스크톱에서는 숨김) */
 .mobileMenuIconWrapper {
-  display: flex; /* 기본적으로 모바일에서 보임 */
+  display: flex; 
   justify-content: flex-end;
-  flex-grow: 1; /* 오른쪽으로 밀어내기 */
+  flex-grow: 1;
 }
 
 /* 사이드바 (Drawer) */
@@ -158,10 +158,10 @@
   right: -200px; /* 초기에는 화면 밖으로 숨김 */
   width: 200px;
   height: 100vh;
-  background-color: #ffbb00; /* 사이드바 배경색 */
+  background-color: #ffbb00; 
   transition: right 0.3s ease-in-out; /* 부드러운 슬라이드 효과 */
   z-index: 10; /* AppBar보다 위에 오도록 */
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2); 
 }
 
 .drawerIcon {
@@ -176,7 +176,7 @@
 .drawerContent {
   width: 100%;
   height: 100%;
-  padding: 16px; /* 내부 패딩 */
+  padding: 16px; 
   box-sizing: border-box;
 }
 
@@ -218,7 +218,6 @@
 
 /* 미디어 쿼리: 데스크톱 화면에서만 적용 */
 @media (min-width: 900px) {
-  /* MUI 'md' breakpoint가 900px, 이 이상에서 데스크톱 내비게이션 보임 */
   .navDesktop {
     display: flex; /* 데스크톱에서 보임 */
   }
@@ -228,7 +227,6 @@
   }
 }
 
-/* 모바일 화면에서만 적용 (Optional: 명시적으로 모바일 스타일 지정) */
 @media (max-width: 768px) {
   .toolbar {
     justify-content: space-between; /* 로고와 햄버거 아이콘만 양 끝으로 */
