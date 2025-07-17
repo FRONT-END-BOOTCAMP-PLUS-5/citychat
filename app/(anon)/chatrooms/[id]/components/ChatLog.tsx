@@ -13,7 +13,7 @@ export default function ChatLog({
   currentUserId,
 }: ChatLogProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
-  const [renderedMessages, setRenderedMessages] = useState(incomingMessages); 
+  const [renderedMessages, setRenderedMessages] = useState(incomingMessages);
   const [translated, setTranslated] = useState<Record<number, string>>({});
   const [isTranslated, setIsTranslated] = useState<Record<number, boolean>>({});
 
@@ -22,7 +22,7 @@ export default function ChatLog({
     if (incomingMessages.length > renderedMessages.length) {
       const newMessages = incomingMessages.slice(renderedMessages.length);
       setRenderedMessages((prev) => [...prev, ...newMessages]);
-      console.log("incomingMessage", incomingMessages);
+      console.log("newMessages", newMessages);
     }
   }, [incomingMessages]);
 
@@ -37,7 +37,7 @@ export default function ChatLog({
     } else {
       if (!translated[index]) {
         const targetLang = /[가-힣]/.test(content) ? "en" : "ko";
-        const res = await fetch("/api/translate", {
+        const res = await fetch("/api/chat/translate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text: content, targetLang }),
@@ -63,7 +63,9 @@ export default function ChatLog({
 
         return (
           <li key={msg.id} className={styles.messageItem}>
-            <span className={styles.sender}>{isMe ? "나" : msg.senderNickname}</span>
+            <span className={styles.sender}>
+              {isMe ? "" : msg.senderNickname}
+            </span>
 
             {repliedTo && (
               <div className={styles.replyBox}>
@@ -72,26 +74,79 @@ export default function ChatLog({
               </div>
             )}
 
-            <span
+            {/* <span
               className={`${styles.messageContent} ${
                 isMe ? styles.myMessage : styles.otherMessage
               }`}
-              onClick={() => onReply(msg)}
-              dangerouslySetInnerHTML={{
-                __html: highlightTags(
-                  isTranslated[i] && translated[i] ? translated[i] : msg.content
-                ),
-              }}
-            />
-
-            <span className={styles.timestamp}>{formattedTime}</span>
-
-            <button
-              onClick={() => handleTranslateToggle(i, msg.content)}
-              className={styles.translateButton}
             >
-              {isTranslated[i] ? "Original" : "Translate"}
-            </button>
+              <span
+                onClick={() => onReply(msg)}
+                dangerouslySetInnerHTML={{
+                  __html: highlightTags(
+                    isTranslated[i] && translated[i]
+                      ? translated[i]
+                      : msg.content
+                  ),
+                }}
+              />
+              <span className={styles.timestamp}>{formattedTime}</span>
+
+              <button
+                onClick={() => handleTranslateToggle(i, msg.content)}
+                className={styles.translateButton}
+              >
+                {isTranslated[i] ? "Original" : "Translate"}
+              </button>
+            </span> */}
+            <div
+              key={msg.id}
+              className={`${styles.messageWrapper} ${
+                isMe ? styles.myWrapper : styles.otherWrapper
+              }`}
+            >
+              {/* ✅ 내 메시지 → 버튼 위쪽 왼쪽에 */}
+              {isMe && (
+                <div className={styles.myTranslateWrap}>
+                  <button
+                    onClick={() => handleTranslateToggle(i, msg.content)}
+                    className={styles.translateButton}
+                  >
+                    {isTranslated[i] ? "Original" : "Translate"}
+                  </button>
+                </div>
+              )}
+
+              {/* 💬 말풍선 */}
+              <span
+                className={`${styles.messageContent} ${
+                  isMe ? styles.myMessage : styles.otherMessage
+                }`}
+              >
+                <span
+                  onClick={() => onReply(msg)}
+                  dangerouslySetInnerHTML={{
+                    __html: highlightTags(
+                      isTranslated[i] && translated[i]
+                        ? translated[i]
+                        : msg.content
+                    ),
+                  }}
+                />
+                <span className={styles.timestamp}>{formattedTime}</span>
+              </span>
+
+              {/* ✅ 상대 메시지 → 버튼 아래쪽 오른쪽에 */}
+              {!isMe && (
+                <div className={styles.otherTranslateWrap}>
+                  <button
+                    onClick={() => handleTranslateToggle(i, msg.content)}
+                    className={styles.translateButton}
+                  >
+                    {isTranslated[i] ? "Original" : "Translate"}
+                  </button>
+                </div>
+              )}
+            </div>
           </li>
         );
       })}
@@ -99,3 +154,4 @@ export default function ChatLog({
     </ul>
   );
 }
+

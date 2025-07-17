@@ -43,53 +43,55 @@ export default function SigninPage() {
   };
 
   return (
-    <SharedPageLayout title="Sign in">
-      <div className={formContainer}>
-        {/* <h3 className={formTitle}>Sign in</h3> */}
-        <form className={signinForm} onSubmit={handleSubmit}>
-          <div className={formGroup}>
-            <label htmlFor="userid" className={formLabel}>
-              ID
-            </label>
-            <input
-              type="text"
-              id="userid"
-              name="userid"
-              className={formInput}
-              placeholder="Enter ID"
-              disabled={isPending}
-              required
-            />
-          </div>
+    <div>
+      <SharedPageLayout title="Sign in">
+        <div className={formContainer}>
+          {/* <h3 className={formTitle}>Sign in</h3> */}
+          <form className={signinForm} onSubmit={handleSubmit}>
+            <div className={formGroup}>
+              <label htmlFor="userid" className={formLabel}>
+                ID
+              </label>
+              <input
+                type="text"
+                id="userid"
+                name="userid"
+                className={formInput}
+                placeholder="Enter ID"
+                disabled={isPending}
+                required
+              />
+            </div>
 
-          <div className={formGroup}>
-            <label htmlFor="password" className={formLabel}>
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className={formInput}
-              placeholder="Enter Password"
-              disabled={isPending}
-              required
-            />
-          </div>
+            <div className={formGroup}>
+              <label htmlFor="password" className={formLabel}>
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                className={formInput}
+                placeholder="Enter Password"
+                disabled={isPending}
+                required
+              />
+            </div>
 
-          <div className={formGroup} style={{ minHeight: "1rem" }}>
-            {error && (
-              <p className={errorMessage}>아이디와 비밀번호를 확인해주세요.</p>
-            )}
-          </div>
+            <div className={formGroup} style={{ minHeight: "1rem" }}>
+              {error && (
+                <p className={errorMessage}>아이디와 비밀번호를 확인해주세요.</p>
+              )}
+            </div>
 
-          <div className={formGroup}>
-            <button type="submit" className={formButton} disabled={isPending}>
-              Signin
-            </button>
-          </div>
-        </form>
-      </div>
-    </SharedPageLayout>
+            <div className={formGroup}>
+              <button type="submit" className={formButton} disabled={isPending}>
+                Signin
+              </button>
+            </div>
+          </form>
+        </div>
+      </SharedPageLayout>
+    </div>
   );
 }

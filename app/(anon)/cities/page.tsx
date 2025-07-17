@@ -26,105 +26,107 @@ const activityCards = [
 
 export default function DetailPage() {
   return (
-    <SharedPageLayout title="Seoul">
-      <section>
-        <header>
-          <p
-            style={{
-              marginBottom: "10px",
-              display: "inline-block",
-              fontSize: "20px",
-            }}
-          >
-            서울은 대한민국의 수도이자 아시아에서 가장 활기차고 현대적인 도시 중
-            하나입니다.
-          </p>
-          <button style={{ float: "right", display: "inline-block" }}>
-            Start Chat
-          </button>
-        </header>
-        {/* 좌측 태그 리스트 */}
-        <div
-          className="tagWrap"
-          style={{
-            width: "200px",
-            display: "block",
-            textAlign: "center",
-            marginTop: "20px",
-            float: "left",
-          }}
-        >
-          <span>내가 관심있는 태그</span>
-          <aside
-            className="tagList"
-            style={{
-              // backgroundColor: "#222",
-              width: "200px",
-              display: "grid",
-              gridTemplateColumns: "repeat(2, 1fr)",
-              padding: "10px",
-              borderRadius: "8px",
-              float: "left",
-              justifyContent: "center",
-              alignItems: "start",
-            }}
-          >
-            {/* 태그 한개의 영역 */}
-            {Tags.map((tag, idx) => (
-              <span
-                key={idx}
-                style={{
-                  margin: "8px",
-                  padding: "6px 12px",
-                  background: "#eee",
-                  borderRadius: "15px",
-                  height: "30px",
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </aside>
-        </div>
-        {/* 우측 컨텐츠 카드 */}
-        <div
-          className="tagWrap"
-          style={{
-            width: "calc(100% - 220px)",
-            display: "block",
-            marginTop: "20px",
-            float: "left",
-          }}
-        >
-          <span className="infoTitle" style={{ marginLeft: "25px" }}>
-            내가 관심있을 만한 정보
-          </span>
-        </div>
-        <div
-          style={{
-            display: "grid",
-            gap: "16px",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            padding: "20px",
-            height: "40vh",
-          }}
-        >
-          {activityCards.map((card, idx) => (
-            <div
-              key={idx}
+    <div>
+      <SharedPageLayout title="Seoul">
+        <section>
+          <header>
+            <p
               style={{
-                padding: "16px",
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                background: "#fafafa",
+                marginBottom: "10px",
+                display: "inline-block",
+                fontSize: "20px",
               }}
             >
-              <h3>{card.title}</h3>
-              <p>{card.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-    </SharedPageLayout>
+              서울은 대한민국의 수도이자 아시아에서 가장 활기차고 현대적인 도시 중
+              하나입니다.
+            </p>
+            <button style={{ float: "right", display: "inline-block" }}>
+              Start Chat
+            </button>
+          </header>
+          {/* 좌측 태그 리스트 */}
+          <div
+            className="tagWrap"
+            style={{
+              width: "200px",
+              display: "block",
+              textAlign: "center",
+              marginTop: "20px",
+              float: "left",
+            }}
+          >
+            <span>내가 관심있는 태그</span>
+            <aside
+              className="tagList"
+              style={{
+                // backgroundColor: "#222",
+                width: "200px",
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                padding: "10px",
+                borderRadius: "8px",
+                float: "left",
+                justifyContent: "center",
+                alignItems: "start",
+              }}
+            >
+              {/* 태그 한개의 영역 */}
+              {Tags.map((tag, idx) => (
+                <span
+                  key={idx}
+                  style={{
+                    margin: "8px",
+                    padding: "6px 12px",
+                    background: "#eee",
+                    borderRadius: "15px",
+                    height: "30px",
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </aside>
+          </div>
+          {/* 우측 컨텐츠 카드 */}
+          <div
+            className="tagWrap"
+            style={{
+              width: "calc(100% - 220px)",
+              display: "block",
+              marginTop: "20px",
+              float: "left",
+            }}
+          >
+            <span className="infoTitle" style={{ marginLeft: "25px" }}>
+              내가 관심있을 만한 정보
+            </span>
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gap: "16px",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              padding: "20px",
+              height: "40vh",
+            }}
+          >
+            {activityCards.map((card, idx) => (
+              <div
+                key={idx}
+                style={{
+                  padding: "16px",
+                  border: "1px solid #ccc",
+                  borderRadius: "8px",
+                  background: "#fafafa",
+                }}
+              >
+                <h3>{card.title}</h3>
+                <p>{card.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </SharedPageLayout>
+    </div>
   );
 }
