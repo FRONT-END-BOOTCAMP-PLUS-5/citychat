@@ -6,18 +6,9 @@
   background-color: #f0f0f0;
   padding: 20px;
   box-sizing: border-box;
-  height: 80vh;
+  height: 65vh;
   margin: 10vh 20vh;
   border-radius: 10px;
-}
-/* brick-background: 배경 이미지 또는 색상 */
-.brickBackground {
-  width: 100%;
-  max-width: 1200px;
-  background-size: cover;
-  background-repeat: repeat;
-  padding: 50px;
-  box-sizing: border-box;
 }
 
 /* main-content-area: 주요 콘텐츠 영역 */
@@ -27,9 +18,12 @@
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  min-height: 500px;
+  /* min-height: 500px; */
+  min-height: 380px;
+  align-items: center;
   position: relative;
   overflow: hidden;
+  height: 50vh;
 }
 
 /*세로 네비게이션 컨테이너 영역*/
@@ -39,20 +33,28 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100%;
+  /* height: 100%; */
+  height: 300px;
+    overflow: hidden;
+  
 }
 
 /* 스크롤 가능한 snap 컨테이너 */
 .scrollSnapContainer {
   height: 100%;
+  width: 100%;
   overflow-y: auto;
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1rem;
   padding: 1rem;
+  
+  
 }
+
 
 /* city-nav-item: 도시 항목 */
 .cityNavItem {
@@ -67,9 +69,11 @@
   text-align: left;
   width: 100%;
   white-space: nowrap;
-  line-height: 3.5;
-  min-height: 100px;
+  line-height: 2.5;
+  min-height: 50px;
+  height: 100px;
 }
+
 
 .cityNavItem::before {
   content: "";
@@ -99,15 +103,16 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  min-height: 400px;
+  min-height: 350px;
   display: flex;
-  align-items: center; /* 중앙정렬 */
+  align-items: center;
+  height: 50vh;
 }
 
 .welcomeSection h1 {
-  font-size: 30px;
+  font-size: 19px;
   color: #333;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   font-weight: bold;
 }
 
@@ -120,14 +125,16 @@
   padding: 24px;
   flex-wrap: nowrap;
   max-width: 800px;
+  height: 80%;
 }
 
 /* 이미지 들어가는 영역 */
 .imageWrapper {
   flex-shrink: 0;
-  width: 300px;
-  height: 400px;
+  width: 250px;
+  height: 320px;
   overflow: hidden;
+  border-radius: 20px;
 }
 
 .cardImage {
@@ -142,12 +149,13 @@
   justify-content: space-between;
   min-height: 300px;
   width: 100%;
+  height: 320px;
 }
 
 .cardTextContainer p {
   display: block;
-  font-size: 18px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.3;
   color: #666;
   margin-bottom: 20px;
   min-height: 150px;
@@ -210,8 +218,8 @@
   }
 
   .cardImage {
-    width: 100%;
-    height: 200px;
+    width: 220px;
+    height: 320px;
     border-radius: 15px 15px 0 0;
   }
 
