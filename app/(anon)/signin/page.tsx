@@ -43,11 +43,10 @@ export default function SigninPage() {
   };
 
   return (
-    <div>
       <SharedPageLayout title="Sign in">
         <div className={formContainer}>
-          {/* <h3 className={formTitle}>Sign in</h3> */}
           <form className={signinForm} onSubmit={handleSubmit}>
+            <h3 className={formTitle}>Sign in</h3>
             <div className={formGroup}>
               <label htmlFor="userid" className={formLabel}>
                 ID
@@ -92,6 +91,5 @@ export default function SigninPage() {
           </form>
         </div>
       </SharedPageLayout>
-    </div>
   );
 }

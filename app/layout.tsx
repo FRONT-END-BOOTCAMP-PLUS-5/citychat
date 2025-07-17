@@ -29,7 +29,7 @@ export default function MainLayout({
             {children}
           </AuthGuard>
         </QueryProvider>
-ss      </body>
+      </body>
     </html>
   );
 }
