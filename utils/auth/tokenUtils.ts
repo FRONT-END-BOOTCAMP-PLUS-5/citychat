@@ -41,3 +41,19 @@ export function verifyAccessToken(token: string) {
     };
   }
 }
+
+// refresh Token 검증
+export function verifyRefreshToken(token: string) {
+  try {
+    const decoded = jwt.verify(token, REFRESH_SECRET) as RefreshTokenPayload;
+    return {
+      ok: true,
+      payload: decoded,
+    };
+  } catch (error: unknown) {
+    return {
+      ok: false,
+      message: error instanceof Error ? error.message : String(error),
+    };
+  }
+}
