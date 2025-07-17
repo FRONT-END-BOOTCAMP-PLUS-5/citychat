@@ -22,6 +22,7 @@ export default function ChatLog({
     if (incomingMessages.length > renderedMessages.length) {
       const newMessages = incomingMessages.slice(renderedMessages.length);
       setRenderedMessages((prev) => [...prev, ...newMessages]);
+      console.log("incomingMessage", incomingMessages);
     }
   }, [incomingMessages]);
 
