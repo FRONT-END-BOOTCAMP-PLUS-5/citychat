@@ -12,7 +12,7 @@ interface FormattedCity {
   id: string; // 데이터 아이디
   name: string; // 지역 명
   description: string; // 내용
-  image: string[]; // 이미지 URL
+  image: string; // 이미지 URL
 }
 
 export async function GET() {
@@ -42,7 +42,7 @@ export async function GET() {
       console.warn("이미지 경로가 비어 있습니다.");
       return "";
     }
-    return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
+    return ${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path};
   };
 
   const citiesWithImageUrls: FormattedCity[] = data.map((city: {
@@ -56,7 +56,6 @@ export async function GET() {
       const fullPath = city.images.storage_path;
       const bucketName = "citychat-img";
       let relativePath = fullPath;
-      console.log(city.images);
       if (fullPath.startsWith(bucketName)) {
         relativePath = fullPath.substring(bucketName.length + 1);
       }
