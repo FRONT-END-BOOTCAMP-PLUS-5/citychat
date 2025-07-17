@@ -5,6 +5,7 @@ import React from "react";
 import { useUserStore } from "@/app/stores/useUserStore";
 import Avatar from "@/app/components/Avatar";
 import { ChevronRight, MessagesSquare, User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const {
   ["page-container"]: pageContainer,
@@ -21,6 +22,15 @@ const {
 
 export default function mePage() {
   const user = useUserStore((state) => state.user); // 유저 정보 데이터
+  const router = useRouter();
+  
+  const handleManageAccount = () => {
+    router.push('/me/account');
+  };
+  
+  const handleMyChats = () => {
+    router.push('/me/chats');
+  };
   
   return (
     <SharedPageLayout title="My page">
@@ -35,7 +45,7 @@ export default function mePage() {
             </div>
           </div>
           <div className={menuList}>
-            <div className={menuItem}>
+            <div className={menuItem} onClick={handleManageAccount}>
               <div className={menuIcon}>
                 <User />
               </div>
@@ -44,7 +54,7 @@ export default function mePage() {
                 <ChevronRight />
               </div>
             </div>
-            <div className={menuItem}>
+            <div className={menuItem} onClick={handleMyChats}>
               <div className={menuIcon}>
                 <MessagesSquare />
               </div>
