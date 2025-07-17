@@ -39,7 +39,6 @@ export default function ChatRoom() {
     });
 
     socketRef.current = socket;
-
     socket.on("connect", () => {
       console.log("✅ Connected to socket");
     });
@@ -48,7 +47,6 @@ export default function ChatRoom() {
     socket.on("receiveMessage", (msg: Message) => {
       setMessages((prev) => [...prev, msg]);
     });
-
     return () => {
       socket.disconnect();
     };
@@ -66,8 +64,10 @@ export default function ChatRoom() {
       sender: user?.nickname ?? "",
       senderId: user?.id,
       replyToId: replyTo?.id ?? null,
+      sentAt : new Date().toISOString(),
     };
     socketRef.current?.emit("sendMessage", message);
+    console.log(message);
   };
 
   return (

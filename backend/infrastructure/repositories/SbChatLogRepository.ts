@@ -12,6 +12,7 @@ interface ChatRow {
   parent_chat_id?: number | null;
   image_id?: number | null;
   deleted_flag: boolean;
+  users?:{ nickname : string };
 }
 
 export class SbChatLogRepository implements ChatLogRepository {
@@ -31,19 +32,22 @@ export class SbChatLogRepository implements ChatLogRepository {
         sent_at,
         parent_chat_id,
         image_id,
-        deleted_flag
+        deleted_flag,
+        users(
+          nickname
+        )
       `)
       .eq("chat_room_id", chatRoomId)
       .eq("deleted_flag", false)
       .gte("sent_at", since)
       .order("sent_at", { ascending: true });
-
+    
     if (error || !data) {
       console.error("❌ Supabase error in getRecentMessages:", error?.message);
       return [];
     }
 
-    return this.mapRowsToMessages(data);
+    return this.mapRowsToMessages(data as unknown as ChatRow[]);
   }
 
   private mapRowsToMessages(rows: ChatRow[]): Chat[] {
@@ -52,7 +56,8 @@ export class SbChatLogRepository implements ChatLogRepository {
       content: row.content,
       contentType: row.content_type,
       chatRoomId: row.chat_room_id,
-      userId: row.user_id,
+      senderId: row.user_id,
+      senderNickname: row.users?.nickname ?? "Unknown",
       sentAt: row.sent_at,
       parentChatId: row.parent_chat_id ?? undefined,
       imageId: row.image_id ?? undefined,

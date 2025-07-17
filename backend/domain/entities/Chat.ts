@@ -2,7 +2,7 @@ export class Chat {
   constructor(
     public readonly id: number,
     public readonly chatRoomId: number,
-    public readonly userId: number,
+    public readonly senderId: number,
     public readonly contentType: "text" | "image",
     public readonly content: string,
     public readonly sentAt: string,
