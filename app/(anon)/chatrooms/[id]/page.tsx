@@ -7,6 +7,7 @@ import ChatLog from "./components/ChatLog";
 import ChatInput from "./components/ChatInput";
 import { Message } from "./types";
 import { useUserStore } from "@/app/stores/useUserStore";
+import ChatSearch from "./components/ChatSearch";
 
 export default function ChatRoom() {
   const params = useParams();
@@ -16,31 +17,42 @@ export default function ChatRoom() {
   const socketRef = useRef<Socket | null>(null);
   const user = useUserStore((state) => state.user);
 
-  //✅소켓 연결
+  // ✅ 기존 채팅 불러오기 (로그 초기 로딩)
   useEffect(() => {
-    const socket = io("https://citychat-server-l070.onrender.com", {
+    const fetchInitialMessages = async () => {
+      const res = await fetch(`/api/chat/logs?roomId=${roomId}&days=7`, {
+        method: "GET",
+        credentials: "include",
+      });
+      const data: Message[] = await res.json();
+      setMessages(data);
+      console.log("data",data);
+    };
+
+    fetchInitialMessages();
+  }, [roomId]);
+
+  // ✅ 소켓 연결
+  useEffect(() => {
+    const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL!, {
       query: { roomId },
     });
 
     socketRef.current = socket;
-
-    //✅채팅방 입장
     socket.on("connect", () => {
-      console.log(`Connected to room ${roomId}`);
+      console.log("✅ Connected to socket");
     });
 
-    //✅서버로부터 메세지 받기
+    // ✅ 새 메시지 수신 → 이전 메시지 유지하고 하나만 추가
     socket.on("receiveMessage", (msg: Message) => {
       setMessages((prev) => [...prev, msg]);
-      console.log("서버로부터 받은 메세지:", msg);
     });
-
     return () => {
       socket.disconnect();
     };
   }, [roomId]);
 
-  //✅새 메시지 서버에 전송
+  // ✅ 새 메시지 서버 전송
   const handleSend = (
     content: string,
     tags: string[],
@@ -51,14 +63,17 @@ export default function ChatRoom() {
       tags,
       sender: user?.nickname ?? "",
       senderId: user?.id,
-      replyToId: replyTo?.id || null,
+      replyToId: replyTo?.id ?? null,
+      sentAt : new Date().toISOString(),
     };
     socketRef.current?.emit("sendMessage", message);
+    console.log(message);
   };
 
   return (
     <div style={{ padding: "20px" }}>
       <h2>🗨️ Chat Room: {roomId}</h2>
+      <ChatSearch />
       <ChatLog
         messages={messages}
         onReply={setReplyTo}

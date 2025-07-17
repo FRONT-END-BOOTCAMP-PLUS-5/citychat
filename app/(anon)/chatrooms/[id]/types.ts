@@ -5,7 +5,8 @@ export interface Message {
   tags?: string[]; // 해시태그 목록
   sender: string; // 작성자 이름
   senderId?: number; //작성자 id
-  sent_at?: string; // 메시지 전송 시간 (ISO 8601 형식)
+  senderNickname?: string // 작성자 닉네임
+  sentAt?: string; // 메시지 전송 시간 (ISO 8601 형식)
   replyToId?: number | null; // 답글 대상 메시지 ID (없으면 null)
 }
 
