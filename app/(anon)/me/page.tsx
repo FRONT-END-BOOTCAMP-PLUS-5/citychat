@@ -3,12 +3,13 @@ import React from "react";
 
 const page = () => {
   return (
-    <SharedPageLayout title="My Page">
-      <div>
-        page
-      </div>
-    </SharedPageLayout>
+    <div>
+      <SharedPageLayout title="My Page">
+        <div>page</div>
+      </SharedPageLayout>
+    </div>
   );
 };
 
 export default page;
+
