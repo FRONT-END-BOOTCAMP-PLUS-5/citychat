@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import styles from "./slider.module.css";
 import type { CustomArrowProps } from "react-slick";
 import Image from "next/image";
+import Link from "next/link";
 
 interface City {
   id: string;
@@ -75,7 +76,7 @@ export default function CenterModeCarousel() {
     autoplay: true,
     autoplaySpeed: 4000,
     centerMode: true,
-    centerPadding: "20px",
+    centerPadding: "10px",
     slidesToShow: 3,
     infinite: true,
     arrows: true,
@@ -90,20 +91,45 @@ export default function CenterModeCarousel() {
       <div className={styles.sliderContainer}>
         <div className={styles.customWrapper}>
           <Slider {...settings}>
-            {cities.map((city, i) => (
-              <div key={city.id}> {/* 각 도시에 고유한 id를 key로 사용 */}
-                <div className="custom-slide-wrapper">
-                  <div
-                    className={`${styles.card} ${
-                      i === activeIndex ? styles.cardActive : ""
-                    }`}
-                  >
-                    <h3 className={styles.cityName}>{city.name}</h3> {/* 도시 이름 */}
-                    <Image src={city.image} alt={city.name} className={styles.cityImage} width={350} height={380}/>
+            {cities.map((city, i) => {
+              // 현재 활성화된 슬라이드를 기준으로 인덱스 계산
+              const totalSlides = cities.length;
+              let relativeIndex = i - activeIndex;
+
+              // 무한 루프를 고려하여 상대적 인덱스 조정
+              if (settings.infinite) {
+                if (relativeIndex > totalSlides / 2) {
+                  relativeIndex -= totalSlides;
+                } else if (relativeIndex < -totalSlides / 2) {
+                  relativeIndex += totalSlides;
+                }
+              }
+
+              const isLeftVisible = relativeIndex === -1; // 왼쪽 슬라이드
+              const isActive = relativeIndex === 0; // 가운데 활성화된 슬라이드
+              const isRightVisible = relativeIndex === 1; // 오른쪽 슬라이드
+              const isBeyondVisible = !isActive && !isLeftVisible && !isRightVisible; // 보이는 3개 외의 슬라이드
+
+              return (
+                <div key={city.id}> {/* 각 도시에 고유한 id를 key로 사용 */}
+                  <div className="custom-slide-wrapper">
+                    <div
+                      className={`${styles.card} ${
+                        isActive ? styles.cardActive : ""
+                      } ${isLeftVisible ? styles.cardLeftVisible : ""} ${
+                        isRightVisible ? styles.cardRightVisible : ""
+                      } ${isBeyondVisible ? styles.cardBehind : ""}`} // cardBehind 클래스 추가
+                    >
+                      <div className={styles.cityLink}>
+                        <h3 className={styles.cityName}>{city.name}</h3>
+                        <Link href="#" className={styles.linkArrow}>➜</Link>
+                      </div>
+                      <Image src={city.image} alt={city.name} className={styles.cityImage} width={350} height={380} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </Slider>
         </div>
       </div>
