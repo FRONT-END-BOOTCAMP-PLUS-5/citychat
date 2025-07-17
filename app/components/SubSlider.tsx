@@ -88,16 +88,6 @@ const SubSlider: React.FC = () => {
     };
   }, [activeIndex, cities]); 
 
-  // activeIndex 변경 시 해당 도시로 부드럽게 스크롤
-  // useEffect(() => {
-  //   const container = scrollRef.current;
-  //   if (container && cities.length > 0) {
-  //     const target = container.children[activeIndex] as HTMLElement | undefined;
-  //     if (target) {
-  //       target.scrollIntoView({ behavior: "smooth", block: "center" });
-  //     }
-  //   }
-  // }, [activeIndex, cities]);
   useEffect(() => {
     const container = scrollRef.current;
     if (!container || cities.length === 0) return;
