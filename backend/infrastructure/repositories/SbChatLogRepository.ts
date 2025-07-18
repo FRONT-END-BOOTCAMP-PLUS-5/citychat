@@ -44,13 +44,14 @@ export class SbChatLogRepository implements ChatLogRepository {
       .eq("chat_room_id", chatRoomId)
       .eq("deleted_flag", false)
       .gte("sent_at", since)
-      .order("sent_at", { ascending: false });
+      .order("sent_at", { ascending: true })
+      .range(0, 499);
 
     if (error || !data) {
       console.error("❌ Supabase error in getRecentMessages:", error?.message);
       return [];
     }
-
+    console.log("길이", data.length);
     return this.mapRowsToMessages(data as unknown as ChatRow[]);
   }
 

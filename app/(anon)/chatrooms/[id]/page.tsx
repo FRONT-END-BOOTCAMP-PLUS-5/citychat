@@ -42,9 +42,7 @@ export default function ChatRoom() {
     });
 
     socketRef.current = socket;
-    socket.on("connect", () => {
-      console.log("✅ Connected to socket");
-    });
+    socket.on("connect", () => {});
 
     // ✅ 새 메시지 수신 → 이전 메시지 유지하고 하나만 추가
     socket.on("receiveMessage", (msg: Message) => {
@@ -70,13 +68,22 @@ export default function ChatRoom() {
       sentAt: new Date().toISOString(),
     };
     socketRef.current?.emit("sendMessage", message);
-    console.log(message);
+  };
+
+  // ✅ 답장 시작 시 검색 초기화
+  const handleReply = (msg: Message) => {
+    setSearchResultIds([]);
+    setCurrentSearchIndex(0);
+    setReplyTo(msg);
   };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.searchBox}>
         <ChatSearch
+          onSearchStart={() => {
+            setReplyTo(null); // 검색 시작 시 답장 초기화
+          }}
           onSearchResults={(ids) => {
             setSearchResultIds(ids);
             setCurrentSearchIndex(0);
@@ -87,7 +94,7 @@ export default function ChatRoom() {
         <div className={styles.chatSection}>
           <ChatLog
             messages={messages}
-            onReply={setReplyTo}
+            onReply={handleReply}
             currentUserId={user?.id ?? null}
             searchResultIds={searchResultIds}
             currentIndex={currentSearchIndex}

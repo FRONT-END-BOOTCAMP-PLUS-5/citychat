@@ -1,7 +1,7 @@
 import { useState } from "react";
-import styles from "./ChatSearch.module.css";
 import { useParams } from "next/navigation";
-import { RotateCw } from "lucide-react";
+import { RotateCw, Search } from "lucide-react";
+import styles from "./ChatSearch.module.css";
 
 type Chat = {
   id: number;
@@ -10,8 +10,10 @@ type Chat = {
 };
 
 export default function ChatSearch({
+  onSearchStart,
   onSearchResults,
 }: {
+  onSearchStart?: () => void;
   onSearchResults: (ids: number[]) => void;
 }) {
   const roomId = useParams()?.id;
@@ -24,7 +26,7 @@ export default function ChatSearch({
       alert("검색어를 입력해주세요.");
       return;
     }
-
+    onSearchStart?.();
     try {
       const encodedKeyword = encodeURIComponent(keyword);
       const res = await fetch(
@@ -68,12 +70,12 @@ export default function ChatSearch({
           placeholder="검색어 입력"
           className={styles.input}
         />
-        <button onClick={handleSearch} className={styles.button}>
-          검색
+        <button className={styles.button} onClick={handleSearch}>
+          <Search size={20} color="#669cf4ff" />
         </button>
         <button className={styles.reset} onClick={handleReset}>
           {" "}
-          <RotateCw size={19} color="#669cf4ff" />
+          <RotateCw size={13} color="#669cf4ff" />
         </button>
       </div>
 
