@@ -5,6 +5,7 @@
   width: 1280px;
   margin: 0 auto;
   padding-top: 10vh;
+  /* padding-bottom: 10vh; */
 }
 .searchBox {
   position: absolute;

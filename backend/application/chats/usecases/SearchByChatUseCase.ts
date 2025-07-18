@@ -13,7 +13,7 @@ export class SearchByChatUseCase {
     const trimmed = chat.trim();
 
     // 태그 검색 (#태그)
-    if (trimmed.startsWith("#")) {
+    if (trimmed.startsWith("#") && trimmed.length > 1) {
       const tag = trimmed.slice(1); // # 제거
       return await this.tagRepo.searchByTagName(tag, chatRoomId);
     }
@@ -22,3 +22,4 @@ export class SearchByChatUseCase {
     return await this.chatRepo.searchByContent(trimmed, chatRoomId);
   }
 }
+

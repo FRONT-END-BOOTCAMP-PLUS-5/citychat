@@ -12,18 +12,21 @@ interface ChatRow {
   parent_chat_id?: number | null;
   image_id?: number | null;
   deleted_flag: boolean;
-  users?:{ nickname : string };
+  users?: { nickname: string };
 }
 
 export class SbChatLogRepository implements ChatLogRepository {
   constructor(private supabase: SupabaseClient) {}
 
   async getRecentMessages(chatRoomId: number, days: number): Promise<Chat[]> {
-    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+    const since = new Date(
+      Date.now() - days * 24 * 60 * 60 * 1000
+    ).toISOString();
 
     const { data, error } = await this.supabase
       .from("chats")
-      .select(`
+      .select(
+        `
         id,
         content,
         content_type,
@@ -36,17 +39,19 @@ export class SbChatLogRepository implements ChatLogRepository {
         users(
           nickname
         )
-      `)
+      `
+      )
       .eq("chat_room_id", chatRoomId)
       .eq("deleted_flag", false)
       .gte("sent_at", since)
-      .order("sent_at", { ascending: true });
-    
+      .order("sent_at", { ascending: true })
+      .range(0, 499);
+
     if (error || !data) {
       console.error("❌ Supabase error in getRecentMessages:", error?.message);
       return [];
     }
-
+    console.log("길이", data.length);
     return this.mapRowsToMessages(data as unknown as ChatRow[]);
   }
 
@@ -65,3 +70,4 @@ export class SbChatLogRepository implements ChatLogRepository {
     }));
   }
 }
+

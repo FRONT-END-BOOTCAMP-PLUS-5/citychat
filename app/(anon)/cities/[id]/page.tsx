@@ -59,8 +59,6 @@ export default function DetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // activeIndex는 더 이상 필요 없으므로 제거합니다.
-
   useEffect(() => {
     const fetchCities = async () => {
       try {

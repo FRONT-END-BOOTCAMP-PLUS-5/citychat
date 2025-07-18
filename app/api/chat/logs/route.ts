@@ -27,7 +27,6 @@ export async function GET(req: NextRequest) {
 
   try {
     const supabase = await createClient();
-    console.log("supabase", supabase);
     const useCase = new GetRecentChatsUseCase(
       new SbChatLogRepository(supabase)
     );

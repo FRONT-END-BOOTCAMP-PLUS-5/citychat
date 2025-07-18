@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChatLogProps } from "../types";
+import { ChatLogProps, Message } from "../types";
 import { highlightTags } from "./ParseTags";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { CircleChevronLeft, CircleChevronRight } from "lucide-react";
 import styles from "./ChatLog.module.css";
 
 export default function ChatLog({
@@ -25,6 +26,7 @@ export default function ChatLog({
   const [renderedMessages, setRenderedMessages] = useState(incomingMessages);
   const [translated, setTranslated] = useState<Record<number, string>>({});
   const [isTranslated, setIsTranslated] = useState<Record<number, boolean>>({});
+  const [scrollByReply, setScrollByReply] = useState(false);
 
   // ✅ 새로운 메시지 감지하여 추가
   useEffect(() => {
@@ -38,8 +40,22 @@ export default function ChatLog({
     setRenderedMessages(incomingMessages);
   }, [searchResultIds, incomingMessages]);
 
+  // ✅ 검색 결과 초기화 시 최신 채팅으로 복구
+  useEffect(() => {
+    if (searchResultIds.length === 0) {
+      setRenderedMessages(incomingMessages);
+      setTimeout(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 500);
+    }
+  }, [searchResultIds, incomingMessages]);
+
   // ✅ 새 메시지 추가 시 맨 아래로 스크롤
   useEffect(() => {
+    if (scrollByReply) {
+      setScrollByReply(false);
+      return;
+    }
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [renderedMessages]);
 
@@ -63,10 +79,7 @@ export default function ChatLog({
   // ✅ 검색 결과로 스크롤 이동
   useEffect(() => {
     const targetId = Number(searchResultIds[currentIndex]);
-    console.log("search결과", searchResultIds);
-    console.log("✅ currentIndex:", currentIndex);
-    console.log("✅ targetId to scroll:", targetId);
-    console.log("✅ all ref keys:", Array.from(messageRefs.current.keys()));
+
     setTimeout(() => {
       const targetElement = messageRefs.current.get(targetId);
       if (targetElement) {
@@ -76,6 +89,22 @@ export default function ChatLog({
       }
     }, 0); // 0ms 딜레이로 다음 이벤트 루프에서 실행
   }, [currentIndex, searchResultIds]);
+
+  // ✅ 줄바꿈을 태그로 넣기
+  function formatMultilineContent(content: string) {
+    const html = content.replace(/\n/g, "<br />");
+    return highlightTags(html);
+  }
+
+  // ✅ 답장 시 해당 메세지로 스크롤 이동
+  const handleReplyWithScroll = (msg: Message) => {
+    const element = messageRefs.current.get(msg.id!);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+      setScrollByReply(true);
+    }
+    onReply(msg); // 기존 reply 콜백 실행
+  };
 
   return (
     <>
@@ -96,7 +125,6 @@ export default function ChatLog({
               ref={(el) => {
                 if (msg.id != null && el) {
                   const numericId = Number(msg.id);
-                  console.log("✅ ref 등록됨:", numericId);
                   messageRefs.current.set(numericId, el);
                 }
               }}
@@ -136,15 +164,16 @@ export default function ChatLog({
                   }`}
                 >
                   <span
-                    onClick={() => onReply(msg)}
+                    onClick={() => handleReplyWithScroll(msg)}
                     dangerouslySetInnerHTML={{
-                      __html: highlightTags(
+                      __html: formatMultilineContent(
                         isTranslated[i] && translated[i]
                           ? translated[i]
                           : msg.content
                       ),
                     }}
                   />
+
                   <span
                     className={`${
                       isMe ? styles.mytimestamp : styles.othertimestamp
@@ -172,11 +201,22 @@ export default function ChatLog({
 
       {searchResultIds.length > 0 && (
         <div className={styles.searchNav}>
-          <button onClick={() => onNavigateSearchResult?.("prev")}>◀</button>
+          <button
+            className={styles.button}
+            onClick={() => onNavigateSearchResult?.("prev")}
+          >
+            {" "}
+            <CircleChevronLeft size={19} color="#669cf4ff" />
+          </button>
           <span>
             {currentIndex + 1} / {searchResultIds.length}
           </span>
-          <button onClick={() => onNavigateSearchResult?.("next")}>▶</button>
+          <button
+            className={styles.button}
+            onClick={() => onNavigateSearchResult?.("next")}
+          >
+            <CircleChevronRight size={19} color="#669cf4ff" />
+          </button>
         </div>
       )}
     </>
