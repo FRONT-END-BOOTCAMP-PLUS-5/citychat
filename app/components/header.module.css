@@ -88,6 +88,30 @@
   color: rgba(255, 255, 255, 0.7); /* 호버 시 색상 변경 */
 }
 
+.navItemDropdownWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.citiesButton {
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.citiesDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+
 /* 마이페이지(로그인 & 비로그인) 이미지 */
 .mypageIcon {
   vertical-align: middle; /* 필요한 경우 텍스트와 아이콘을 수직으로 정렬 */
