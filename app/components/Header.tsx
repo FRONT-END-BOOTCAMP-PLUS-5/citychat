@@ -14,10 +14,17 @@ const pages = [
   { name: "Landmark", path: "/landmark" },
   { name: "About", path: "/about" },
 ];
+//  ─────── Cities의 드롭다운 항목 ───────
+const cityRegions = [
+  { name: "서울", path: "/cities/seoul" },
+  { name: "부산", path: "/cities/busan" },
+  { name: "대전", path: "/cities/deajeon" },
+];
 
 function Header() {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
   const [isMypageDropdownOpen, setIsMypageDropdownOpen] = React.useState(false);
+  const [isCitiesDropdownOpen, setIsCitiesDropdownOpen] = React.useState(false);
 
   // Zustand 스토어에서 상태와 액션
   const user = useUserStore((state) => state.user); // 유저 정보 데이터
@@ -44,12 +51,18 @@ function Header() {
       setIsDrawerOpen(open);
       if (open) {
         setIsMypageDropdownOpen(false);
+        setIsCitiesDropdownOpen(false);
       }
     };
 
-  // 토글로 드롭다운을 열고 닫는 기능
+  // 토글로 드롭다운을 열고 닫는 기능(me)
   const toggleMypageDropdown = () => {
     setIsMypageDropdownOpen((prev) => !prev);
+  };
+  
+  // 토글로 드롭다운을 열고 닫는 기능(cities)
+  const toggleCitiesDropdown = () => {
+    setIsCitiesDropdownOpen((prev) => !prev);
   };
 
   // 마우스 클릭시 드롭다운과 안에 있는 요소들(회원가입,로그인 등..)(한번만 실행 :,[])
@@ -57,6 +70,8 @@ function Header() {
     const handleClickOutside = (event: MouseEvent) => {
       const mypageButton = document.getElementById("mypage-button");
       const mypageDropdown = document.getElementById("mypage-dropdown");
+      const citiesButton = document.getElementById("cities-button"); 
+      const citiesDropdown = document.getElementById("cities-dropdown"); 
 
       // 클릭된 버튼과 드롭다운 요소 포함 여부 확인
       if (
@@ -66,6 +81,14 @@ function Header() {
         !mypageDropdown.contains(event.target as Node)
       ) {
         setIsMypageDropdownOpen(false); // 드롭다운 자동 닫힘
+      }
+      if (
+        citiesButton &&
+        !citiesButton.contains(event.target as Node) &&
+        citiesDropdown &&
+        !citiesDropdown.contains(event.target as Node)
+      ) {
+        setIsCitiesDropdownOpen(false);
       }
     };
     // 드롭다운 실행 후 이벤트 제거
@@ -101,12 +124,46 @@ function Header() {
           </div>
 
           <nav className={styles.navDesktop}>
-            {pages.map((page) => (
-              <Link href={page.path} key={page.name} className={styles.navItem}>
-                {page.name}
-              </Link>
-            ))}
-            {/* 아이콘 버튼 */}
+            {/* ✅ 기존 pages.map 안에 "Cities" 조건 처리 */}
+            {pages.map((page) =>
+              page.name === "Cities" ? (
+                <div key={page.name} className={styles.navItemDropdownWrapper}>
+                  <button
+                    id="cities-button" // ✅ 드롭다운 토글용
+                    className={`${styles.navItem} ${styles.citiesButton}`}
+                    onClick={toggleCitiesDropdown}
+                    aria-haspopup="true"
+                    aria-expanded={isCitiesDropdownOpen}
+                  >
+                    {page.name}
+                  </button>
+                  {isCitiesDropdownOpen && (
+                    <div id="cities-dropdown" className={styles.citiesDropdown}>
+                      {cityRegions.map((region) => (
+                        <Link
+                          key={region.name}
+                          href={region.path}
+                          className={styles.dropdownItem}
+                          onClick={() => setIsCitiesDropdownOpen(false)}
+                        >
+                          {region.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={page.name}
+                  href={page.path}
+                  className={styles.navItem}
+                >
+                  {page.name}
+                </Link>
+              )
+            )}
+
+            {/* 마이페이지 버튼 */}
             <div className={styles.mypageContainer}>
               <button
                 id="mypage-button"
@@ -127,7 +184,6 @@ function Header() {
                   />
                 )}
               </button>
-              {/* 드롭다운 내용 변경 */}
               {isMypageDropdownOpen && (
                 <div id="mypage-dropdown" className={styles.mypageDropdown}>
                   {isLoggedIn ? (
