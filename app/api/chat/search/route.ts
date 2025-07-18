@@ -21,12 +21,15 @@ export async function GET(req: NextRequest) {
   );
 
   try {
-    const chatRoomId = parseInt(roomId, 10);// 문자열을 정수로 변환s
+    const chatRoomId = parseInt(roomId, 10); // 문자열을 정수로 변환s
     const result = await useCase.execute({ chat: keyword, chatRoomId });
     return NextResponse.json(result);
   } catch (error) {
     console.error("❌ Error in /api/chats/search:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
