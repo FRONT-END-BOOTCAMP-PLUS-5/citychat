@@ -1,15 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import SharedPageLayout from "@/app/SharedPageLayout";
-import { useParams } from "next/navigation"; 
+import { useParams } from "next/navigation";
 
 // 태그 값 배열
 const Tags = ["#날씨", "#음식", "#패션", "#꿀팁", "#문화", "#교통"];
 
-// 카드 값 배열 
+// 카드 값 배열
 const activityCards = [
   {
-    title: "도시에서 뭐하고 놀지 고민할 때", 
+    title: "도시에서 뭐하고 놀지 고민할 때",
     description: "이걸 눌러서 확인하면 재밌는 걸 찾을 수 있어요!",
   },
   {
@@ -64,8 +64,7 @@ export default function DetailPage() {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        // '/api/cities' 엔드포인트가 모든 도시 목록을 반환한다고 가정합니다.
-        const response = await fetch("/api/cities"); 
+        const response = await fetch(`/api/cities?cityId=${cityId}`);
         if (!response.ok) {
           throw new Error(`HTTP 오류! 상태: ${response.status}`);
         }
@@ -219,3 +218,4 @@ export default function DetailPage() {
     </div>
   );
 }
+

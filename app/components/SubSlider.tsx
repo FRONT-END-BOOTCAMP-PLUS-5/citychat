@@ -108,12 +108,15 @@ const SubSlider: React.FC = () => {
 
   if (loading) {
     return <div className={styles.loadingState}>도시를 불러오는 중...</div>;
+    // return null; // 불러오기 비 활성화
   }
   if (error) {
     return <div className={styles.errorState}>오류: {error}</div>;
+    // return null;
   }
   if (cities.length === 0) {
     return <div className={styles.emptyState}>도시를 찾을 수 없습니다.</div>;
+    // return null;
   }
 
   const currentCity = cities[activeIndex];
