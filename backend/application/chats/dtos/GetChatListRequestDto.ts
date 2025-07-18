@@ -1,4 +1,4 @@
-export interface GetChatListByUserIdRequestDto {
-    offset?: number;
-    limit?: number;
+export interface GetChatListRequestDto {
+  offset?: number;
+  limit?: number;
 }

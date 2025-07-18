@@ -1,9 +1,10 @@
 "use client";
-import { useGetCurrentUserChatList } from "@/app/hooks/useGetCurrentUserChatList";
+import { useGetCurrentUserChats } from "@/app/hooks/useGetCurrentUserChats";
 import styles from "./page.module.css";
 import SharedPageLayout from "@/app/SharedPageLayout";
 import { useInView } from "react-intersection-observer";
 import React, { useEffect } from "react";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 const {
   ["page-container"]: pageContainer,
@@ -12,9 +13,9 @@ const {
   ["menu-item"]: menuItem,
 } = styles;
 
-export default function UserChatListPage() {
+export default function MyChatPage() {
   const { ref, inView } = useInView();
-  const { data, isFetchingNextPage, hasNextPage, fetchNextPage } = useGetCurrentUserChatList(10);
+  const { data, isFetchingNextPage, hasNextPage, fetchNextPage } = useGetCurrentUserChats(10);
   console.log(data);
   console.log("hasNextPage", hasNextPage);
 
@@ -28,19 +29,19 @@ export default function UserChatListPage() {
     <SharedPageLayout title="My chats">
       <div className={pageContainer}>
         <div className={contentWrapper}>
-          <div className={menuList}>
-            {data?.chats && data.chats.length > 0 
+          <div className={menuList} style={{ height: "50vh", overflowY: "auto" }}>
+            {data?.items && data.items.length > 0 
               ? 
-              data.chats.map((chat) => (
-                <div className={menuItem} key={chat.id}>
-                  {chat.content}
+              data.items.map((item) => (
+                <div className={menuItem} key={item.id}>
+                  {item.content}
                 </div>
               ))
               : null
             }
             {hasNextPage &&
-            <div ref={ref} style={{ height: "5px" }}>
-              {isFetchingNextPage && "isLoading..."}
+            <div ref={ref} style={{ height: "40px" }}>
+              {isFetchingNextPage && <LoadingSpinner size={20} /> }
             </div>}
           </div>
         </div>

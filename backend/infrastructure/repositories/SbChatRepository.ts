@@ -2,6 +2,7 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { ChatRepository } from "../../domain/repositories/ChatRepository";
 import { Chat } from "../../domain/entities/Chat";
 import { createClient } from "@/utils/supabase/server";
+import { ApiResponse } from "@/app/types/ApiResponse";
 
 interface ChatTable {
   id: number;
@@ -17,7 +18,7 @@ interface ChatTable {
 
 export class SbChatRepository implements ChatRepository {
 
-  constructor(private supabase: SupabaseClient) {}
+  constructor(private supabase: SupabaseClient) { }
 
   private mapToChat(chatTable: ChatTable): Chat {
     return new Chat(
@@ -32,12 +33,12 @@ export class SbChatRepository implements ChatRepository {
       chatTable.image_id ?? undefined,
     );
   }
-  
+
   async getChatListByUserId(
     userId: number,
     offset: number = 0,
     limit: number = 10
-  ): Promise<{ chats: Chat[]; total: number; hasMore: boolean; }> {
+  ): Promise<ApiResponse<Chat>> {
 
     try {
       // 전체 개수 조회
@@ -65,7 +66,7 @@ export class SbChatRepository implements ChatRepository {
       const total = count ?? 0;
       const hasMore = offset + chats.length < total;
 
-      return { chats, total, hasMore };
+      return { items: chats, total, hasMore };
     } catch (error) {
       throw new Error(`Failed to get chat list : ${error instanceof Error ? error.message : "Unknown Error"}`);
     }
