@@ -1,11 +1,11 @@
-"use client"
+"use client";
 import SharedPageLayout from "@/app/SharedPageLayout";
 import styles from "./page.module.css";
 import React from "react";
 import { useUserStore } from "@/app/stores/useUserStore";
 import Avatar from "@/app/components/Avatar";
-import { ChevronRight, MessagesSquare, User } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { ChevronRight, MessagesSquare, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const {
   ["page-container"]: pageContainer,
@@ -20,16 +20,16 @@ const {
   ["menu-arrow"]: menuArrow,
 } = styles;
 
-export default function mePage() {
+export default function MePage() {
   const user = useUserStore((state) => state.user); // 유저 정보 데이터
   const router = useRouter();
   
   const handleManageAccount = () => {
-    router.push('/me/account');
+    router.push("/me/account");
   };
   
   const handleMyChats = () => {
-    router.push('/me/chats');
+    router.push("/me/chats");
   };
   
   return (
@@ -49,7 +49,7 @@ export default function mePage() {
               <div className={menuIcon}>
                 <User />
               </div>
-              <span className={menuText}>Manage Account</span>
+              <span className={menuText}>My Account</span>
               <div className={menuArrow}>
                 <ChevronRight />
               </div>
