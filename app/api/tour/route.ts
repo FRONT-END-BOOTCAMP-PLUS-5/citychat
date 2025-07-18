@@ -59,20 +59,20 @@ const AREA_CODES: { [key: string]: string } = {
 };
 
 
+
 // GET 메서드 핸들러
 export async function GET(req: NextRequest) {
   const { searchParams, pathname } = new URL(req.url);
   const cityId = searchParams.get("cityId");
-  
   const pathSegments = pathname.split("/");
   const areaNameFromPath = pathSegments[pathSegments.length - 1]; 
   const areaCdFromPath = AREA_CODES[areaNameFromPath.toLowerCase()];
-
-
   const areaCd = searchParams.get("areaCd") || areaCdFromPath || ""; 
   const signguCd = searchParams.get("signguCd") || "";
   const pageNo = searchParams.get("pageNo") || "1";
   const numOfRows = searchParams.get("numOfRows") || "10";
+
+  console.log(cityId);
 
   const serviceKey = process.env.TOUR_API_AUTH_KEY;
   if (!serviceKey) {
