@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 // 태그 값 배열
 const Tags = ["#날씨", "#음식", "#패션", "#꿀팁", "#문화", "#교통"];
 
-// 카드 값 배열 (이 부분은 현재 하드코딩되어 있습니다. 실제로는 선택된 도시에 따라 동적으로 변경되어야 합니다.)
+// 카드 값 배열 
 const activityCards = [
   {
     title: "도시에서 뭐하고 놀지 고민할 때", 

@@ -16,9 +16,11 @@ const pages = [
 ];
 //  ─────── Cities의 드롭다운 항목 ───────
 const cityRegions = [
-  { name: "서울", path: "/cities/seoul" },
-  { name: "부산", path: "/cities/busan" },
-  { name: "대전", path: "/cities/deajeon" },
+  { name: "서울", path: "/cities/1" },
+  { name: "부산", path: "/cities/2" },
+  { name: "대전", path: "/cities/3" },
+  { name: "강릉", path: "/cities/4" },
+  { name: "제주", path: "/cities/5" },
 ];
 
 function Header() {
