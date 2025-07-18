@@ -121,14 +121,16 @@
 }
 
 .highlighted {
+  width: fit-content;
+  height: fit-content;
   background-color: #fff9d1;
-  border-left: 4px solid #ffd700;
-  padding-left: 8px;
+  padding: 8px;
 }
 .searchNav {
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin-top: 8px;
+  border-radius: 4px;
 }
 

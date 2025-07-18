@@ -7,6 +7,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const keyword = searchParams.get("keyword");
   const roomId = searchParams.get("roomId");
+  console.log("keyword", keyword);
 
   if (!keyword || !roomId) {
     return NextResponse.json(

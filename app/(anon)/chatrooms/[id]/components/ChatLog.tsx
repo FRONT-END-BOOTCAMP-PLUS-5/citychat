@@ -38,6 +38,16 @@ export default function ChatLog({
     setRenderedMessages(incomingMessages);
   }, [searchResultIds, incomingMessages]);
 
+  // ✅ 검색 결과 초기화 시 최신 채팅으로 복구
+  useEffect(() => {
+    if (searchResultIds.length === 0) {
+      setRenderedMessages(incomingMessages);
+      setTimeout(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 500);
+    }
+  }, [searchResultIds, incomingMessages]);
+
   // ✅ 새 메시지 추가 시 맨 아래로 스크롤
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -63,10 +73,7 @@ export default function ChatLog({
   // ✅ 검색 결과로 스크롤 이동
   useEffect(() => {
     const targetId = Number(searchResultIds[currentIndex]);
-    console.log("search결과", searchResultIds);
-    console.log("✅ currentIndex:", currentIndex);
-    console.log("✅ targetId to scroll:", targetId);
-    console.log("✅ all ref keys:", Array.from(messageRefs.current.keys()));
+
     setTimeout(() => {
       const targetElement = messageRefs.current.get(targetId);
       if (targetElement) {
@@ -76,6 +83,11 @@ export default function ChatLog({
       }
     }, 0); // 0ms 딜레이로 다음 이벤트 루프에서 실행
   }, [currentIndex, searchResultIds]);
+
+  function formatMultilineContent(content: string) {
+    const html = content.replace(/\n/g, "<br />");
+    return highlightTags(html);
+  }
 
   return (
     <>
@@ -96,7 +108,6 @@ export default function ChatLog({
               ref={(el) => {
                 if (msg.id != null && el) {
                   const numericId = Number(msg.id);
-                  console.log("✅ ref 등록됨:", numericId);
                   messageRefs.current.set(numericId, el);
                 }
               }}
@@ -138,7 +149,7 @@ export default function ChatLog({
                   <span
                     onClick={() => onReply(msg)}
                     dangerouslySetInnerHTML={{
-                      __html: highlightTags(
+                      __html: formatMultilineContent(
                         isTranslated[i] && translated[i]
                           ? translated[i]
                           : msg.content

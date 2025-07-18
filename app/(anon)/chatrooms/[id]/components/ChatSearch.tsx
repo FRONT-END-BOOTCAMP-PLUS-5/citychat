@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./ChatSearch.module.css";
 import { useParams } from "next/navigation";
+import { RotateCw } from "lucide-react";
 
 type Chat = {
   id: number;
@@ -13,30 +14,48 @@ export default function ChatSearch({
 }: {
   onSearchResults: (ids: number[]) => void;
 }) {
+  const roomId = useParams()?.id;
   const [keyword, setKeyword] = useState("");
   const [results, setResults] = useState<Chat[]>([]);
-  const [loading, setLoading] = useState(false);
-  const roomId = useParams()?.id; // Next.js에서 [id]를 라우트 param으로 받는 경우
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = async () => {
     if (!keyword.trim()) {
       alert("검색어를 입력해주세요.");
       return;
     }
-    setLoading(true);
+
     try {
+      const encodedKeyword = encodeURIComponent(keyword);
       const res = await fetch(
-        `/api/chat/search?keyword=${keyword}&roomId=${roomId}`
+        `/api/chat/search?keyword=${encodedKeyword}&roomId=${roomId}`
       );
       const data = await res.json();
-      setResults(data);
-      onSearchResults(data.map((chat: Chat) => chat.id));
+      setHasSearched(true);
+      if (Array.isArray(data)) {
+        setResults(data);
+        onSearchResults(data.map((chat: Chat) => chat.id));
+        if (data.length === 0) {
+          setTimeout(() => {
+            handleReset();
+          }, 30 * 1000);
+        }
+      } else {
+        console.warn("검색 결과 형식이 배열이 아닙니다:", data);
+        setResults([]);
+      }
     } catch (err) {
       console.error("검색 오류:", err);
       setResults([]);
-    } finally {
-      setLoading(false);
     }
+  };
+
+  //초기화 함수
+  const handleReset = () => {
+    setKeyword("");
+    setResults([]);
+    setHasSearched(false);
+    onSearchResults([]); // 하이라이트 초기화
   };
 
   return (
@@ -52,21 +71,18 @@ export default function ChatSearch({
         <button onClick={handleSearch} className={styles.button}>
           검색
         </button>
+        <button className={styles.reset} onClick={handleReset}>
+          {" "}
+          <RotateCw size={19} color="#669cf4ff" />
+        </button>
       </div>
 
-      {loading ? (
-        <p>검색 중...</p>
+      {!hasSearched ? (
+        <></>
       ) : results.length === 0 ? (
-        <p>검색 결과가 없습니다.</p>
+        <p className={styles.results}>검색 결과가 없습니다.</p>
       ) : (
-        <ul className={styles.results}>
-          {results.map((chat) => (
-            <li key={chat.id} className={styles.resultItem}>
-              <p className={styles.resultDate}>{chat.sent_at}</p>
-              <p>{chat.content}</p>
-            </li>
-          ))}
-        </ul>
+        <p className={styles.results}>검색 결과 : {results.length}</p>
       )}
     </div>
   );
