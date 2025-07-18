@@ -1,4 +1,4 @@
-// components/Avatar.tsx
+"use client"
 import React, { useState } from "react";
 import styles from "./avatar.module.css";
 // Avatar 컴포넌트가 받을 props의 타입을 정의
@@ -28,9 +28,8 @@ const Avatar: React.FC<AvatarProps> = ({
     <div
       className={styles.avatarContainer}
       style={{
-        marginLeft: "15px",
         width: size,
-        height: size,
+        aspectRatio: 1,
         backgroundColor: backgroundColor,
         color: textColor,
         fontSize: size / 2,
