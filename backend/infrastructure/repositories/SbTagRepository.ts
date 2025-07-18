@@ -2,7 +2,6 @@ import { TagRepository } from "@/backend/domain/repositories/TagRepository";
 import { Chat } from "@/backend/domain/entities/Chat";
 import { createClient } from "@/utils/supabase/server";
 
-
 type SupabaseTagRow = {
   id: number;
   tag_name: string;
@@ -25,9 +24,12 @@ export class SbTagRepository implements TagRepository {
   async searchByTagName(tagName: string, chatRoomId: number): Promise<Chat[]> {
     const supabase = createClient();
 
-    const { data, error } = await (await supabase)
+    const { data, error } = await (
+      await supabase
+    )
       .from("tags")
-      .select(`
+      .select(
+        `
         id,
         tag_name,
         chat_tags (
@@ -43,8 +45,10 @@ export class SbTagRepository implements TagRepository {
             image_id
           )
         )
-      `)
+      `
+      )
       .eq("tag_name", tagName)
+      .order("sent_at", { ascending: false })
       .returns<SupabaseTagRow[]>(); // ✅ 타입 지정 완료
 
     if (error) {
@@ -79,3 +83,4 @@ export class SbTagRepository implements TagRepository {
     return chats;
   }
 }
+

@@ -98,8 +98,8 @@ export default function SignupPage() {
   return (
     <SharedPageLayout title="Sign up">
       <div className={formContainer}>
-        {/* <h3 className={formTitle}>Personal Information</h3> */}
         <form className={signupForm} onSubmit={handleSubmit}>
+          <h3 className={formTitle}>Personal Information</h3>
           <div className={formGroup}>
             <label htmlFor="nickname" className={formLabel}>Nickname</label>
             <div className={inputRow}>

@@ -1,33 +1,61 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChatLogProps } from "../types";
+import { ChatLogProps, Message } from "../types";
 import { highlightTags } from "./ParseTags";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { CircleChevronLeft, CircleChevronRight } from "lucide-react";
 import styles from "./ChatLog.module.css";
 
 export default function ChatLog({
   messages: incomingMessages,
   onReply,
   currentUserId,
-}: ChatLogProps) {
+  searchResultIds = [],
+  currentIndex = 0,
+  onNavigateSearchResult,
+}: ChatLogProps & {
+  searchResultIds?: number[];
+  currentIndex?: number;
+  onNavigateSearchResult?: (direction: "prev" | "next") => void;
+}) {
   const bottomRef = useRef<HTMLDivElement>(null);
+  const messageRefs = useRef<Map<number, HTMLLIElement | null>>(new Map());
+  const highlightSet = new Set(searchResultIds);
   const [renderedMessages, setRenderedMessages] = useState(incomingMessages);
   const [translated, setTranslated] = useState<Record<number, string>>({});
   const [isTranslated, setIsTranslated] = useState<Record<number, boolean>>({});
+  const [scrollByReply, setScrollByReply] = useState(false);
 
   // ✅ 새로운 메시지 감지하여 추가
   useEffect(() => {
     if (incomingMessages.length > renderedMessages.length) {
       const newMessages = incomingMessages.slice(renderedMessages.length);
       setRenderedMessages((prev) => [...prev, ...newMessages]);
-      console.log("newMessages", newMessages);
     }
   }, [incomingMessages]);
 
+  useEffect(() => {
+    setRenderedMessages(incomingMessages);
+  }, [searchResultIds, incomingMessages]);
+
+  // ✅ 검색 결과 초기화 시 최신 채팅으로 복구
+  useEffect(() => {
+    if (searchResultIds.length === 0) {
+      setRenderedMessages(incomingMessages);
+      setTimeout(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 500);
+    }
+  }, [searchResultIds, incomingMessages]);
+
   // ✅ 새 메시지 추가 시 맨 아래로 스크롤
   useEffect(() => {
+    if (scrollByReply) {
+      setScrollByReply(false);
+      return;
+    }
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [renderedMessages]);
 
@@ -48,110 +76,150 @@ export default function ChatLog({
       setIsTranslated((prev) => ({ ...prev, [index]: true }));
     }
   };
+  // ✅ 검색 결과로 스크롤 이동
+  useEffect(() => {
+    const targetId = Number(searchResultIds[currentIndex]);
+
+    setTimeout(() => {
+      const targetElement = messageRefs.current.get(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else {
+        console.warn("❌ ref 없음:", targetId);
+      }
+    }, 0); // 0ms 딜레이로 다음 이벤트 루프에서 실행
+  }, [currentIndex, searchResultIds]);
+
+  // ✅ 줄바꿈을 태그로 넣기
+  function formatMultilineContent(content: string) {
+    const html = content.replace(/\n/g, "<br />");
+    return highlightTags(html);
+  }
+
+  // ✅ 답장 시 해당 메세지로 스크롤 이동
+  const handleReplyWithScroll = (msg: Message) => {
+    const element = messageRefs.current.get(msg.id!);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+      setScrollByReply(true);
+    }
+    onReply(msg); // 기존 reply 콜백 실행
+  };
 
   return (
-    <ul className={styles.chatContainer}>
-      {renderedMessages.map((msg, i) => {
-        const isMe = msg.senderId === currentUserId;
-        const formattedTime = msg.sentAt
-          ? format(new Date(msg.sentAt), "a h:mm", { locale: ko })
-          : "";
+    <>
+      <ul className={styles.chatContainer}>
+        {renderedMessages.map((msg, i) => {
+          const isMe = msg.senderId === currentUserId;
+          const isHighlighted = highlightSet.has(msg.id!);
+          const formattedTime = msg.sentAt
+            ? format(new Date(msg.sentAt), "a h:mm", { locale: ko })
+            : "";
+          const repliedTo = msg.replyToId
+            ? renderedMessages.find((m) => m.id === msg.replyToId)
+            : null;
 
-        const repliedTo = msg.replyToId
-          ? renderedMessages.find((m) => m.id === msg.replyToId)
-          : null;
-
-        return (
-          <li key={msg.id} className={styles.messageItem}>
-            <span className={styles.sender}>
-              {isMe ? "" : msg.senderNickname}
-            </span>
-
-            {repliedTo && (
-              <div className={styles.replyBox}>
-                <div>↪ {repliedTo.senderNickname}</div>
-                <div>{repliedTo.content}</div>
-              </div>
-            )}
-
-            {/* <span
-              className={`${styles.messageContent} ${
-                isMe ? styles.myMessage : styles.otherMessage
-              }`}
-            >
-              <span
-                onClick={() => onReply(msg)}
-                dangerouslySetInnerHTML={{
-                  __html: highlightTags(
-                    isTranslated[i] && translated[i]
-                      ? translated[i]
-                      : msg.content
-                  ),
-                }}
-              />
-              <span className={styles.timestamp}>{formattedTime}</span>
-
-              <button
-                onClick={() => handleTranslateToggle(i, msg.content)}
-                className={styles.translateButton}
-              >
-                {isTranslated[i] ? "Original" : "Translate"}
-              </button>
-            </span> */}
-            <div
+          return (
+            <li
               key={msg.id}
-              className={`${styles.messageWrapper} ${
-                isMe ? styles.myWrapper : styles.otherWrapper
+              ref={(el) => {
+                if (msg.id != null && el) {
+                  const numericId = Number(msg.id);
+                  messageRefs.current.set(numericId, el);
+                }
+              }}
+              className={`${styles.messageItem} ${
+                isHighlighted ? styles.highlighted : ""
               }`}
             >
-              {/* ✅ 내 메시지 → 버튼 위쪽 왼쪽에 */}
-              {isMe && (
-                <div className={styles.myTranslateWrap}>
-                  <button
-                    onClick={() => handleTranslateToggle(i, msg.content)}
-                    className={styles.translateButton}
-                  >
-                    {isTranslated[i] ? "Original" : "Translate"}
-                  </button>
-                </div>
-              )}
-
-              {/* 💬 말풍선 */}
-              <span
-                className={`${styles.messageContent} ${
-                  isMe ? styles.myMessage : styles.otherMessage
-                }`}
-              >
-                <span
-                  onClick={() => onReply(msg)}
-                  dangerouslySetInnerHTML={{
-                    __html: highlightTags(
-                      isTranslated[i] && translated[i]
-                        ? translated[i]
-                        : msg.content
-                    ),
-                  }}
-                />
-                <span className={styles.timestamp}>{formattedTime}</span>
+              <span className={styles.sender}>
+                {isMe ? "" : msg.senderNickname}
               </span>
 
-              {/* ✅ 상대 메시지 → 버튼 아래쪽 오른쪽에 */}
-              {!isMe && (
-                <div className={styles.otherTranslateWrap}>
-                  <button
-                    onClick={() => handleTranslateToggle(i, msg.content)}
-                    className={styles.translateButton}
-                  >
-                    {isTranslated[i] ? "Original" : "Translate"}
-                  </button>
+              {repliedTo && (
+                <div className={styles.replyBox}>
+                  <div>↪ {repliedTo.senderNickname}</div>
+                  <div>{repliedTo.content}</div>
                 </div>
               )}
-            </div>
-          </li>
-        );
-      })}
-      <div ref={bottomRef} />
-    </ul>
+
+              <div
+                className={`${styles.messageWrapper} ${
+                  isMe ? styles.myWrapper : styles.otherWrapper
+                }`}
+              >
+                {isMe && (
+                  <div className={styles.myTranslateWrap}>
+                    <button
+                      onClick={() => handleTranslateToggle(i, msg.content)}
+                      className={styles.translateButton}
+                    >
+                      {isTranslated[i] ? "Original" : "Translate"}
+                    </button>
+                  </div>
+                )}
+                <span
+                  className={`${styles.messageContent} ${
+                    isMe ? styles.myMessage : styles.otherMessage
+                  }`}
+                >
+                  <span
+                    onClick={() => handleReplyWithScroll(msg)}
+                    dangerouslySetInnerHTML={{
+                      __html: formatMultilineContent(
+                        isTranslated[i] && translated[i]
+                          ? translated[i]
+                          : msg.content
+                      ),
+                    }}
+                  />
+
+                  <span
+                    className={`${
+                      isMe ? styles.mytimestamp : styles.othertimestamp
+                    }`}
+                  >
+                    {formattedTime}
+                  </span>
+                </span>
+                {!isMe && (
+                  <div className={styles.otherTranslateWrap}>
+                    <button
+                      onClick={() => handleTranslateToggle(i, msg.content)}
+                      className={styles.translateButton}
+                    >
+                      {isTranslated[i] ? "Original" : "Translate"}
+                    </button>
+                  </div>
+                )}
+              </div>
+            </li>
+          );
+        })}
+        <div ref={bottomRef} />
+      </ul>
+
+      {searchResultIds.length > 0 && (
+        <div className={styles.searchNav}>
+          <button
+            className={styles.button}
+            onClick={() => onNavigateSearchResult?.("prev")}
+          >
+            {" "}
+            <CircleChevronLeft size={19} color="#669cf4ff" />
+          </button>
+          <span>
+            {currentIndex + 1} / {searchResultIds.length}
+          </span>
+          <button
+            className={styles.button}
+            onClick={() => onNavigateSearchResult?.("next")}
+          >
+            <CircleChevronRight size={19} color="#669cf4ff" />
+          </button>
+        </div>
+      )}
+    </>
   );
 }
 

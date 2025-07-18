@@ -25,15 +25,19 @@ export async function GET(req: NextRequest) {
     );
   }
 
-
   try {
     const supabase = await createClient();
-    console.log("supabase", supabase);
-    const useCase = new GetRecentChatsUseCase(new SbChatLogRepository(supabase));
+    const useCase = new GetRecentChatsUseCase(
+      new SbChatLogRepository(supabase)
+    );
     const messages = await useCase.execute({ chatRoomId, days: dayCount });
     return NextResponse.json(messages);
   } catch (error) {
     console.error("❌ Error in /api/chats/logs:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
+

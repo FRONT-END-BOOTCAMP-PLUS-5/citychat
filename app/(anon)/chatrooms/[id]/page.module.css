@@ -1,23 +1,38 @@
+.wrapper {
+  position: relative;
+  /* height: 100vh; */
+  overflow: hidden;
+  width: 1280px;
+  margin: 0 auto;
+  padding-top: 10vh;
+  /* padding-bottom: 10vh; */
+}
+.searchBox {
+  position: absolute;
+  z-index: 10;
+}
 .chatRoomContainer {
-  width: 50vw;
-  margin: 100px auto 0 auto; /* 상단 여백 + 중앙 정렬 */
+  position: relative;
+  width: 40vw;
+  margin: 0 auto;
   padding: 24px;
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  min-height: 80vh;
+  height: 70vh;
 }
 
 .chatSection {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  min-height: 0; 
-  max-height: 70vh; 
+  min-height: 0;
+  max-height: 70vh;
 }
 
 .chatInputWrapper {
   margin-top: auto;
 }
+

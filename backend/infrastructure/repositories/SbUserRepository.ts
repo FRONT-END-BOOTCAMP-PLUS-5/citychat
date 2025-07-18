@@ -88,12 +88,34 @@ export class SbUserRepository implements UserRepository {
         return this.mapToUser(data as UserTable);
     }
 
-    update(user: User): Promise<User> {
-        throw new Error("Method not implemented.");
+    async update(user: User): Promise<User> {
+        const userTableData = this.mapToUserTable(user);
+
+        const { data, error } = await this.supabase
+            .from("users")
+            .update(userTableData)
+            .eq("id", user.id)
+            .eq("deleted_flag", false)
+            .select()
+            .single();
+
+        if (error) throw new Error(error.message);
+        return this.mapToUser(data as UserTable);
     }
-    delete(id: number): Promise<User> {
-        throw new Error("Method not implemented.");
+
+    async delete(id: number): Promise<User> {
+        const { data, error } = await this.supabase
+            .from("users")
+            .update({ deleted_flag: true })
+            .eq("id", id)
+            .eq("deleted_flag", false)
+            .select()
+            .single();
+
+        if (error) throw new Error(error.message);
+        return this.mapToUser(data as UserTable);
     }
+    
     findAll(): Promise<User[]> {
         throw new Error("Method not implemented.");
     }

@@ -1,73 +1,92 @@
 import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { useParams } from "next/navigation";
+import { RotateCw, Search } from "lucide-react";
+import styles from "./ChatSearch.module.css";
 
 type Chat = {
   id: number;
   content: string;
   sent_at: string;
-  user_id: string;
 };
 
-export default function ChatSearch() {
+export default function ChatSearch({
+  onSearchStart,
+  onSearchResults,
+}: {
+  onSearchStart?: () => void;
+  onSearchResults: (ids: number[]) => void;
+}) {
+  const roomId = useParams()?.id;
   const [keyword, setKeyword] = useState("");
   const [results, setResults] = useState<Chat[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = async () => {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("chats")
-      .select("*")
-      .ilike("content", `%${keyword}%`);// 대소문자 구분 없는 검색
-
-    if (error) {
-      console.error("검색 오류:", error.message);
-      setResults([]);
-    } else {
-      setResults(data || []);
+    if (!keyword.trim()) {
+      alert("검색어를 입력해주세요.");
+      return;
     }
-    console.log("검색결과",results);
-    setLoading(false);
+    onSearchStart?.();
+    try {
+      const encodedKeyword = encodeURIComponent(keyword);
+      const res = await fetch(
+        `/api/chat/search?keyword=${encodedKeyword}&roomId=${roomId}`
+      );
+      const data = await res.json();
+      setHasSearched(true);
+      if (Array.isArray(data)) {
+        setResults(data);
+        onSearchResults(data.map((chat: Chat) => chat.id));
+        if (data.length === 0) {
+          setTimeout(() => {
+            handleReset();
+          }, 30 * 1000);
+        }
+      } else {
+        console.warn("검색 결과 형식이 배열이 아닙니다:", data);
+        setResults([]);
+      }
+    } catch (err) {
+      console.error("검색 오류:", err);
+      setResults([]);
+    }
+  };
+
+  //초기화 함수
+  const handleReset = () => {
+    setKeyword("");
+    setResults([]);
+    setHasSearched(false);
+    onSearchResults([]); // 하이라이트 초기화
   };
 
   return (
-    <div className="p-4 max-w-xl mx-auto">
-      <h2 className="text-xl font-bold mb-2">🔍 채팅 검색</h2>
-      <div className="flex gap-2 mb-4">
+    <div className={styles.container}>
+      <div className={styles.inputGroup}>
         <input
           type="text"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="검색어 입력"
-          className="border rounded p-2 w-full"
+          className={styles.input}
         />
-        <button
-          onClick={handleSearch}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          검색
+        <button className={styles.button} onClick={handleSearch}>
+          <Search size={20} color="#669cf4ff" />
+        </button>
+        <button className={styles.reset} onClick={handleReset}>
+          {" "}
+          <RotateCw size={13} color="#669cf4ff" />
         </button>
       </div>
 
-      {loading ? (
-        <p>검색 중...</p>
+      {!hasSearched ? (
+        <></>
       ) : results.length === 0 ? (
-        <p>검색 결과가 없습니다.</p>
+        <p className={styles.results}>검색 결과가 없습니다.</p>
       ) : (
-        <ul className="space-y-2">
-          {results.map((chat) => (
-            <li key={chat.id} className="border p-2 rounded shadow">
-              <p className="text-sm text-gray-600">{chat.sent_at}</p>
-              <p>{chat.content}</p>
-            </li>
-          ))}
-        </ul>
+        <p className={styles.results}>검색 결과 : {results.length}</p>
       )}
     </div>
   );
 }
+

@@ -1,8 +1,7 @@
 .chatContainer {
   flex-grow: 1;
   overflow-y: auto;
-  padding: 0 4px;
-  min-height: 0;
+  padding: 0 1%;
 }
 
 .messageItem {
@@ -15,6 +14,7 @@
 .sender {
   font-weight: 300;
   color: #939393;
+  font-size: 0.65rem;
 }
 
 .replyBox {
@@ -29,7 +29,7 @@
   display: flex;
   flex-direction: row;
   max-width: 100%;
-  margin: 12px 0;
+  margin-bottom: 12px;
 }
 
 .myWrapper {
@@ -43,7 +43,7 @@
 }
 
 .myTranslateWrap {
-  align-self: flex-start;
+  align-self: flex-end;
   margin-bottom: 4px;
 }
 
@@ -81,7 +81,7 @@
   border-radius: 18px 3px 18px 18px; /* 말풍선 모양 */
   max-width: 90%;
   margin: 6px 0;
-  font-size: 15px;
+  font-size: 0.85rem;
   line-height: 1.4;
 }
 
@@ -94,15 +94,21 @@
   border-radius: 3px 18px 18px 18px;
   max-width: 80%;
   margin: 6px 0;
-  font-size: 15px;
+  font-size: 0.85rem;
   line-height: 1.4;
 }
 
-.timestamp {
-  /* margin-left: 6px; */
-  font-size: 12px;
+.mytimestamp {
+  font-size: 10px;
+  color: #ffffff;
+  align-self: flex-end;
+  font-size: 0.6rem;
+}
+.othertimestamp {
+  font-size: 10px;
   color: #888;
   align-self: flex-end;
+  font-size: 0.6rem;
 }
 
 .translateButton {
@@ -112,5 +118,28 @@
   background: none;
   border: none;
   cursor: pointer;
+}
+
+.highlighted {
+  width: fit-content;
+  height: fit-content;
+  background-color: #fff9d1;
+  padding: 8px;
+}
+.searchNav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 8px;
+  border-radius: 4px;
+}
+.button {
+  background: none;
+  border: none;
+  padding: 0.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
