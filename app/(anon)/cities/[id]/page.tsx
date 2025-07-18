@@ -62,7 +62,7 @@ export default function DetailPage() {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await fetch(`/api/cities?cityId=${cityId}`);
+        const response = await fetch("/api/cities");
         if (!response.ok) {
           throw new Error(`HTTP 오류! 상태: ${response.status}`);
         }
@@ -76,7 +76,74 @@ export default function DetailPage() {
       }
     };
     fetchCities();
+
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+
+      if (isNaN(cityId)) {
+        setError("잘못된 도시 ID입니다. 올바른 숫자를 입력해주세요.");
+        setLoading(false);
+        return;
+      }
+
+      let fetchedCity: City | null = null;
+      let areaCdToFetch: string | undefined;
+
+      try {
+        // 1. Fetch all cities to find the current city's details (including areaCd if available)
+        const citiesResponse = await fetch("/api/cities");
+        if (!citiesResponse.ok) {
+          throw new Error(
+            `도시 데이터 불러오기 실패: HTTP 상태 ${citiesResponse.status}`
+          );
+        }
+        const allCities: City[] = await citiesResponse.json();
+        fetchedCity = allCities.find((city) => city.id === cityId) || null;
+
+        if (!fetchedCity) {
+          setError(`선택된 도시 (ID: ${cityId}) 정보를 찾을 수 없습니다.`);
+          setLoading(false);
+          return;
+        }
+        setCurrentCity(fetchedCity);
+
+        // Determine the areaCd: prioritize from fetched city, then fall back to client-side map
+        areaCdToFetch = fetchedCity.areaCd || AREA_CODES_CLIENT[cityId];
+
+        if (!areaCdToFetch) {
+          setError("해당 도시에 대한 지역 코드를 찾을 수 없습니다.");
+          setLoading(false);
+          return;
+        }
+
+        // 2. Fetch tour data using the determined areaCd
+        const tourResponse = await fetch(`/api/tour?areaCd=${areaCdToFetch}`);
+
+        if (!tourResponse.ok) {
+          throw new Error(
+            `관광지 데이터 불러오기 실패: HTTP 상태 ${tourResponse.status}`
+          );
+        }
+
+        const tourData: TourItem[] = await tourResponse.json();
+        setTourItems(tourData);
+      } catch (err: unknown) {
+        console.error("데이터 불러오는 중 오류 발생:", err);
+        setError(
+          `데이터를 불러오는 데 실패했습니다: ${
+            err instanceof Error ? err.message : String(err)
+          }`
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [cityId]);
 
   // URL의 id가 유효한 숫자가 아닐 경우 (예: /cities/abc)
   if (isNaN(cityId)) {
