@@ -1,11 +1,16 @@
 "use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./header.module.css";
 import Avatar from "./Avatar";
+import { useEffect } from "react";
 import { useUserStore } from "@/app/stores/useUserStore";
 import { useSignout } from "@/app/hooks/useSignout";
+import { useCityStore } from "../stores/useCitystore";
+import { GetCityListUseCase } from "@/backend/application/cities/usecases/GetCityListUseCase";
+import { SbCityRepository } from "@/backend/infrastructure/repositories/SbCityRepository";
 
 // ─────── 페이지 목록 ───────
 const pages = [
@@ -31,6 +36,18 @@ function Header() {
   // Zustand 스토어에서 상태와 액션
   const user = useUserStore((state) => state.user); // 유저 정보 데이터
   const { mutate: signout } = useSignout();
+  const addCities = useCityStore((state) => state.addCities); //도시 정보 데이터
+
+  // Supabase 정보 스토어 저장
+  useEffect(() => {
+    const fetchCities = async () => {
+      const useCase = new GetCityListUseCase(new SbCityRepository());
+      const cities = await useCase.execute();
+      addCities(cities);
+    };
+
+    fetchCities();
+  }, [addCities]);
 
   // 로그인 여부 확인
   const isLoggedIn = !!user;
@@ -61,7 +78,7 @@ function Header() {
   const toggleMypageDropdown = () => {
     setIsMypageDropdownOpen((prev) => !prev);
   };
-  
+
   // 토글로 드롭다운을 열고 닫는 기능(cities)
   const toggleCitiesDropdown = () => {
     setIsCitiesDropdownOpen((prev) => !prev);
@@ -72,8 +89,8 @@ function Header() {
     const handleClickOutside = (event: MouseEvent) => {
       const mypageButton = document.getElementById("mypage-button");
       const mypageDropdown = document.getElementById("mypage-dropdown");
-      const citiesButton = document.getElementById("cities-button"); 
-      const citiesDropdown = document.getElementById("cities-dropdown"); 
+      const citiesButton = document.getElementById("cities-button");
+      const citiesDropdown = document.getElementById("cities-dropdown");
 
       // 클릭된 버튼과 드롭다운 요소 포함 여부 확인
       if (
@@ -340,3 +357,4 @@ function Header() {
 }
 
 export default Header;
+

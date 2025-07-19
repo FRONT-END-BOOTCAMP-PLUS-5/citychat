@@ -10,6 +10,9 @@ export default function Home() {
   const mainScrollContainerRef = useRef<HTMLDivElement>(null);
   const isScrolling = useRef(false);
 
+
+ 
+
   useEffect(() => {
     const container = mainScrollContainerRef.current;
     if (!container) return;
@@ -47,8 +50,9 @@ export default function Home() {
       <Section
         bgImageUrl="https://miro.medium.com/v2/resize:fit:2000/1*nf5RvOUHclJqEYIljcNmEw.jpeg"
         style={{
-          height: "100vh", scrollSnapAlign: "start",
-          position: "relative"
+          height: "100vh",
+          scrollSnapAlign: "start",
+          position: "relative",
         }}
       >
         <Slider />
@@ -56,10 +60,11 @@ export default function Home() {
 
       <Section
         bgImageUrl="https://uofhorang.com/wp-content/uploads/2024/08/Population-by-Age-Group-in-South-Korea-for-2023.jpg"
-        style={{ height: "100vh", scrollSnapAlign: "start"}}
+        style={{ height: "100vh", scrollSnapAlign: "start" }}
       >
         <SubSlider />
       </Section>
     </div>
   );
 }
+
