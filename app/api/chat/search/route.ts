@@ -1,13 +1,15 @@
+import { createClient } from "@/utils/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 import { SbChatRepository } from "@/backend/infrastructure/repositories/SbChatRepository";
 import { SbTagRepository } from "@/backend/infrastructure/repositories/SbTagRepository";
 import { SearchByChatUseCase } from "@/backend/application/chats/usecases/SearchByChatUseCase";
 
 export async function GET(req: NextRequest) {
+  const supabase = await createClient();
+
   const { searchParams } = new URL(req.url);
   const keyword = searchParams.get("keyword");
   const roomId = searchParams.get("roomId");
-  console.log("keyword", keyword);
 
   if (!keyword || !roomId) {
     return NextResponse.json(
@@ -17,7 +19,7 @@ export async function GET(req: NextRequest) {
   }
 
   const useCase = new SearchByChatUseCase(
-    new SbChatRepository(),
+    new SbChatRepository(supabase),
     new SbTagRepository()
   );
 

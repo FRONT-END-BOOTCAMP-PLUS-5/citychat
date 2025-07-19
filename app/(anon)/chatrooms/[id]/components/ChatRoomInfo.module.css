@@ -1,0 +1,21 @@
+.city {
+  width: 100%;
+  padding: 0.5vw 0;
+  background-color: #ffffff;
+  border-bottom: 0.4px solid #dedfe1;
+  border-radius: 16px 16px 0 0;
+  text-align: center;
+}
+
+.cityName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2b2b2b;
+}
+
+.people {
+  font-size: 0.8rem;
+  color: #8b8c8e;
+  margin-top: 2px;
+}
+

@@ -4,24 +4,27 @@
   overflow: hidden;
   width: 1280px;
   margin: 0 auto;
-  padding-top: 10vh;
+  padding-top: 15vh;
   /* padding-bottom: 10vh; */
 }
 .searchBox {
   position: absolute;
+  margin-top: 1vh;
+  margin-left: 24px;
   z-index: 10;
 }
 .chatRoomContainer {
-  position: relative;
   width: 40vw;
-  margin: 0 auto;
-  padding: 24px;
+  margin: 1vh auto;
+  padding: 12px 24px 24px 24px;
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  align-items: center;
   height: 70vh;
+  transform: translateX(3vw);
 }
 
 .chatSection {
@@ -30,9 +33,5 @@
   flex-grow: 1;
   min-height: 0;
   max-height: 70vh;
-}
-
-.chatInputWrapper {
-  margin-top: auto;
 }
 

@@ -1,40 +1,42 @@
 .inputWrapper {
+  gap: 0.5rem;
+  width: 38vw;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  width: 40vw;
-  margin: 2vw auto 2vw;
 }
 
 .inputArea {
-  position: relative;
   display: flex;
+  position: relative;
   align-items: center;
 }
 
 .textarea {
   width: 100%;
-  padding: 20px 40px 12px 20px;
-  font-size: 0.85rem;
-  border-radius: 24px;
-  box-shadow: rgba(0, 0, 0, 0.1) 4px 4px 16px;
-  outline: none;
-  background-color: white;
   border: none;
-  color: rgb(97, 95, 95);
   resize: none;
+  outline: none;
   overflow: hidden;
   min-height: 56px;
   max-height: 200px;
+  font-size: 0.85rem;
+  border-radius: 24px;
+  color: rgb(97, 95, 95);
+  background-color: white;
+  padding: 20px 40px 12px 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 4px 4px 16px;
 }
 
 .sendButton {
-  position: absolute;
-  right: 12px;
-  background: none;
+  right: 1vw;
   border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
+  display: flex;
   color: gray;
+  padding: 0.2rem;
+  cursor: pointer;
+  background: none;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
 }
 

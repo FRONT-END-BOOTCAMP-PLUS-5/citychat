@@ -3,10 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { ChatLogProps, Message } from "../types";
 import { highlightTags } from "./ParseTags";
-import { format } from "date-fns";
 import styles from "./ChatLog.module.css";
-import { ko } from "date-fns/locale";
-import { CircleChevronLeft, CircleChevronRight } from "lucide-react";
+import {
+  CircleChevronLeft,
+  CircleChevronRight,
+  CornerDownRight,
+} from "lucide-react";
 
 export default function ChatLog({
   messages: incomingMessages,
@@ -28,10 +30,18 @@ export default function ChatLog({
   const [isTranslated, setIsTranslated] = useState<Record<number, boolean>>({});
   const [scrollByReply, setScrollByReply] = useState(false);
 
-  // ✅ 새로운 메시지 감지하여 추가
+  // 페이지 렌더링 시 채팅방 맨 아래로 강제 스크롤, 애니메이션 없이
+  useEffect(() => {
+    if (searchResultIds.length === 0 && renderedMessages.length > 0) {
+      bottomRef.current?.scrollIntoView({ behavior: "auto" });
+    }
+  }, [renderedMessages]);
+
+  // 새로운 메시지 감지하여 추가
   useEffect(() => {
     if (incomingMessages.length > renderedMessages.length) {
       const newMessages = incomingMessages.slice(renderedMessages.length);
+      console.log(newMessages);
       setRenderedMessages((prev) => [...prev, ...newMessages]);
     }
   }, [incomingMessages]);
@@ -40,7 +50,7 @@ export default function ChatLog({
     setRenderedMessages(incomingMessages);
   }, [searchResultIds, incomingMessages]);
 
-  // ✅ 검색 결과 초기화 시 최신 채팅으로 복구
+  // 검색 결과 초기화 시 최신 채팅으로 복구
   useEffect(() => {
     if (searchResultIds.length === 0) {
       setRenderedMessages(incomingMessages);
@@ -50,7 +60,7 @@ export default function ChatLog({
     }
   }, [searchResultIds, incomingMessages]);
 
-  // ✅ 새 메시지 추가 시 맨 아래로 스크롤
+  // 새 메시지 추가 시 맨 아래로 스크롤
   useEffect(() => {
     if (scrollByReply) {
       setScrollByReply(false);
@@ -59,6 +69,7 @@ export default function ChatLog({
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [renderedMessages]);
 
+  //번역과 원본 토글 기능
   const handleTranslateToggle = async (index: number, content: string) => {
     if (isTranslated[index]) {
       setIsTranslated((prev) => ({ ...prev, [index]: false }));
@@ -76,27 +87,27 @@ export default function ChatLog({
       setIsTranslated((prev) => ({ ...prev, [index]: true }));
     }
   };
-  // ✅ 검색 결과로 스크롤 이동
+
+  // 검색 결과로 스크롤 이동
   useEffect(() => {
     const targetId = Number(searchResultIds[currentIndex]);
-
     setTimeout(() => {
       const targetElement = messageRefs.current.get(targetId);
       if (targetElement) {
         targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
       } else {
-        console.warn("❌ ref 없음:", targetId);
+        // console.warn("❌ ref 없음:", targetId);
       }
-    }, 0); // 0ms 딜레이로 다음 이벤트 루프에서 실행
+    }, 1000);
   }, [currentIndex, searchResultIds]);
 
-  // ✅ 줄바꿈을 태그로 넣기
+  // 줄바꿈을 줄바꿈 태그로 바꾸기
   function formatMultilineContent(content: string) {
     const html = content.replace(/\n/g, "<br />");
     return highlightTags(html);
   }
 
-  // ✅ 답장 시 해당 메세지로 스크롤 이동
+  // 답장 시 해당 메세지로 스크롤 이동
   const handleReplyWithScroll = (msg: Message) => {
     const element = messageRefs.current.get(msg.id!);
     if (element) {
@@ -113,12 +124,13 @@ export default function ChatLog({
           const isMe = msg.senderId === currentUserId;
           const isHighlighted = highlightSet.has(msg.id!);
           const formattedTime = msg.sentAt
-            ? format(new Date(msg.sentAt), "a h:mm", { locale: ko })
+            ? new Date(msg.sentAt).toLocaleTimeString("ko-KR", {
+                timeZone: "Asia/Seoul",
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true,
+              })
             : "";
-          const repliedTo = msg.replyToId
-            ? renderedMessages.find((m) => m.id === msg.replyToId)
-            : null;
-
           return (
             <li
               key={msg.id}
@@ -135,13 +147,35 @@ export default function ChatLog({
               <span className={styles.sender}>
                 {isMe ? "" : msg.senderNickname}
               </span>
+              {msg.parentChatId != null &&
+                (() => {
+                  const repliedToMsg = renderedMessages.find(
+                    (m) => m.id === msg.parentChatId
+                  );
+                  if (!repliedToMsg) return null;
 
-              {repliedTo && (
-                <div className={styles.replyBox}>
-                  <div>↪ {repliedTo.senderNickname}</div>
-                  <div>{repliedTo.content}</div>
-                </div>
-              )}
+                  return (
+                    <div
+                      className={`${styles.replyBox} ${
+                        isMe ? styles.replyRight : styles.replyLeft
+                      }`}
+                    >
+                      <div className={styles.replyContent}>
+                        <CornerDownRight
+                          size={10}
+                          color="#669cf4ff"
+                          className={styles.replyArrow}
+                        />
+                        <div className={styles.reply}>
+                          <div className={styles.replyTo}>
+                            {repliedToMsg.senderNickname}
+                          </div>
+                          <div>{repliedToMsg.content}</div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
 
               <div
                 className={`${styles.messageWrapper} ${

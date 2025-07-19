@@ -4,6 +4,7 @@ import { useState, useRef, KeyboardEvent } from "react";
 import { parseTags } from "./ParseTags";
 import { ChatReply } from "./ChatReply";
 import { ChatInputProps } from "../types";
+import { SendHorizontal } from "lucide-react";
 import styles from "./ChatInput.module.css";
 
 export default function ChatInput({
@@ -48,9 +49,10 @@ export default function ChatInput({
           className={styles.textarea}
         />
         <button onClick={handleSend} className={styles.sendButton}>
-          ➤
+          <SendHorizontal size={15} />
         </button>
       </div>
     </div>
   );
 }
+
