@@ -11,7 +11,7 @@ type CityStore = {
   cities: City[];
   getCityById: (id: number) => City | undefined;
   addCity: (city: City) => void;
-  addCities: (cities: City[]) => void; // ✅ 추가
+  addCities: (cities: City[]) => void;
   clearCities: () => void;
 };
 
