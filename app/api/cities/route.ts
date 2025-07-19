@@ -23,7 +23,10 @@ export async function GET() {
   // 에러 처리
   if (error) {
     console.error("도시 정보를 가져오는 중 오류 발생:", error);
-    return NextResponse.json({ error: "도시 정보를 가져오지 못했습니다." }, { status: 500 });
+    return NextResponse.json(
+      { error: "도시 정보를 가져오지 못했습니다." },
+      { status: 500 }
+    );
   }
 
   const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -31,7 +34,10 @@ export async function GET() {
   if (!SUPABASE_URL) {
     console.error("환경 변수 NEXT_PUBLIC_SUPABASE_URL이 설정되지 않았습니다.");
     return NextResponse.json(
-      { error: "서버 설정 오류: Supabase URL이 정의되지 않았습니다. .env.local 파일을 확인해주세요." },
+      {
+        error:
+          "서버 설정 오류: Supabase URL이 정의되지 않았습니다. .env.local 파일을 확인해주세요.",
+      },
       { status: 500 }
     );
   }
@@ -44,30 +50,33 @@ export async function GET() {
     return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
   };
 
-  const citiesWithImageUrls: FormattedCity[] = data.map((city: {
+  const citiesWithImageUrls: FormattedCity[] = data.map(
+    (city: {
       id: string;
       name: string;
       description: string;
       images: ImageRecord[];
-  }) => {
-    let imageUrl = "";
-    if (city.images) {
-      const fullPath = city.images.storage_path;
-      const bucketName = "citychat-img";
-      let relativePath = fullPath;
-      if (fullPath.startsWith(bucketName)) {
-        relativePath = fullPath.substring(bucketName.length + 1);
+    }) => {
+      let imageUrl = "";
+      if (city.images) {
+        const fullPath = city.images.storage_path;
+        const bucketName = "citychat-img";
+        let relativePath = fullPath;
+        if (fullPath.startsWith(bucketName)) {
+          relativePath = fullPath.substring(bucketName.length + 1);
+        }
+        imageUrl = getPublicImageUrl(bucketName, relativePath);
       }
-      imageUrl = getPublicImageUrl(bucketName, relativePath);
-    }
 
-    return {
-      id: city.id,
-      name: city.name,
-      description: city.description,
-      image: imageUrl,
-    };
-  });
+      return {
+        id: city.id,
+        name: city.name,
+        description: city.description,
+        image: imageUrl,
+      };
+    }
+  );
 
   return NextResponse.json(citiesWithImageUrls);
 }
+
