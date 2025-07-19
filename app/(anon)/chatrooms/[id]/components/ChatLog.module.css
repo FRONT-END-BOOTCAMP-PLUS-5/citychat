@@ -18,13 +18,37 @@
 }
 
 .replyBox {
-  margin-bottom: 4px;
-  padding: 4px 8px;
-  background-color: #e0e0e0;
-  border-left: 4px solid #999;
-  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  padding: 6px 10px;
+  max-width: 70%;
+  font-size: 0.7rem;
   color: #333;
 }
+.replyContent {
+  display: flex;
+}
+.replyArrow {
+  margin: 0 3px 3px 1px;
+}
+.reply {
+  display: flex;
+  flex-direction: column;
+}
+
+.replyRight {
+  margin-left: auto;
+  border-bottom: 2px solid #007aff;
+}
+
+.replyLeft {
+  margin-right: auto;
+  border-bottom: 2px solid #d1cdcdb7;
+}
+.replyTo {
+  font-size: 0.6rem;
+}
+
 .messageWrapper {
   display: flex;
   flex-direction: row;
