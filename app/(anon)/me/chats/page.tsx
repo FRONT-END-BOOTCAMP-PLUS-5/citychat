@@ -7,7 +7,7 @@ import React, { useEffect, useState, useRef } from "react";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import EmptyChatList from "./components/EmptyChatList";
 import { useRouter } from "next/navigation";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { useCityStore } from "@/app/stores/useCitystore";
 
 const {
   ["page-container"]: pageContainer,
@@ -15,7 +15,6 @@ const {
   ["filter-container"]: filterContainer,
   ["filter-toggle-button"]: filterToggleButton,
   ["filter-text"]: filterText,
-  ["filter-icon"]: filterIcon,
   ["filter-dropdown"]: filterDropdown,
   ["filter-option"]: filterOption,
   ["menu-list"]: menuList,
@@ -25,16 +24,8 @@ const {
   ["filter-option-selected"]: filterOptionSelected,
 } = styles;
 
-const regions = [
-  { id: "all", name: "전체" },
-  { id: "1", name: "서울", chatroom_id: 1 },
-  { id: "2", name: "부산", chatroom_id: 2 },
-  { id: "3", name: "대전", chatroom_id: 3 },
-  { id: "4", name: "강릉", chatroom_id: 4 },
-  { id: "5", name: "제주", chatroom_id: 5 },
-];
-
 export default function MyChatPage() {
+  const { cities } = useCityStore();
   const menuListRef = useRef<HTMLDivElement>(null);
   const { ref: triggerRef, inView } = useInView({
     threshold: 0,
@@ -44,6 +35,15 @@ export default function MyChatPage() {
   const router = useRouter();
   const [selectedRegion, setSelectedRegion] = useState<string>("all");
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+  
+  const regions = [
+    { id: "all", name: "전체" },
+    ...cities.map(city => ({ 
+      id: city.id.toString(), 
+      name: city.name, 
+      chatroom_id: city.id // cities의 id가 chatRoomId와 동일
+    }))
+  ];
   
   const getChatRoomId = () => {
     if (selectedRegion === "all") return undefined;
@@ -103,7 +103,6 @@ export default function MyChatPage() {
               className={filterToggleButton}
               onClick={() => setIsFilterOpen(!isFilterOpen)}>
               <span className={filterText}>{getSelectedRegionName()}</span>
-              {/* <span className={filterIcon}>{isFilterOpen ? <ChevronUp /> : <ChevronDown />}</span> */}
             </button>
             {isFilterOpen && (
               <div className={filterDropdown}>
