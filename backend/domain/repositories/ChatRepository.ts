@@ -3,5 +3,5 @@ import { Chat } from "../entities/Chat";
 
 export interface ChatRepository {
   searchByContent(keyword: string, chatRoomId: number): Promise<Chat[]>;
-  getChatListByUserId(userId: number, offset?: number, limit?: number): Promise<ApiResponse<Chat>>;
+  getChatListByUserId(userId: number, offset?: number, limit?: number, chatRoomId?: number): Promise<ApiResponse<Chat>>;
 }

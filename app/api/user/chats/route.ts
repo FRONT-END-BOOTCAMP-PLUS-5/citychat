@@ -36,7 +36,8 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const requestDto: GetChatListRequestDto = {
       offset: searchParams.get("offset") ? parseInt(searchParams.get("offset")!, 10) : undefined,
-      limit: searchParams.get("limit") ? parseInt(searchParams.get("limit")!, 10) : undefined
+      limit: searchParams.get("limit") ? parseInt(searchParams.get("limit")!, 10) : undefined,
+      chatRoomId: searchParams.get("chatRoomId") ? parseInt(searchParams.get("chatRoomId")!, 10) : undefined
     };
 
     const result = await getChatListUseCase.execute(userId, requestDto);

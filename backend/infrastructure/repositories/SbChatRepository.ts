@@ -37,25 +37,38 @@ export class SbChatRepository implements ChatRepository {
   async getChatListByUserId(
     userId: number,
     offset: number = 0,
-    limit: number = 10
+    limit: number = 10,
+    chatRoomId?: number
   ): Promise<ApiResponse<Chat>> {
 
     try {
-      // 전체 개수 조회
-      const { count, error: countError } = await this.supabase
+      // 기본 카운트 쿼리 조건
+      const baseQuery = this.supabase
         .from("chats")
         .select("*", { count: "exact", head: true })
         .eq("user_id", userId)
         .eq("deleted_flag", false);
 
+      // chatRoomId가 있으면 추가 필터링
+      const countQuery = chatRoomId ? baseQuery.eq("chat_room_id", chatRoomId) : baseQuery;
+
+      // 전체 개수 조회
+      const { count, error: countError } = await countQuery;
+
       if (countError) throw new Error(countError.message);
 
-      // 페이지네이션된 데이터 조회
-      const { data, error } = await this.supabase
+      // 기본 데이터 쿼리 조건
+      const dataQuery = this.supabase
         .from("chats")
         .select("*")
         .eq("user_id", userId)
-        .eq("deleted_flag", false)
+        .eq("deleted_flag", false);
+
+      // chatRoomId가 있으면 추가 필터링
+      const filteredDataQuery = chatRoomId ? dataQuery.eq("chat_room_id", chatRoomId) : dataQuery;
+
+      // 페이지네이션된 데이터 조회
+      const { data, error } = await filteredDataQuery
         .order("sent_at", { ascending: false })
         .range(offset, offset + limit - 1);
 

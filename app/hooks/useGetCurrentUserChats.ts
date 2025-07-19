@@ -7,9 +7,19 @@ import { ApiResponse } from "../types/ApiResponse";
 
 const getCurrentUserChatList = async (
   offset: number = 0,
-  limit: number = 10
+  limit: number = 10,
+  chatRoomId?: number
 ): Promise<ApiResponse<GetChatListResponseDto>> => {
-  const response = await fetch(`/api/user/chats?offset=${offset}&limit=${limit}`);
+  const params = new URLSearchParams({
+    offset: offset.toString(),
+    limit: limit.toString(),
+  });
+  
+  if (chatRoomId) {
+    params.append('chatRoomId', chatRoomId.toString());
+  }
+  
+  const response = await fetch(`/api/user/chats?${params}`);
 
   if (!response.ok) {
     if (response.status === 401) {
@@ -23,11 +33,12 @@ const getCurrentUserChatList = async (
 };
 
 export const useGetCurrentUserChats = (
-  limit: number = 10
+  limit: number = 10,
+  chatRoomId?: number
 ): UseInfiniteQueryResult<ApiResponse<GetChatListResponseDto>, Error> => {
   return useInfiniteQuery({
-    queryKey: ["current-user-chats", { limit }],
-    queryFn: ({ pageParam = 0 }) => getCurrentUserChatList(pageParam, limit),
+    queryKey: ["current-user-chats", { limit, chatRoomId }],
+    queryFn: ({ pageParam = 0 }) => getCurrentUserChatList(pageParam, limit, chatRoomId),
     getNextPageParam: (lastPage, allPages) => {
       // allPages : 이전 페이지
       if (!lastPage.hasMore) return undefined;

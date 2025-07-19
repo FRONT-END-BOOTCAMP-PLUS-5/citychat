@@ -11,7 +11,7 @@ export class GetCurrentUserChatListUsecase {
       throw new Error("Invalid user ID");
     }
 
-    const result = await this.chatRepository.getChatListByUserId(userId, request.offset, request.limit);
+    const result = await this.chatRepository.getChatListByUserId(userId, request.offset, request.limit, request.chatRoomId);
 
     // Chat 엔티티를 ResponseDto로 변환
     const responseData: ApiResponse<GetChatListResponseDto> = {
