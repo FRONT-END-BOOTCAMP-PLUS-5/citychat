@@ -11,6 +11,7 @@ type CityStore = {
   cities: City[];
   getCityById: (id: number) => City | undefined;
   addCity: (city: City) => void;
+  addCities: (cities: City[]) => void; // ✅ 추가
   clearCities: () => void;
 };
 
@@ -24,6 +25,14 @@ export const useCityStore = create<CityStore>()(
           set((state) => {
             const exists = state.cities.some((c) => c.id === city.id);
             return exists ? state : { cities: [...state.cities, city] };
+          }),
+        addCities: (newCities) =>
+          set((state) => {
+            const existingIds = new Set(state.cities.map((c) => c.id));
+            const filtered = newCities.filter(
+              (city) => !existingIds.has(city.id)
+            );
+            return { cities: [...state.cities, ...filtered] };
           }),
         clearCities: () => set({ cities: [] }),
       }),

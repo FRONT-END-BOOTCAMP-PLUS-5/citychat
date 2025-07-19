@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { ChatLogProps, Message } from "../types";
 import { highlightTags } from "./ParseTags";
 import { format } from "date-fns";
+import styles from "./ChatLog.module.css";
 import { ko } from "date-fns/locale";
 import { CircleChevronLeft, CircleChevronRight } from "lucide-react";
-import styles from "./ChatLog.module.css";
 
 export default function ChatLog({
   messages: incomingMessages,

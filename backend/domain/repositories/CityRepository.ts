@@ -1,6 +1,7 @@
+// backend/domain/repositories/CityRepository.ts
 import { City } from "../entities/City";
 
 export interface CityRepository {
-  getCityById(cityId: number): Promise<City | null>;
+  getCityById(id: number): Promise<City | null>;
+  getAllCities(): Promise<City[]>; 
 }
-

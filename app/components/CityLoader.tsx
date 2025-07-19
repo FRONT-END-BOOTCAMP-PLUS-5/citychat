@@ -3,29 +3,19 @@
 import { useEffect } from "react";
 import { useCityStore } from "../stores/useCitystore";
 import { SbCityRepository } from "@/backend/infrastructure/repositories/SbCityRepository";
-import { GetCityByIdUseCase } from "@/backend/application/cities/usecases/GetCityByNameUseCase";
+import { GetCityListUseCase } from "@/backend/application/cities/usecases/GetCityListUseCase";
 
-export default function CityLoader({ cityId }: { cityId: number }) {
-  const addCity = useCityStore((state) => state.addCity);
-  const getCityById = useCityStore((state) => state.getCityById);
+export default function CityLoader() {
+  const addCities = useCityStore((state) => state.addCities);
 
   useEffect(() => {
-    const loadCity = async () => {
-      const existing = getCityById(cityId);
-      if (!existing) {
-        const useCase = new GetCityByIdUseCase(new SbCityRepository());
-        const city = await useCase.execute(cityId);
-        if (city) {
-          addCity({
-            id: city.id,
-            name: city.name,
-            description: city.description,
-          });
-        }
-      }
+    const loadCities = async () => {
+      const useCase = new GetCityListUseCase(new SbCityRepository());
+      const cities = await useCase.execute();
+      addCities(cities);
     };
-    loadCity();
-  }, [cityId, addCity, getCityById]);
+    loadCities();
+  }, [addCities]);
 
   return null;
 }

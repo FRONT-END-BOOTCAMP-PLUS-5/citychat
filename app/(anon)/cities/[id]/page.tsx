@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import SharedPageLayout from "@/app/SharedPageLayout";
 import { useParams } from "next/navigation";
-import CityLoader from "@/app/components/CityLoader";
+import { useEffect, useState } from "react";
 import { useCityStore } from "@/app/stores/useCitystore";
+import CityLoader from "@/app/components/CityLoader";
+import SharedPageLayout from "@/app/SharedPageLayout";
 
 const Tags = ["#날씨", "#음식", "#패션", "#꿀팁", "#문화", "#교통"];
 
@@ -28,17 +29,42 @@ const activityCards = [
 ];
 
 export default function DetailPage() {
+  const [hasMounted, setHasMounted] = useState(false);
   const params = useParams();
   const cityId = parseInt(params.id as string, 10);
+  //cities 정보 중 해당 도시 데이터 접근
   const getCityById = useCityStore((state) => state.getCityById);
   const currentCity = getCityById(cityId);
-  console.log(cityId);
+  //tour/route.ts 공공데이터 저장
+  // const [tourList, setTourList] = useState<unknown[] | null>(null);
 
+  // SSR hydration mismatch 방지
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const fetchTourData = async () => {
+      try {
+        const res = await fetch(`/api/tour?id=${cityId}`);
+        const data = await res.json();
+        // setTourList(data); // 배열
+        console.log("공공데이터", data);
+      } catch (err) {
+        console.error("관광 정보 로딩 실패:", err);
+      }
+    };
+    fetchTourData();
+  }, [cityId]);
+
+  if (!hasMounted) return null;
+
+  const shouldLoadCity = !currentCity;
   return (
-    <div>
-      {!currentCity && <CityLoader cityId={cityId} />}
+    <>
+      {shouldLoadCity && <CityLoader />}
       {currentCity ? (
-        <SharedPageLayout title={currentCity?.name || "로딩 중..."}>
+        <SharedPageLayout title={currentCity.name}>
           <section>
             <header>
               <p
@@ -48,7 +74,7 @@ export default function DetailPage() {
                   fontSize: "20px",
                 }}
               >
-                {currentCity?.description || "도시 설명을 불러오는 중..."}
+                {currentCity.description}
               </p>
               <button style={{ float: "right", display: "inline-block" }}>
                 채팅 시작
@@ -127,9 +153,11 @@ export default function DetailPage() {
           </section>
         </SharedPageLayout>
       ) : (
-        <div style={{ padding: "20px", textAlign: "center" }}>로딩 중...</div>
+        <div style={{ padding: "20px", textAlign: "center" }}>
+          도시 정보를 불러오는 중입니다...
+        </div>
       )}
-    </div>
+    </>
   );
 }
 

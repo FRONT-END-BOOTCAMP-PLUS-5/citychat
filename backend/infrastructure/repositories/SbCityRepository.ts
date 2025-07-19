@@ -30,5 +30,24 @@ export class SbCityRepository implements CityRepository {
 
     return city;
   }
+
+  async getAllCities(): Promise<City[]> {
+    const { data, error } = await supabaseClient
+      .from("cities")
+      .select("id, name, description");
+
+    if (error || !data) {
+      console.error("❌ 전체 도시 불러오기 실패:", error);
+      return [];
+    }
+
+    const cityDtos: CityDTO[] = data;
+
+    return cityDtos.map((dto) => ({
+      id: dto.id,
+      name: dto.name,
+      description: dto.description,
+    }));
+  }
 }
 
