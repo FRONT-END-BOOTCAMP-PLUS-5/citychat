@@ -150,7 +150,7 @@ const SubSlider: React.FC = () => {
             <div className={styles.cardTextContainer}>
               <h1>{currentCity.name}에 오신 것을 환영합니다!</h1>
               <p>{currentCity.description}</p>
-              <Link href="" className={styles.exploreButton}>
+              <Link href={`/cities/${currentCity.id}`} className={styles.exploreButton}>
                 Explore
               </Link>
             </div>

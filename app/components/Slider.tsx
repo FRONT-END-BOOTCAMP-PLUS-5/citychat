@@ -123,7 +123,7 @@ export default function CenterModeCarousel() {
                     >
                       <div className={styles.cityLink}>
                         <h3 className={styles.cityName}>{city.name}</h3>
-                        <Link href="#" className={styles.linkArrow}>➜</Link>
+                        <Link href={`/cities/${city.id}`} className={styles.linkArrow}>➜</Link>
                       </div>
                       <Image src={city.image} alt={city.name} className={styles.cityImage} width={350} height={380} />
                     </div>
