@@ -1,6 +1,5 @@
 .container {
-  width: 20rem;
-  margin-left: 24px;
+  width: 16rem;
 }
 
 .title {
@@ -12,7 +11,7 @@
 .inputGroup {
   display: flex;
   align-items: center;
-  width: 80%;
+  width: 100%;
   background-color: white;
   border-radius: 12px;
   padding: 0.5rem 0.75rem;
