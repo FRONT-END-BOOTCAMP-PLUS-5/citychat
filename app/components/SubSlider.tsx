@@ -13,7 +13,7 @@ interface City {
 }
 
 const ITEM_HEIGHT = 100;
-const ITEM_GAP = 20;
+const ITEM_GAP = 10;
 const SLIDE_HEIGHT = ITEM_HEIGHT + ITEM_GAP;
 
 const SubSlider: React.FC = () => {
@@ -50,19 +50,39 @@ const SubSlider: React.FC = () => {
     let wheelTimeout: NodeJS.Timeout | null = null;
 
     const handleWheel = (e: WheelEvent) => {
+      // 기본 스크롤 동작 방지
       e.preventDefault();
 
       if (wheelTimeout) return;
 
-      if (e.deltaY > 0 && activeIndex < cities.length - 1) {
-        setActiveIndex((prev) => prev + 1);
-      } else if (e.deltaY < 0 && activeIndex > 0) {
-        setActiveIndex((prev) => prev - 1);
+      let newIndex = activeIndex;
+      let handledBySubSlider = false; // SubSlider가 이 이벤트를 처리했는지 여부
+
+      if (e.deltaY > 0) {
+        // 아래로 스크롤
+        if (activeIndex < cities.length - 1) {
+          newIndex = activeIndex + 1;
+          handledBySubSlider = true;
+        }
+      } else {
+        // 위로 스크롤
+        if (activeIndex > 0) {
+          newIndex = activeIndex - 1;
+          handledBySubSlider = true;
+        }
+      }
+
+      if (handledBySubSlider) {
+        setActiveIndex(newIndex);
+        e.stopPropagation(); // SubSlider가 스크롤을 처리했으므로 이벤트 전파 중지
+      } else {
+        // SubSlider가 더 이상 스크롤할 수 없는 경우 (맨 위 또는 맨 아래)
+        // 이벤트를 상위 (Home 컴포넌트)로 전파하도록 허용
       }
 
       wheelTimeout = setTimeout(() => {
         wheelTimeout = null;
-      }, 300);
+      }, 300); // 디바운스
     };
 
     container.addEventListener("wheel", handleWheel, { passive: false });
