@@ -2,12 +2,13 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import { useCityStore } from "@/app/stores/useCitystore";
+import TopTagList from "@/app/components/TopTagList";
 import CityLoader from "@/app/components/CityLoader";
 import SharedPageLayout from "@/app/SharedPageLayout";
+import { useCityStore } from "@/app/stores/useCitystore";
+import TourCard from "@/app/(anon)/cities/[id]/components/TourCard";
 import ChatButton from "@/app/(anon)/cities/[id]/components/ChatButton";
 import CategoryFilter from "@/app/(anon)/cities/[id]/components/CategoryFilter";
-import TourCard from "@/app/(anon)/cities/[id]/components/TourCard";
 
 interface TourItem {
   rlteCtgrySclsNm: string;
@@ -76,7 +77,6 @@ export default function DetailPage() {
       {currentCity ? (
         <SharedPageLayout title={currentCity.name}>
           <ChatButton cityId={cityId} />
-
           <section>
             <header>
               <p
@@ -89,9 +89,9 @@ export default function DetailPage() {
                 {currentCity.description}
               </p>
             </header>
-
-            {/* 태그 목록 */}
-            <div
+            
+            {/* 인기 태그 */}
+            {/* <div
               className="tagWrap"
               style={{
                 width: "200px",
@@ -125,7 +125,8 @@ export default function DetailPage() {
                   </span>
                 ))}
               </aside>
-            </div>
+            </div> */}
+            <TopTagList roomId={Number(cityId)} />
 
             {/* 필터 및 카드 */}
             <div
@@ -177,3 +178,4 @@ export default function DetailPage() {
     </>
   );
 }
+

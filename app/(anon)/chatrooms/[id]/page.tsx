@@ -7,7 +7,7 @@ import { Message, pMessage } from "./types";
 import styles from "./page.module.css";
 import ChatLog from "./components/ChatLog";
 import ChatInput from "./components/ChatInput";
-import TopTagList from "./components/TopTagList";
+import TopTagList from "../../../components/TopTagList";
 import ChatSearch from "./components/ChatSearch";
 import ChatRoomInfo from "./components/ChatRoomInfo";
 import { useUserStore } from "@/app/stores/useUserStore";
