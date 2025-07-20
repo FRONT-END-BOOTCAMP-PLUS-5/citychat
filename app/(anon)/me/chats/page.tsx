@@ -24,6 +24,12 @@ const {
   ["filter-option-selected"]: filterOptionSelected,
 } = styles;
 
+type RegionType = {
+  id: string;
+  name: string;
+  chatroom_id?: number;
+}
+
 export default function MyChatPage() {
   const { cities } = useCityStore();
   const menuListRef = useRef<HTMLDivElement>(null);
@@ -36,7 +42,7 @@ export default function MyChatPage() {
   const [selectedRegion, setSelectedRegion] = useState<string>("all");
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   
-  const regions = [
+  const regions: RegionType[] = [
     { id: "all", name: "전체" },
     ...cities.map(city => ({ 
       id: city.id.toString(), 
@@ -66,7 +72,7 @@ export default function MyChatPage() {
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const handleChatClick = (chatId: number, chatRoomId: number) => {
-    router.push(`/chatrooms/${chatRoomId}?highlight=${chatId}`);
+    router.push(`/chatrooms/${chatRoomId}?chatId=${chatId}`);
   };
 
   const handleRegionSelect = (regionId: string) => {
