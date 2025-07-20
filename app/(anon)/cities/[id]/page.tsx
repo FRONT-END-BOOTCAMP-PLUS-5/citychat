@@ -23,8 +23,6 @@ interface City {
   description: string;
 }
 
-const Tags = ["#날씨", "#음식", "#패션", "#꿀팁", "#문화", "#교통"];
-
 export default function DetailPage() {
   const [hasMounted, setHasMounted] = useState(false);
   const params = useParams();
@@ -126,46 +124,57 @@ export default function DetailPage() {
                 ))}
               </aside>
             </div> */}
-            <TopTagList roomId={Number(cityId)} />
 
-            {/* 필터 및 카드 */}
             <div
               style={{
-                width: "calc(100% - 220px)",
-                float: "left",
+                display: "flex",
+                gap: "20px",
+                marginTop: "28px",
               }}
             >
-              <CategoryFilter
-                categories={categories}
-                selectedCategory={selectedCategory}
-                onChange={setSelectedCategory}
-              />
 
+              <div style={{ width: "200px", flexShrink: 0 }}>
+                <TopTagList roomId={Number(cityId)} />
+              </div>
+            
+              {/* 필터 및 카드 */}
               <div
                 style={{
-                  display: "grid",
-                  gap: "16px",
-                  gridTemplateColumns: "repeat(2, 1fr)",
-                  padding: "20px",
-                  height: "40vh",
-                  overflowY: "auto",
+                  flex: 1, marginLeft:"30px", marginTop:"5px"
                 }}
               >
-                {filteredTourList && filteredTourList.length > 0 ? (
-                  filteredTourList.map((item, idx) => (
-                    <TourCard
-                      key={idx}
-                      rlteTatsNm={item.rlteTatsNm}
-                      areaNm={item.areaNm}
-                      rlteSignguNm={item.rlteSignguNm}
-                      rlteCtgrySclsNm={item.rlteCtgrySclsNm}
-                    />
-                  ))
-                ) : (
-                  <p style={{ gridColumn: "1 / -1", textAlign: "center" }}>
+                <CategoryFilter
+                  categories={categories}
+                  selectedCategory={selectedCategory}
+                  onChange={setSelectedCategory}
+                />
+
+                <div
+                  style={{
+                    display: "grid",
+                    gap: "16px",
+                    gridTemplateColumns: "repeat(2, 1fr)",
+                    padding: "20px",
+                    height: "40vh",
+                    overflowY: "auto",
+                  }}
+                >
+                  {filteredTourList && filteredTourList.length > 0 ? (
+                    filteredTourList.map((item, idx) => (
+                      <TourCard
+                        key={idx}
+                        rlteTatsNm={item.rlteTatsNm}
+                        areaNm={item.areaNm}
+                        rlteSignguNm={item.rlteSignguNm}
+                        rlteCtgrySclsNm={item.rlteCtgrySclsNm}
+                      />
+                    ))
+                  ) : (
+                    <p style={{ gridColumn: "1 / -1", textAlign: "center" }}>
                     선택한 분류의 정보가 없습니다.
-                  </p>
-                )}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </section>
