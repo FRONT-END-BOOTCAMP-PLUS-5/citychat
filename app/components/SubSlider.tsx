@@ -4,6 +4,8 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import styles from "./subSlider.module.css";
 import Image from "next/image";
 import Link from "next/link";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
+
 
 interface City {
   id: string;
@@ -98,7 +100,7 @@ const SubSlider: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div className={styles.loadingState}>도시를 불러오는 중...</div>;
+    return <LoadingSpinner size={15} />;
   }
   if (error) {
     return <div className={styles.errorState}>오류: {error}</div>;

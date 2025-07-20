@@ -11,8 +11,6 @@ export default function Home() {
   const isScrolling = useRef(false);
 
 
- 
-
   useEffect(() => {
     const container = mainScrollContainerRef.current;
     if (!container) return;

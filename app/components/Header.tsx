@@ -80,7 +80,8 @@ function Header() {
   };
 
   // 토글로 드롭다운을 열고 닫는 기능(cities)
-  const toggleCitiesDropdown = () => {
+  const toggleCitiesDropdown = (event : React.MouseEvent) => {
+    event.preventDefault();
     setIsCitiesDropdownOpen((prev) => !prev);
   };
 
@@ -89,8 +90,7 @@ function Header() {
     const handleClickOutside = (event: MouseEvent) => {
       const mypageButton = document.getElementById("mypage-button");
       const mypageDropdown = document.getElementById("mypage-dropdown");
-      const citiesButton = document.getElementById("cities-button");
-      const citiesDropdown = document.getElementById("cities-dropdown");
+      const citiesDropdownWrapper = document.getElementById("cities-dropdown-wrapper");
 
       // 클릭된 버튼과 드롭다운 요소 포함 여부 확인
       if (
@@ -102,10 +102,8 @@ function Header() {
         setIsMypageDropdownOpen(false); // 드롭다운 자동 닫힘
       }
       if (
-        citiesButton &&
-        !citiesButton.contains(event.target as Node) &&
-        citiesDropdown &&
-        !citiesDropdown.contains(event.target as Node)
+        citiesDropdownWrapper &&
+        !citiesDropdownWrapper.contains(event.target as Node)
       ) {
         setIsCitiesDropdownOpen(false);
       }
@@ -146,16 +144,17 @@ function Header() {
             {/* ✅ 기존 pages.map 안에 "Cities" 조건 처리 */}
             {pages.map((page) =>
               page.name === "Cities" ? (
-                <div key={page.name} className={styles.navItemDropdownWrapper}>
-                  <button
-                    id="cities-button" // ✅ 드롭다운 토글용
-                    className={`${styles.navItem} ${styles.citiesButton}`}
-                    onClick={toggleCitiesDropdown}
+                <div key={page.name} className={styles.navItemDropdownWrapper} id="cities-dropdown-wrapper">
+                  <Link
+                    href={page.path} // Cities 경로 유지
+                    className={`${styles.navItem} ${styles.citiesLink}`} // navItem 기본 스타일 적용
+                    onClick={toggleCitiesDropdown} // Link 클릭 시 드롭다운 토글
                     aria-haspopup="true"
                     aria-expanded={isCitiesDropdownOpen}
+                    id="cities-button" // 외부 클릭 감지를 위해 ID 유지 (옵션)
                   >
                     {page.name}
-                  </button>
+                  </Link>
                   {isCitiesDropdownOpen && (
                     <div id="cities-dropdown" className={styles.citiesDropdown}>
                       {cityRegions.map((region) => (
@@ -276,79 +275,18 @@ function Header() {
                 </Link>
               </li>
             ))}
-            {isLoggedIn ? (
-              <>
-                <li className={styles.drawerListItem}>
-                  <Link
-                    href="/me"
-                    className={styles.drawerLink}
-                    onClick={toggleDrawer(false)}
-                  >
-                    <Image
-                      src="/assets/login-profile.png"
-                      alt="마이페이지"
-                      width={24}
-                      height={24}
-                      className={styles.drawerIcon}
-                    />
-                    마이페이지
-                  </Link>
-                </li>
-                <li className={styles.drawerListItem}>
-                  <button
-                    className={styles.drawerLink}
-                    onClick={() => {
-                      handleLogout();
-                      toggleDrawer(false);
-                    }}
-                  >
-                    <Image
-                      src="/assets/login-profile.png"
-                      alt="로그아웃"
-                      width={24}
-                      height={24}
-                      className={styles.drawerIcon}
-                    />
-                    로그아웃
-                  </button>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className={styles.drawerListItem}>
-                  <Link
-                    href="/signup"
-                    className={styles.drawerLink}
-                    onClick={toggleDrawer(false)}
-                  >
-                    <Image
-                      src="/assets/login-profile.png"
-                      alt="회원가입"
-                      width={24}
-                      height={24}
-                      className={styles.drawerIcon}
-                    />
-                    회원가입
-                  </Link>
-                </li>
-                <li className={styles.drawerListItem}>
-                  <Link
-                    href="/signin"
-                    className={styles.drawerLink}
-                    onClick={toggleDrawer(false)}
-                  >
-                    <Image
-                      src="/assets/login-profile.png"
-                      alt="로그인"
-                      width={24}
-                      height={24}
-                      className={styles.drawerIcon}
-                    />
-                    로그인
-                  </Link>
-                </li>
-              </>
-            )}
+            <Link
+              href="/signin"
+              onClick={toggleDrawer(false)}
+            >
+              <Image
+                src="/assets/login-profile.png"
+                alt="마이페이지"
+                width={24}
+                height={24}
+                className={styles.drawerIcon}
+              />
+            </Link>
           </ul>
         </div>
       </div>

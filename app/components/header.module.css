@@ -249,7 +249,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .toolbar {
     justify-content: space-between; /* 로고와 햄버거 아이콘만 양 끝으로 */
   }
