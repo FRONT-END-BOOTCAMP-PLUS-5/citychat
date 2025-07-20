@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
-// 서버에서 반환될 조인된 이미지 데이터의 실제 형태를 반영하는 인터페이스 추가
+// 서버에서 반환될 조인된 이미지 데이터의 실제 형태
 interface ImageRecord {
   storage_path: string;
 }
@@ -12,6 +12,14 @@ interface FormattedCity {
   name: string; // 지역 명
   description: string; // 내용
   image: string; // 이미지 URL
+}
+
+// Supabase 쿼리에서 반환되는 City 데이터의 실제 형태를 명시적으로 정의
+interface SupabaseCityData {
+  id: string;
+  name: string;
+  description: string;
+  images: ImageRecord | null;
 }
 
 export async function GET() {
@@ -50,18 +58,18 @@ export async function GET() {
     return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
   };
 
-  const citiesWithImageUrls: FormattedCity[] = data.map(
-    (city: {
-      id: string;
-      name: string;
-      description: string;
-      images: ImageRecord[];
-    }) => {
+  // 이중 캐스팅을 사용하여 타입 불일치 오류를 회피
+  const citiesData = data as unknown as SupabaseCityData[];
+
+  const citiesWithImageUrls: FormattedCity[] = citiesData.map(
+    (city) => {
       let imageUrl = "";
-      if (city.images) {
+      // city.images가 존재하고 그 안에 storage_path가 있는지 확인
+      if (city.images && city.images.storage_path) {
         const fullPath = city.images.storage_path;
         const bucketName = "citychat-img";
         let relativePath = fullPath;
+        // 경로가 버킷 이름으로 시작하면 상대 경로로 변환
         if (fullPath.startsWith(bucketName)) {
           relativePath = fullPath.substring(bucketName.length + 1);
         }
@@ -79,4 +87,3 @@ export async function GET() {
 
   return NextResponse.json(citiesWithImageUrls);
 }
-
