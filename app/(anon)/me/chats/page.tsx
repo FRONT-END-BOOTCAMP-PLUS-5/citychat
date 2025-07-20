@@ -44,11 +44,15 @@ export default function MyChatPage() {
 
   const regions: RegionType[] = [
     { id: "all", name: "전체" },
-    ...cities.map((city) => ({
-      id: city.id.toString(),
-      name: city.name,
-      chatroom_id: city.id, // cities의 id가 chatRoomId와 동일
-    })),
+    ...cities
+      .sort((a, b) => {
+        return a.id as number - b.id as number;
+      })
+      .map((city) => ({
+        id: city.id.toString(),
+        name: city.name,
+        chatroom_id: city.id, // cities의 id가 chatRoomId와 동일
+      })),
   ];
 
   const getChatRoomId = () => {
