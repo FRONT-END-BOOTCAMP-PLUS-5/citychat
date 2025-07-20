@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 import styles from "./page.module.css";
 import SharedPageLayout from "@/app/SharedPageLayout";
 import { useSignup } from "@/app/hooks/useSignup";
@@ -8,7 +9,6 @@ import { useSignup } from "@/app/hooks/useSignup";
 const {
   ["form-container"]: formContainer,
   ["signup-form"]: signupForm,
-  ["form-title"]: formTitle,
   ["form-group"]: formGroup,
   ["form-label"]: formLabel,
   ["form-input"]: formInput,
@@ -19,6 +19,7 @@ const {
   ["duplicate-message-success"]: duplicateMessageSuccess,
   ["duplicate-message-error"]: duplicateMessageError,
   ["error-message"]: errorMessage,
+  ["signin-link"]: signinLink,
 } = styles;
 
 export default function SignupPage() {
@@ -99,7 +100,6 @@ export default function SignupPage() {
     <SharedPageLayout title="Sign up">
       <div className={formContainer}>
         <form className={signupForm} onSubmit={handleSubmit}>
-          <h3 className={formTitle}>Personal Information</h3>
           <div className={formGroup}>
             <label htmlFor="nickname" className={formLabel}>Nickname</label>
             <div className={inputRow}>
@@ -226,6 +226,12 @@ export default function SignupPage() {
             <button type="submit" className={formButton} style={{ width: "100%" }} disabled={isPending}>
               Sign Up
             </button>
+          </div>
+          
+          <div className={formGroup}>
+            <p className={signinLink}>
+              이미 계정이 있으신가요? <Link href="/signin">로그인하기</Link>
+            </p>
           </div>
         </form>
       </div>
