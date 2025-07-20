@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@/app/components/Modal";
 import styles from "../page.module.css";
-import { useUpdatePassword } from "@/app/hooks/useUpdateUser";
+import { useUpdateUser } from "@/app/hooks/useUpdateUser";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 const {
@@ -28,7 +28,7 @@ export default function PasswordChangeModal({
   isOpen,
   onClose,
 }: PasswordChangeModalProps) {
-  const { mutate: updatePassword, isPending, error, isSuccess } = useUpdatePassword();
+  const { mutate: updateUser, isPending, error, isSuccess } = useUpdateUser();
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -71,7 +71,7 @@ export default function PasswordChangeModal({
       return;
     }
 
-    updatePassword({
+    updateUser({
       currentPassword: passwordData.currentPassword,
       newPassword: passwordData.newPassword
     }, {
@@ -79,14 +79,14 @@ export default function PasswordChangeModal({
         setSubmitMessage({
           show: true,
           type: "success",
-          text: "비밀번호가 성공적으로 변경되었습니다."
+          text: "사용자 정보가 성공적으로 수정되었습니다."
         });
       },
       onError: (error) => {
         setSubmitMessage({
           show: true,
           type: "error",
-          text: error.message || "비밀번호 변경에 실패했습니다."
+          text: error.message || "사용자 정보 수정에 실패했습니다."
         });
       }
     });

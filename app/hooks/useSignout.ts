@@ -1,7 +1,22 @@
 import { useMutation } from "@tanstack/react-query";
-import { signout } from "../apis/authApi";
 import { useUserStore } from "../stores/useUserStore";
 import { useRouter } from "next/navigation";
+
+const signout = async (): Promise<{ success: boolean; message: string }> => {
+  const response = await fetch("/api/auth/signout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || errorData.error || "로그아웃에 실패했습니다.");
+  }
+
+  return response.json();
+};
 
 export const useSignout = () => {
   const router = useRouter();

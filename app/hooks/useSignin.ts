@@ -1,7 +1,24 @@
 import { SigninRequestDto } from "@/backend/application/auth/dtos/SigninRequestDto";
+import { SigninResponseDto } from "@/backend/application/auth/dtos/SigninResponseDto";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { signin } from "../apis/authApi";
+
+const signin = async (data: SigninRequestDto): Promise<SigninResponseDto> => {
+  const response = await fetch("/api/auth/signin", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || errorData.error || "로그인에 실패했습니다.");
+  }
+
+  return response.json();
+};
 
 export const useSignin = () => {
   const router = useRouter();

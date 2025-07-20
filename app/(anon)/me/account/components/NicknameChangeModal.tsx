@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@/app/components/Modal";
 import styles from "../page.module.css";
-import { useUpdateNickname } from "@/app/hooks/useUpdateUser";
+import { useUpdateUser } from "@/app/hooks/useUpdateUser";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 const {
@@ -33,7 +33,7 @@ export default function NicknameChangeModal({
   onClose,
   currentNickname = "",
 }: NicknameChangeModalProps) {
-  const { mutate: updateNickname, isPending, error, isSuccess } = useUpdateNickname();
+  const { mutate: updateUser, isPending, error, isSuccess } = useUpdateUser();
   const [newNickname, setNewNickname] = useState("");
   const [nicknameStatus, setNicknameStatus] = useState({
     checked: false,
@@ -109,19 +109,19 @@ export default function NicknameChangeModal({
       return;
     }
     
-    updateNickname(newNickname, {
+    updateUser({ nickname: newNickname }, {
       onSuccess: () => {
         setSubmitMessage({
           show: true,
           type: "success",
-          text: "닉네임이 성공적으로 변경되었습니다."
+          text: "사용자 정보가 성공적으로 수정되었습니다."
         });
       },
       onError: (error) => {
         setSubmitMessage({
           show: true,
           type: "error",
-          text: error.message || "닉네임 변경에 실패했습니다."
+          text: error.message || "사용자 정보 수정에 실패했습니다."
         });
       }
     });
