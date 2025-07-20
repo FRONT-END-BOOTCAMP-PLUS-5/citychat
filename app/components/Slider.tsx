@@ -14,11 +14,13 @@ interface City {
   image: string;
 }
 
-
 const NextArrow = (props: CustomArrowProps) => {
   const { className, onClick } = props;
   return (
-    <div className={`${className} ${styles.arrow} ${styles.next}`} onClick={onClick}>
+    <div
+      className={`${className} ${styles.arrow} ${styles.next}`}
+      onClick={onClick}
+    >
       ▶
     </div>
   );
@@ -27,7 +29,10 @@ const NextArrow = (props: CustomArrowProps) => {
 const PrevArrow = (props: CustomArrowProps) => {
   const { className, onClick } = props;
   return (
-    <div className={`${className} ${styles.arrow} ${styles.prev}`} onClick={onClick}>
+    <div
+      className={`${className} ${styles.arrow} ${styles.prev}`}
+      onClick={onClick}
+    >
       ◀
     </div>
   );
@@ -35,10 +40,9 @@ const PrevArrow = (props: CustomArrowProps) => {
 
 export default function CenterModeCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [cities, setCities] = useState<City[]>([]); 
-  const [loading, setLoading] = useState(true); 
+  const [cities, setCities] = useState<City[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
 
   // Supabase에서 도시 목록 불러오기 (API 라우트 사용)
   useEffect(() => {
@@ -63,7 +67,9 @@ export default function CenterModeCarousel() {
 
   // 로딩, 오류, 데이터 없음 상태 처리
   if (loading) {
-    return <div className={styles.loadingState}>도시 정보를 불러오는 중...</div>;
+    return (
+      <div className={styles.loadingState}>도시 정보를 불러오는 중...</div>
+    );
   }
   if (error) {
     return <div className={styles.errorState}>오류: {error}</div>;
@@ -71,7 +77,6 @@ export default function CenterModeCarousel() {
   if (cities.length === 0) {
     return <div className={styles.emptyState}>표시할 도시가 없습니다.</div>;
   }
-
 
   const settings = {
     autoplay: true,
@@ -109,24 +114,38 @@ export default function CenterModeCarousel() {
               const isLeftVisible = relativeIndex === -1; // 왼쪽 슬라이드
               const isActive = relativeIndex === 0; // 가운데 활성화된 슬라이드
               const isRightVisible = relativeIndex === 1; // 오른쪽 슬라이드
-              const isBeyondVisible = !isActive && !isLeftVisible && !isRightVisible; // 보이는 3개 외의 슬라이드
+              const isBeyondVisible =
+                !isActive && !isLeftVisible && !isRightVisible; // 보이는 3개 외의 슬라이드
 
               return (
-                <div key={city.id}> {/* 각 도시에 고유한 id를 key로 사용 */}
+                <div key={city.id}>
+                  {" "}
+                  {/* 각 도시에 고유한 id를 key로 사용 */}
                   <div className="custom-slide-wrapper">
-                    <div
-                      className={`${styles.card} ${
-                        isActive ? styles.cardActive : ""
-                      } ${isLeftVisible ? styles.cardLeftVisible : ""} ${
-                        isRightVisible ? styles.cardRightVisible : ""
-                      } ${isBeyondVisible ? styles.cardBehind : ""}`} // cardBehind 클래스 추가
+                    {" "}
+                    <Link
+                      href={`/cities/${city.id}`}
+                      className={styles.linkArrow}
                     >
-                      <div className={styles.cityLink}>
-                        <h3 className={styles.cityName}>{city.name}</h3>
-                        <Link href={`/cities/${city.id}`} className={styles.linkArrow}>➜</Link>
+                      <div
+                        className={`${styles.card} ${
+                          isActive ? styles.cardActive : ""
+                        } ${isLeftVisible ? styles.cardLeftVisible : ""} ${
+                          isRightVisible ? styles.cardRightVisible : ""
+                        } ${isBeyondVisible ? styles.cardBehind : ""}`} // cardBehind 클래스 추가
+                      >
+                        <div className={styles.cityLink}>
+                          <h3 className={styles.cityName}>{city.name}</h3>
+                        </div>
+                        <Image
+                          src={city.image}
+                          alt={city.name}
+                          className={styles.cityImage}
+                          width={350}
+                          height={380}
+                        />
                       </div>
-                      <Image src={city.image} alt={city.name} className={styles.cityImage} width={350} height={380} />
-                    </div>
+                    </Link>
                   </div>
                 </div>
               );
@@ -137,3 +156,4 @@ export default function CenterModeCarousel() {
     </div>
   );
 }
+

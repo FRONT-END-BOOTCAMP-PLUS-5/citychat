@@ -45,7 +45,6 @@ function Header() {
       const cities = await useCase.execute();
       addCities(cities);
     };
-
     fetchCities();
   }, [addCities]);
 
