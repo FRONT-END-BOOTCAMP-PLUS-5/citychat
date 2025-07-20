@@ -28,7 +28,7 @@ type RegionType = {
   id: string;
   name: string;
   chatroom_id?: number;
-}
+};
 
 export default function MyChatPage() {
   const { cities } = useCityStore();
@@ -41,30 +41,24 @@ export default function MyChatPage() {
   const router = useRouter();
   const [selectedRegion, setSelectedRegion] = useState<string>("all");
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
-  
+
   const regions: RegionType[] = [
     { id: "all", name: "전체" },
-    ...cities.map(city => ({ 
-      id: city.id.toString(), 
-      name: city.name, 
-      chatroom_id: city.id // cities의 id가 chatRoomId와 동일
-    }))
+    ...cities.map((city) => ({
+      id: city.id.toString(),
+      name: city.name,
+      chatroom_id: city.id, // cities의 id가 chatRoomId와 동일
+    })),
   ];
-  
+
   const getChatRoomId = () => {
     if (selectedRegion === "all") return undefined;
-    const region = regions.find(r => r.id === selectedRegion);
+    const region = regions.find((r) => r.id === selectedRegion);
     return region?.chatroom_id;
   };
-  
-  const { data, 
-    isLoading,
-    isFetchingNextPage, 
-    hasNextPage, 
-    fetchNextPage } = useGetCurrentUserChats(10, getChatRoomId());
-  console.log(data);
-  console.log("data", data?.items);
 
+  const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
+    useGetCurrentUserChats(10, getChatRoomId());
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
@@ -81,14 +75,18 @@ export default function MyChatPage() {
   };
 
   const getSelectedRegionName = () => {
-    return regions.find(region => region.id === selectedRegion)?.name || "전체";
+    return (
+      regions.find((region) => region.id === selectedRegion)?.name || "전체"
+    );
   };
 
   const formatTime = (sentAt: string) => {
     const now = new Date();
     const chatTime = new Date(sentAt);
-    const diffInMinutes = Math.floor((now.getTime() - chatTime.getTime()) / (1000 * 60));
-    
+    const diffInMinutes = Math.floor(
+      (now.getTime() - chatTime.getTime()) / (1000 * 60)
+    );
+
     if (diffInMinutes < 1) return "Just now";
     if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
     if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
@@ -96,7 +94,7 @@ export default function MyChatPage() {
   };
 
   const getRegionName = (chatRoomId: number) => {
-    const region = regions.find(r => r.chatroom_id === chatRoomId);
+    const region = regions.find((r) => r.chatroom_id === chatRoomId);
     return region ? `${region.name}방` : `${chatRoomId}번방`;
   };
 
@@ -107,7 +105,8 @@ export default function MyChatPage() {
           <div className={filterContainer}>
             <button
               className={filterToggleButton}
-              onClick={() => setIsFilterOpen(!isFilterOpen)}>
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+            >
               <span className={filterText}>{getSelectedRegionName()}</span>
             </button>
             {isFilterOpen && (
@@ -115,7 +114,9 @@ export default function MyChatPage() {
                 {regions.map((region) => (
                   <button
                     key={region.id}
-                    className={`${filterOption} ${selectedRegion === region.id ? filterOptionSelected : ""}`}
+                    className={`${filterOption} ${
+                      selectedRegion === region.id ? filterOptionSelected : ""
+                    }`}
                     onClick={() => handleRegionSelect(region.id)}
                   >
                     {region.name}
@@ -125,31 +126,40 @@ export default function MyChatPage() {
             )}
           </div>
           <div className={menuList} ref={menuListRef}>
-            { isLoading
-              ? <LoadingSpinner size={10} />
-              : data?.items && data.items.length > 0 
-                ? data.items.map((item) => (
-                  <div 
-                    className={menuItem} 
-                    key={item.id}
-                    onClick={() => handleChatClick(item.id, item.chatRoomId)}>
-                    <div className={chatContent}>
-                      {item.contentType === "image" ? "📷 Image" : item.content}
-                    </div>
-                    <div className={chatInfo}>
-                      {`${getRegionName(item.chatRoomId)} - ${formatTime(item.sentAt)}`}
-                    </div>
+            {isLoading ? (
+              <LoadingSpinner size={10} />
+            ) : data?.items && data.items.length > 0 ? (
+              data.items.map((item) => (
+                <div
+                  className={menuItem}
+                  key={item.id}
+                  onClick={() => handleChatClick(item.id, item.chatRoomId)}
+                >
+                  <div className={chatContent}>
+                    {item.contentType === "image" ? "📷 Image" : item.content}
                   </div>
-                ))
-                : <EmptyChatList />
-            }
-            {hasNextPage &&
-            <div ref={triggerRef} style={{ height: "20px", width: "100%", margin: "1rem 0" }}>
-              {isFetchingNextPage && <LoadingSpinner size={10} /> }
-            </div>}
+                  <div className={chatInfo}>
+                    {`${getRegionName(item.chatRoomId)} - ${formatTime(
+                      item.sentAt
+                    )}`}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <EmptyChatList id={String(selectedRegion)} />
+            )}
+            {hasNextPage && (
+              <div
+                ref={triggerRef}
+                style={{ height: "20px", width: "100%", margin: "1rem 0" }}
+              >
+                {isFetchingNextPage && <LoadingSpinner size={10} />}
+              </div>
+            )}
           </div>
         </div>
       </div>
     </SharedPageLayout>
   );
-};
+}
+
