@@ -15,7 +15,7 @@ export class SigninUsecase {
 
     try {
       // 사용자 조회
-      const user = await this.userRepository.findByUserId(userId);
+      const user = await this.userRepository.findOneByCriteria({userid: userId});
       if (!user) {
         return {
           success: false,

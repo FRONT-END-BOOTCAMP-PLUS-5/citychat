@@ -11,7 +11,8 @@ export const AUTH_CONFIG = {
 
   // API 호출 시, 토큰 확인이 필요한 api 경로들
   authRequiredPaths: [
-    "/api/user/chats"
+    "/api/user/chats",
+    "/api/users/me", // 사용자 정보 수정
     //"/api/auth/signout",
     //"/api/chat/logs", // 채팅 로그 조회
   ],

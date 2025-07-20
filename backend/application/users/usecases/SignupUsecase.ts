@@ -9,7 +9,7 @@ export class SignupUsecase {
 
     async execute(request: SignupRequestDto): Promise<SignupResponseDto> {
         try {
-            const existingUser = await this.userRepository.findByUserId(request.userId);
+            const existingUser = await this.userRepository.findOneByCriteria({ userid: request.userId });
             if (existingUser) {
                 return {
                     success: false,

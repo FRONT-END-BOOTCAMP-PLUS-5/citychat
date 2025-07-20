@@ -113,10 +113,6 @@ export class SbUserRepository implements UserRepository {
     return this.mapToUser(data as UserTable);
   }
 
-  findAll(): Promise<User[]> {
-    throw new Error("Method not implemented.");
-  }
-
   async findOneByCriteria(criteria: GetUserCriteria): Promise<User | null> {
     const { data, error } = await this.buildUserQuery("users", "*", criteria)
       .eq("deleted_flag", false)
@@ -126,21 +122,5 @@ export class SbUserRepository implements UserRepository {
     if (!data) return null;
 
     return this.mapToUser(data as unknown as UserTable);
-  }
-
-  findById(id: number): Promise<User | null> {
-    throw new Error("Method not implemented.");
-  }
-
-  async findByUserId(userId: string): Promise<User | null> {
-    const { data, error } = await this.supabase
-      .from("users")
-      .select()
-      .eq("user_id", userId)
-      .eq("deleted_flag", false)
-      .maybeSingle();
-    if (error) throw new Error(error.message);
-    if (!data) return null;
-    return this.mapToUser(data as UserTable);
   }
 }
