@@ -1,0 +1,38 @@
+.wrapper {
+  margin-top: 5vh;
+  width: 16rem;
+}
+
+.title {
+  color: #4b5563;
+  font-weight: bold;
+  margin-bottom: 1.4vh;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.tagItem {
+  padding: 6px 12px;
+  background-color: #fff2a8;
+  border-radius: 999px;
+  font-size: 14px;
+  color: #444;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.tagItem:hover {
+  background-color: #ffe87d;
+}
+
+.selected {
+  background-color: #ffd54f;
+  color: white;
+}
+

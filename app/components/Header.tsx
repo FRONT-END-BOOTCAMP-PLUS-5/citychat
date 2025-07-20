@@ -280,7 +280,7 @@ function Header() {
               <>
                 <li className={styles.drawerListItem}>
                   <Link
-                    href="/mypage"
+                    href="/me"
                     className={styles.drawerLink}
                     onClick={toggleDrawer(false)}
                   >
@@ -317,7 +317,7 @@ function Header() {
               <>
                 <li className={styles.drawerListItem}>
                   <Link
-                    href="/signin"
+                    href="/signup"
                     className={styles.drawerLink}
                     onClick={toggleDrawer(false)}
                   >
@@ -333,7 +333,7 @@ function Header() {
                 </li>
                 <li className={styles.drawerListItem}>
                   <Link
-                    href="/login"
+                    href="/signin"
                     className={styles.drawerLink}
                     onClick={toggleDrawer(false)}
                   >

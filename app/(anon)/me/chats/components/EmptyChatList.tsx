@@ -1,3 +1,4 @@
+"use client";
 import { MessageSquare } from "lucide-react";
 import styles from "./empty-chat-list.module.css";
 
