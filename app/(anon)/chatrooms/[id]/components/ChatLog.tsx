@@ -90,7 +90,8 @@ export default function ChatLog({
 
   // 검색 결과로 스크롤 이동
   useEffect(() => {
-    const targetId = Number(searchResultIds[currentIndex]);
+    const reversed = [...searchResultIds].reverse();
+    const targetId = Number(reversed[currentIndex]);
     setTimeout(() => {
       const targetElement = messageRefs.current.get(targetId);
       if (targetElement) {
