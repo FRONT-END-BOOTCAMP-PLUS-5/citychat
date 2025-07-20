@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@/app/components/Modal";
 import styles from "../page.module.css";
+import { useUpdateUser } from "@/app/hooks/useUpdateUser";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 const {
   ["modal-form"]: modalForm,
@@ -24,20 +26,24 @@ interface NicknameChangeModalProps {
   isOpen: boolean;
   onClose: () => void;
   currentNickname?: string;
-  onNicknameChange: (newNickname: string) => void;
 }
 
 export default function NicknameChangeModal({
   isOpen,
   onClose,
   currentNickname = "",
-  onNicknameChange,
 }: NicknameChangeModalProps) {
+  const { mutate: updateUser, isPending, error, isSuccess } = useUpdateUser();
   const [newNickname, setNewNickname] = useState("");
   const [nicknameStatus, setNicknameStatus] = useState({
     checked: false,
     isDuplicate: false,
     message: ""
+  });
+  const [submitMessage, setSubmitMessage] = useState({
+    show: false,
+    type: "success" as "success" | "error",
+    text: ""
   });
 
   // 모달이 열릴 때 현재 닉네임으로 초기화
@@ -45,12 +51,17 @@ export default function NicknameChangeModal({
     if (isOpen) {
       setNewNickname(currentNickname);
       setNicknameStatus({ checked: false, isDuplicate: false, message: "" });
+      setSubmitMessage({ show: false, type: "success", text: "" });
     }
   }, [isOpen, currentNickname]);
 
   const checkNicknameDuplicate = async () => {
     if (!newNickname.trim()) {
-      alert("닉네임을 입력해주세요.");
+      setNicknameStatus({
+        checked: false,
+        isDuplicate: false,
+        message: "닉네임을 입력해주세요."
+      });
       return;
     }
 
@@ -73,7 +84,11 @@ export default function NicknameChangeModal({
         message: result.message
       });
     } catch (error) {
-      alert("중복 확인 중 오류가 발생했습니다.");
+      setNicknameStatus({
+        checked: false,
+        isDuplicate: false,
+        message: "중복 확인 중 오류가 발생했습니다."
+      });
     }
   };
 
@@ -86,16 +101,30 @@ export default function NicknameChangeModal({
     }
     
     if (!nicknameStatus.checked || nicknameStatus.isDuplicate) {
-      alert("닉네임 중복 확인을 해주세요.");
+      setSubmitMessage({
+        show: true,
+        type: "error",
+        text: "닉네임 중복 확인을 해주세요."
+      });
       return;
     }
     
-    try {
-      await onNicknameChange(newNickname);
-      onClose();
-    } catch (error) {
-      console.error("닉네임 변경 실패:", error);
-    }
+    updateUser({ nickname: newNickname }, {
+      onSuccess: () => {
+        setSubmitMessage({
+          show: true,
+          type: "success",
+          text: "사용자 정보가 성공적으로 수정되었습니다."
+        });
+      },
+      onError: (error) => {
+        setSubmitMessage({
+          show: true,
+          type: "error",
+          text: error.message || "사용자 정보 수정에 실패했습니다."
+        });
+      }
+    });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,24 +149,37 @@ export default function NicknameChangeModal({
               value={newNickname}
               onChange={handleInputChange}
               placeholder="새 닉네임을 입력하세요"
+              disabled={isPending}
             />
             <button
               type="button"
               className={`${modalFormButton} ${modalEditButton}`}
               onClick={checkNicknameDuplicate}
+              disabled={isPending}
             >
               중복확인
             </button>
           </div>
-          <p className={`${duplicateMessage} ${nicknameStatus.checked ? (nicknameStatus.isDuplicate ? duplicateMessageError : duplicateMessageSuccess) : ''}`}>
-            {nicknameStatus.checked ? nicknameStatus.message : ''}
+          <p className={`${duplicateMessage} ${nicknameStatus.message ? (nicknameStatus.isDuplicate ? duplicateMessageError : duplicateMessageSuccess) : ""}`}>
+            {nicknameStatus.message}
           </p>
         </div>
+        
+        {/* 제출 결과 메시지 */}
+        {submitMessage.show && (
+          <div className={modalFormGroup}>
+            <p className={`${duplicateMessage} ${submitMessage.type === "success" ? duplicateMessageSuccess : duplicateMessageError}`}>
+              {submitMessage.text}
+            </p>
+          </div>
+        )}
+
         <div className={modalButtons}>
           <button
             type="button"
             className={`${modalButton} ${cancelButton}`}
             onClick={onClose}
+            disabled={isPending}
           >
             취소
           </button>
@@ -145,8 +187,9 @@ export default function NicknameChangeModal({
             type="button"
             className={modalButton}
             onClick={handleSubmit}
+            disabled={isPending}
           >
-            변경
+            {isPending ? <LoadingSpinner size={5} /> : "확인"}
           </button>
         </div>
       </div>

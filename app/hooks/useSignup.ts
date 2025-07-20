@@ -1,7 +1,24 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { signup } from "../apis/authApi";
 import { SignupRequestDto } from "@/backend/application/users/dtos/SignupRequestDto";
+import { SignupResponseDto } from "@/backend/application/users/dtos/SignupResponseDto";
+
+const signup = async (data: SignupRequestDto): Promise<SignupResponseDto> => {
+  const response = await fetch("/api/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || errorData.error || "회원가입에 실패했습니다.");
+  }
+
+  return response.json();
+};
 
 export const useSignup = () => {
   const router = useRouter();

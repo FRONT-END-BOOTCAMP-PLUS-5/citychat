@@ -16,7 +16,7 @@ const getCurrentUserChatList = async (
   });
   
   if (chatRoomId) {
-    params.append('chatRoomId', chatRoomId.toString());
+    params.append("chatRoomId", chatRoomId.toString());
   }
   
   const response = await fetch(`/api/user/chats?${params}`);
