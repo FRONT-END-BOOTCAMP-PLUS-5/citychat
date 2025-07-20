@@ -39,6 +39,7 @@
   border-radius: 20px;
   border: 1px solid #dee2e6;
   transition: all 0.2s ease;
+  cursor: default;
 }
 
 .menu-list {
@@ -90,8 +91,8 @@
 
 @media (min-width: 480px) {
   .content-wrapper {
-    border: 0.1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
   }
 }
 

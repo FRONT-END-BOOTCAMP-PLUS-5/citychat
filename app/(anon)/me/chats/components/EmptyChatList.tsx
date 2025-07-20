@@ -14,6 +14,7 @@ export default function EmptyChatList({ id }: EmptyChatListProps) {
   const router = useRouter();
 
   const handleClick = () => {
+    if(id === "all") id = "1";
     router.push(`/chatrooms/${id}`);
   };
 
