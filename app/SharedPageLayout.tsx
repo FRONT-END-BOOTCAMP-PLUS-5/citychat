@@ -21,12 +21,13 @@ export default function SharedPageLayout({
           <div style={{ height: "10vh", backgroundColor: "transparent", position: "sticky", top: 0, zIndex: 5 }}></div>
           <div style={{ height: "10vh", backgroundColor: "transparent" }}></div>
           <div className="content-box">
-            <h1 className="page-title">{title}</h1>
-            {children}
+            <div className="content-inner">
+              <h1 className="page-title">{title}</h1>
+              {children}
+            </div>
           </div>
         </main>
       </div>
-      <Footer />
     </div> 
 
   );
