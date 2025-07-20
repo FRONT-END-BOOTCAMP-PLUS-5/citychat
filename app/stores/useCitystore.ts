@@ -2,14 +2,15 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 type City = {
-  id: number;
+  id: string;
   name: string;
   description: string;
+  image?: string;
 };
 
 type CityStore = {
   cities: City[];
-  getCityById: (id: number) => City | undefined;
+  getCityById: (id: string) => City | undefined;
   addCity: (city: City) => void;
   addCities: (cities: City[]) => void;
   clearCities: () => void;
@@ -28,11 +29,18 @@ export const useCityStore = create<CityStore>()(
           }),
         addCities: (newCities) =>
           set((state) => {
+            
+            // newCities가 배열인지 확인
+            if (!Array.isArray(newCities)) {
+              return state;
+            }
+            
             const existingIds = new Set(state.cities.map((c) => c.id));
             const filtered = newCities.filter(
               (city) => !existingIds.has(city.id)
             );
-            return { cities: [...state.cities, ...filtered] };
+            const updatedCities = [...state.cities, ...filtered];
+            return { cities: updatedCities };
           }),
         clearCities: () => set({ cities: [] }),
       }),

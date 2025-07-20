@@ -4,17 +4,15 @@ import React, { useState } from "react";
 import styles from "./page.module.css";
 import SharedPageLayout from "@/app/SharedPageLayout";
 import { useUserStore } from "@/app/stores/useUserStore";
-import { Edit2, FormInput } from "lucide-react";
+import { Edit2 } from "lucide-react";
 import NicknameChangeModal from "./components/NicknameChangeModal";
 import PasswordChangeModal from "./components/PasswordChangeModal";
 
 const {
   ["form-container"]: formContainer,
   ["profile-form"]: profileForm,
-  ["form-title"]: formTitle,
   ["form-group"]: formGroup,
   ["form-label"]: formLabel,
-  ["form-input"]: formInput,
   ["form-button"]: formButton,
   ["input-row"]: inputRow,
   ["edit-button"]: editButton,
@@ -39,7 +37,6 @@ export default function ProfilePage() {
     <SharedPageLayout title="My Account">
       <div className={formContainer}>
         <div className={profileForm}>
-          {/* <h3 className={formTitle}>Personal Information</h3> */}
           
           <div className={formGroup}>
             <label className={formLabel}>Nickname</label>
@@ -55,7 +52,7 @@ export default function ProfilePage() {
                 onClick={handleEditNickname}
               >
                 <Edit2 size={16} />
-                변경
+                닉네임 변경
               </button>
             </div>
           </div>
