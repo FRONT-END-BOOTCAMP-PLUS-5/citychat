@@ -27,30 +27,6 @@ export default function ProfilePage() {
   const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
-  const handleNicknameChange = async (newNickname: string) => {
-    try {
-      // TODO: API 호출로 닉네임 변경
-      console.log("닉네임 변경:", newNickname);
-    } catch (error) {
-      console.error("닉네임 변경 실패:", error);
-      throw error; // 에러를 다시 던져서 모달에서 처리하도록
-    }
-  };
-
-  const handlePasswordChange = async (passwordData: {
-    currentPassword: string;
-    newPassword: string;
-    confirmPassword: string;
-  }) => {
-    try {
-      // TODO: API 호출로 비밀번호 변경
-      console.log("비밀번호 변경", passwordData);
-    } catch (error) {
-      console.error("비밀번호 변경 실패:", error);
-      throw error; // 에러를 다시 던져서 모달에서 처리하도록
-    }
-  };
-
   const handleEditNickname = () => {
     setIsNicknameModalOpen(true);
   };
@@ -124,7 +100,6 @@ export default function ProfilePage() {
           isOpen={isNicknameModalOpen}
           onClose={() => setIsNicknameModalOpen(false)}
           currentNickname={user?.nickname}
-          onNicknameChange={handleNicknameChange}
         />
       </div>
 
@@ -133,7 +108,6 @@ export default function ProfilePage() {
         <PasswordChangeModal
           isOpen={isPasswordModalOpen}
           onClose={() => setIsPasswordModalOpen(false)}
-          onPasswordChange={handlePasswordChange}
         />
       </div>
     </SharedPageLayout>
