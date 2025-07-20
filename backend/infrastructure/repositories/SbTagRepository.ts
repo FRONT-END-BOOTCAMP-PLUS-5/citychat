@@ -48,7 +48,7 @@ export class SbTagRepository implements TagRepository {
       `
       )
       .eq("tag_name", tagName)
-      .order("sent_at", { ascending: false })
+      .order("id", { ascending: false })
       .returns<SupabaseTagRow[]>(); // ✅ 타입 지정 완료
 
     if (error) {

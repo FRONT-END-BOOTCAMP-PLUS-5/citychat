@@ -1,26 +1,29 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
+import { useEffect, useRef, useState } from "react";
+import { Message, pMessage } from "./types";
+import styles from "./page.module.css";
 import ChatLog from "./components/ChatLog";
 import ChatInput from "./components/ChatInput";
-import { Message } from "./types";
-import { useUserStore } from "@/app/stores/useUserStore";
+import TopTagList from "./components/TopTagList";
 import ChatSearch from "./components/ChatSearch";
-import styles from "./page.module.css";
+import ChatRoomInfo from "./components/ChatRoomInfo";
+import { useUserStore } from "@/app/stores/useUserStore";
 
 export default function ChatRoom() {
   const params = useParams();
   const roomId = params.id as string;
+  const socketRef = useRef<Socket | null>(null);
+
+  const user = useUserStore((state) => state.user);
   const [messages, setMessages] = useState<Message[]>([]);
   const [replyTo, setReplyTo] = useState<Message | null>(null);
-  const socketRef = useRef<Socket | null>(null);
-  const user = useUserStore((state) => state.user);
   const [searchResultIds, setSearchResultIds] = useState<number[]>([]);
   const [currentSearchIndex, setCurrentSearchIndex] = useState(0);
 
-  // ✅ 기존 채팅 불러오기 (로그 초기 로딩)
+  // 채팅방의 기록(log) 불러오기
   useEffect(() => {
     const fetchInitialMessages = async () => {
       const res = await fetch(`/api/chat/logs?roomId=${roomId}&days=30`, {
@@ -29,31 +32,29 @@ export default function ChatRoom() {
       });
       const data: Message[] = await res.json();
       setMessages(data);
-      console.log("data", data);
     };
 
     fetchInitialMessages();
   }, [roomId]);
 
-  // ✅ 소켓 연결
+  // 채팅 수신
   useEffect(() => {
     const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL!, {
       query: { roomId },
     });
-
     socketRef.current = socket;
-    socket.on("connect", () => {});
-
-    // ✅ 새 메시지 수신 → 이전 메시지 유지하고 하나만 추가
-    socket.on("receiveMessage", (msg: Message) => {
-      setMessages((prev) => [...prev, msg]);
+    socket.on("receiveMessage", (msg: pMessage) => {
+      const mappedMsg: Message = {
+        ...msg,
+        sentAt: msg.sent_at,
+      };
+      setMessages((prev) => [...prev, mappedMsg]);
     });
     return () => {
       socket.disconnect();
     };
   }, [roomId]);
 
-  // ✅ 새 메시지 서버 전송
   const handleSend = (
     content: string,
     tags: string[],
@@ -65,12 +66,11 @@ export default function ChatRoom() {
       sender: user?.nickname ?? "",
       senderId: user?.id,
       replyToId: replyTo?.id ?? null,
-      sentAt: new Date().toISOString(),
     };
     socketRef.current?.emit("sendMessage", message);
   };
 
-  // ✅ 답장 시작 시 검색 초기화
+  // 채팅 송신
   const handleReply = (msg: Message) => {
     setSearchResultIds([]);
     setCurrentSearchIndex(0);
@@ -79,19 +79,27 @@ export default function ChatRoom() {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.searchBox}>
+      <header className={styles.searchBox}>
         <ChatSearch
-          onSearchStart={() => {
-            setReplyTo(null); // 검색 시작 시 답장 초기화
-          }}
+          onSearchStart={() => setReplyTo(null)}
           onSearchResults={(ids) => {
             setSearchResultIds(ids);
             setCurrentSearchIndex(0);
           }}
         />
-      </div>
-      <div className={styles.chatRoomContainer}>
-        <div className={styles.chatSection}>
+        <TopTagList
+          roomId={Number(roomId)}
+          onSearchResults={(ids) => {
+            setSearchResultIds(ids);
+            setCurrentSearchIndex(0);
+            setReplyTo(null);
+          }}
+        />
+      </header>
+
+      <main className={styles.chatRoomContainer}>
+        <ChatRoomInfo roomId={roomId} />
+        <section className={styles.chatSection}>
           <ChatLog
             messages={messages}
             onReply={handleReply}
@@ -99,24 +107,26 @@ export default function ChatRoom() {
             searchResultIds={searchResultIds}
             currentIndex={currentSearchIndex}
             onNavigateSearchResult={(direction) => {
-              setCurrentSearchIndex((prev) => {
-                if (direction === "prev") {
-                  return prev === 0 ? searchResultIds.length - 1 : prev - 1;
-                } else {
-                  return prev === searchResultIds.length - 1 ? 0 : prev + 1;
-                }
-              });
+              setCurrentSearchIndex((prev) =>
+                direction === "prev"
+                  ? prev === 0
+                    ? searchResultIds.length - 1
+                    : prev - 1
+                  : prev === searchResultIds.length - 1
+                  ? 0
+                  : prev + 1
+              );
             }}
           />
-        </div>
-      </div>
-      <div className={styles.chatInputWrapper}>
-        <ChatInput
-          onSend={handleSend}
-          replyTo={replyTo}
-          onCancelReply={() => setReplyTo(null)}
-        />
-      </div>
+        </section>
+        <footer className={styles.chatInputWrapper}>
+          <ChatInput
+            onSend={handleSend}
+            replyTo={replyTo}
+            onCancelReply={() => setReplyTo(null)}
+          />
+        </footer>
+      </main>
     </div>
   );
 }

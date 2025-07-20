@@ -17,8 +17,7 @@ interface ChatTable {
 }
 
 export class SbChatRepository implements ChatRepository {
-
-  constructor(private supabase: SupabaseClient) { }
+  constructor(private supabase: SupabaseClient) {}
 
   private mapToChat(chatTable: ChatTable): Chat {
     return new Chat(
@@ -30,7 +29,7 @@ export class SbChatRepository implements ChatRepository {
       chatTable.sent_at,
       chatTable.deleted_flag,
       chatTable.parent_chat_id ?? undefined,
-      chatTable.image_id ?? undefined,
+      chatTable.image_id ?? undefined
     );
   }
 
@@ -40,7 +39,6 @@ export class SbChatRepository implements ChatRepository {
     limit: number = 10,
     chatRoomId?: number
   ): Promise<ApiResponse<Chat>> {
-
     try {
       // 기본 카운트 쿼리 조건
       const baseQuery = this.supabase
@@ -50,7 +48,9 @@ export class SbChatRepository implements ChatRepository {
         .eq("deleted_flag", false);
 
       // chatRoomId가 있으면 추가 필터링
-      const countQuery = chatRoomId ? baseQuery.eq("chat_room_id", chatRoomId) : baseQuery;
+      const countQuery = chatRoomId
+        ? baseQuery.eq("chat_room_id", chatRoomId)
+        : baseQuery;
 
       // 전체 개수 조회
       const { count, error: countError } = await countQuery;
@@ -65,23 +65,31 @@ export class SbChatRepository implements ChatRepository {
         .eq("deleted_flag", false);
 
       // chatRoomId가 있으면 추가 필터링
-      const filteredDataQuery = chatRoomId ? dataQuery.eq("chat_room_id", chatRoomId) : dataQuery;
+      const filteredDataQuery = chatRoomId
+        ? dataQuery.eq("chat_room_id", chatRoomId)
+        : dataQuery;
 
       // 페이지네이션된 데이터 조회
       const { data, error } = await filteredDataQuery
-        .order("sent_at", { ascending: false })
+        .order("sent_at", { ascending: true })
         .range(offset, offset + limit - 1);
 
       if (error) throw new Error(error.message);
 
-      const chats: Chat[] = (data as ChatTable[])?.map((chatData) => this.mapToChat(chatData)) || [];
+      const chats: Chat[] =
+        (data as ChatTable[])?.map((chatData) => this.mapToChat(chatData)) ||
+        [];
 
       const total = count ?? 0;
       const hasMore = offset + chats.length < total;
 
       return { items: chats, total, hasMore };
     } catch (error) {
-      throw new Error(`Failed to get chat list : ${error instanceof Error ? error.message : "Unknown Error"}`);
+      throw new Error(
+        `Failed to get chat list : ${
+          error instanceof Error ? error.message : "Unknown Error"
+        }`
+      );
     }
   }
 
