@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React from "react";
+import Link from "next/link";
 import styles from "./page.module.css";
 import SharedPageLayout from "@/app/SharedPageLayout";
 import { useSignin } from "@/app/hooks/useSignin";
@@ -15,6 +16,7 @@ const {
   ["form-input"]: formInput,
   ["form-button"]: formButton,
   ["error-message"]: errorMessage,
+  ["signup-link"]: signupLink,
 } = styles;
 
 export default function SigninPage() {
@@ -46,7 +48,6 @@ export default function SigninPage() {
       <SharedPageLayout title="Sign in">
         <div className={formContainer}>
           <form className={signinForm} onSubmit={handleSubmit}>
-            <h3 className={formTitle}>Sign in</h3>
             <div className={formGroup}>
               <label htmlFor="userid" className={formLabel}>
                 ID
@@ -87,6 +88,12 @@ export default function SigninPage() {
               <button type="submit" className={formButton} disabled={isPending}>
                 Signin
               </button>
+            </div>
+
+            <div className={formGroup}>
+              <p className={signupLink}>
+                계정이 없으신가요? <Link href="/signup">회원가입하기</Link>
+              </p>
             </div>
           </form>
         </div>
