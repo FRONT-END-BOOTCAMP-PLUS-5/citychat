@@ -6,11 +6,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface City {
-  id: string; 
+  id: string;
   name: string;
-  image: string; 
+  image: string;
   description: string;
 }
+
+const ITEM_HEIGHT = 35;
+const ITEM_GAP = 10;
+const SLIDE_HEIGHT = ITEM_HEIGHT + ITEM_GAP;
 
 const SubSlider: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -19,11 +23,10 @@ const SubSlider: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Supabase에서 도시 목록 불러오기 (API 라우트 사용)
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await fetch("/api/cities"); 
+        const response = await fetch("/api/cities");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -37,71 +40,59 @@ const SubSlider: React.FC = () => {
       }
     };
     fetchCities();
-  }, []); // 컴포넌트 마운트 시 한 번만 실행
+  }, []);
 
-  // 스크롤 및 휠 이벤트 처리 통합 및 최적화
+  // 휠 이벤트로 인덱스 변경
   useEffect(() => {
     const container = scrollRef.current;
     if (!container || cities.length === 0) return;
 
     let wheelTimeout: NodeJS.Timeout | null = null;
 
-    // 스크롤 이벤트 핸들러
-    const handleScroll = () => {
-      const children = Array.from(container.children);
-      const scrollTop = container.scrollTop;
-
-      const active = children.findIndex((child) => {
-        const el = child as HTMLElement;
-        return el.offsetTop - scrollTop >= -10;
-      });
-
-      if (active >= 0 && active !== activeIndex) {
-        setActiveIndex(active);
-      }
-    };
-    // 휠 이벤트 핸들러 (debouncing 적용)
     const handleWheel = (e: WheelEvent) => {
-      e.preventDefault(); // 기본 스크롤 동작 방지
+      // 기본 스크롤 동작 방지
+      e.preventDefault();
 
-      if (wheelTimeout) return; // 이미 휠 이벤트 처리 중이면 무시
+      if (wheelTimeout) return;
 
-      if (e.deltaY > 0 && activeIndex < cities.length - 1) {
-        setActiveIndex((prev) => prev + 1);
-      } else if (e.deltaY < 0 && activeIndex > 0) {
-        setActiveIndex((prev) => prev - 1);
+      let newIndex = activeIndex;
+      let handledBySubSlider = false; // SubSlider가 이 이벤트를 처리했는지 여부
+
+      if (e.deltaY > 0) {
+        // 아래로 스크롤
+        if (activeIndex < cities.length - 1) {
+          newIndex = activeIndex + 1;
+          handledBySubSlider = true;
+        }
+      } else {
+        // 위로 스크롤
+        if (activeIndex > 0) {
+          newIndex = activeIndex - 1;
+          handledBySubSlider = true;
+        }
       }
 
-      // 휠 이벤트 발생 후 500ms 동안 추가 이벤트 무시
+      if (handledBySubSlider) {
+        setActiveIndex(newIndex);
+        e.stopPropagation(); // SubSlider가 스크롤을 처리했으므로 이벤트 전파 중지
+      } else {
+        // SubSlider가 더 이상 스크롤할 수 없는 경우 (맨 위 또는 맨 아래)
+        // 이벤트를 상위 (Home 컴포넌트)로 전파하도록 허용
+      }
+
       wheelTimeout = setTimeout(() => {
         wheelTimeout = null;
-      }, 700);
+      }, 300); // 디바운스
     };
 
-    container.addEventListener("scroll", handleScroll);
     container.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => {
-      container.removeEventListener("scroll", handleScroll);
       container.removeEventListener("wheel", handleWheel);
       if (wheelTimeout) clearTimeout(wheelTimeout);
     };
-  }, [activeIndex, cities]); 
-
-  useEffect(() => {
-    const container = scrollRef.current;
-    if (!container || cities.length === 0) return;
-
-    const target = container.children[activeIndex] as HTMLElement | undefined;
-    if (target) {
-      container.scrollTo({
-        top: target.offsetTop,
-        behavior: "smooth",
-      });
-    }
   }, [activeIndex, cities]);
 
-  // 네비게이션 클릭 핸들러
   const handleNavClick = useCallback((index: number) => {
     setActiveIndex(index);
   }, []);
@@ -122,18 +113,25 @@ const SubSlider: React.FC = () => {
     <div className={styles.appContainer}>
       <div className={styles.mainContentArea}>
         <div className={styles.verticalNavContainer}>
-          <div ref={scrollRef} className={styles.scrollSnapContainer}>
-            {cities.map((city, index) => (
-              <div
-                key={city.id || city.name} // id가 있다면 id를 key로 사용, 없으면 name
-                className={`${styles.cityNavItem} ${
-                  index === activeIndex ? styles.active : ""
-                }`}
-                onClick={() => handleNavClick(index)}
-              >
-                {city.name}
-              </div>
-            ))}
+          <div className={styles.scrollSnapContainer}>
+            <div
+              ref={scrollRef}
+              className={styles.scrollInner}
+              style={{
+                transform: `translateY(-${activeIndex * SLIDE_HEIGHT}px)`,
+                transition: "transform 0.3s ease",
+              }}
+            >
+              {cities.map((city, index) => (
+                <div
+                  key={city.id || city.name}
+                  className={`${styles.cityNavItem} ${index === activeIndex ? styles.active : ""}`}
+                  onClick={() => handleNavClick(index)}
+                >
+                  {city.name}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <div className={styles.welcomeSection}>
@@ -145,15 +143,17 @@ const SubSlider: React.FC = () => {
                   alt={currentCity.name}
                   width={250}
                   height={320}
-                  priority 
-                  unoptimized 
+                  priority
+                  unoptimized
                 />
               )}
             </div>
             <div className={styles.cardTextContainer}>
               <h1>{currentCity.name}에 오신 것을 환영합니다!</h1>
               <p>{currentCity.description}</p>
-              <Link href="" className={styles.exploreButton}>Explore</Link>
+              <Link href={`/cities/${currentCity.id}`} className={styles.exploreButton}>
+                Explore
+              </Link>
             </div>
           </div>
         </div>

@@ -1,0 +1,9 @@
+
+.card {
+    padding: 16px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 4px 8px #0000001a;
+    height: 110px;
+    line-height: 1.5;
+}

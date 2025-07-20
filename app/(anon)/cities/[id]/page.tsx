@@ -1,44 +1,40 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useCityStore } from "@/app/stores/useCitystore";
 import CityLoader from "@/app/components/CityLoader";
 import SharedPageLayout from "@/app/SharedPageLayout";
+import ChatButton from "@/app/(anon)/cities/[id]/components/ChatButton";
+import CategoryFilter from "@/app/(anon)/cities/[id]/components/CategoryFilter";
+import TourCard from "@/app/(anon)/cities/[id]/components/TourCard";
+
+interface TourItem {
+  rlteCtgrySclsNm: string;
+  rlteTatsNm: string;
+  areaNm: string;
+  rlteSignguNm: string;
+}
+
+interface City {
+  id: number;
+  name: string;
+  description: string;
+}
 
 const Tags = ["#날씨", "#음식", "#패션", "#꿀팁", "#문화", "#교통"];
-
-const activityCards = [
-  {
-    title: "도시에서 뭐하고 놀지 고민할 때",
-    description: "이걸 눌러서 확인하면 재밌는 걸 찾을 수 있어요!",
-  },
-  {
-    title: "현지인이 추천하는 핫플레이스",
-    description: "숨은 매력을 찾아보세요!",
-  },
-  {
-    title: "패션과 음식, 도시의 취향을 즐기자",
-    description: "취향 저격 코스를 소개해 드릴게요!",
-  },
-  {
-    title: "인기 명소 한눈에 보기",
-    description: "이번 여행은 이걸로 완성!",
-  },
-];
 
 export default function DetailPage() {
   const [hasMounted, setHasMounted] = useState(false);
   const params = useParams();
   const cityId = parseInt(params.id as string, 10);
-  //cities 정보 중 해당 도시 데이터 접근
-  const getCityById = useCityStore((state) => state.getCityById);
-  const currentCity = getCityById(cityId);
-  //tour/route.ts 공공데이터 저장
-  // const [tourList, setTourList] = useState<unknown[] | null>(null);
 
-  // SSR hydration mismatch 방지
+  const getCityById = useCityStore((state) => state.getCityById);
+  const currentCity: City | undefined = getCityById(cityId);
+
+  const [tourList, setTourList] = useState<TourItem[] | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+
   useEffect(() => {
     setHasMounted(true);
   }, []);
@@ -47,8 +43,8 @@ export default function DetailPage() {
     const fetchTourData = async () => {
       try {
         const res = await fetch(`/api/tour?id=${cityId}`);
-        const data = await res.json();
-        // setTourList(data); // 배열
+        const data: TourItem[] = await res.json();
+        setTourList(data);
         console.log("공공데이터", data);
       } catch (err) {
         console.error("관광 정보 로딩 실패:", err);
@@ -57,35 +53,50 @@ export default function DetailPage() {
     fetchTourData();
   }, [cityId]);
 
+  const categories = useMemo(() => {
+    if (!tourList) return [];
+    const unique = new Set(tourList.map((item) => item.rlteCtgrySclsNm));
+    return ["All", ...Array.from(unique)];
+  }, [tourList]);
+
+  const filteredTourList = useMemo(() => {
+    if (selectedCategory === "All") return tourList;
+    return tourList?.filter(
+      (item) => item.rlteCtgrySclsNm === selectedCategory
+    );
+  }, [tourList, selectedCategory]);
+
   if (!hasMounted) return null;
 
   const shouldLoadCity = !currentCity;
+
   return (
     <>
       {shouldLoadCity && <CityLoader />}
       {currentCity ? (
         <SharedPageLayout title={currentCity.name}>
+          <ChatButton cityId={cityId} />
+
           <section>
             <header>
               <p
                 style={{
                   marginBottom: "10px",
                   display: "inline-block",
-                  fontSize: "20px",
+                  fontSize: "16px",
                 }}
               >
                 {currentCity.description}
               </p>
-              <button style={{ float: "right", display: "inline-block" }}>
-                채팅 시작
-              </button>
             </header>
+
+            {/* 태그 목록 */}
             <div
               className="tagWrap"
               style={{
                 width: "200px",
                 textAlign: "center",
-                marginTop: "20px",
+                marginTop: "28px",
                 float: "left",
               }}
             >
@@ -115,40 +126,46 @@ export default function DetailPage() {
                 ))}
               </aside>
             </div>
+
+            {/* 필터 및 카드 */}
             <div
               style={{
                 width: "calc(100% - 220px)",
-                marginTop: "20px",
                 float: "left",
               }}
             >
-              <span style={{ marginLeft: "25px" }}>
-                내가 관심있을 만한 정보
-              </span>
-            </div>
-            <div
-              style={{
-                display: "grid",
-                gap: "16px",
-                gridTemplateColumns: "repeat(2, 1fr)",
-                padding: "20px",
-                height: "40vh",
-              }}
-            >
-              {activityCards.map((card, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    padding: "16px",
-                    border: "1px solid #ccc",
-                    borderRadius: "8px",
-                    background: "#fafafa",
-                  }}
-                >
-                  <h3>{card.title}</h3>
-                  <p>{card.description}</p>
-                </div>
-              ))}
+              <CategoryFilter
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onChange={setSelectedCategory}
+              />
+
+              <div
+                style={{
+                  display: "grid",
+                  gap: "16px",
+                  gridTemplateColumns: "repeat(2, 1fr)",
+                  padding: "20px",
+                  height: "40vh",
+                  overflowY: "auto",
+                }}
+              >
+                {filteredTourList && filteredTourList.length > 0 ? (
+                  filteredTourList.map((item, idx) => (
+                    <TourCard
+                      key={idx}
+                      rlteTatsNm={item.rlteTatsNm}
+                      areaNm={item.areaNm}
+                      rlteSignguNm={item.rlteSignguNm}
+                      rlteCtgrySclsNm={item.rlteCtgrySclsNm}
+                    />
+                  ))
+                ) : (
+                  <p style={{ gridColumn: "1 / -1", textAlign: "center" }}>
+                    선택한 분류의 정보가 없습니다.
+                  </p>
+                )}
+              </div>
             </div>
           </section>
         </SharedPageLayout>
@@ -160,4 +177,3 @@ export default function DetailPage() {
     </>
   );
 }
-

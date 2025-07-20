@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import styles from "./avatar.module.css";
 // Avatar 컴포넌트가 받을 props의 타입을 정의
