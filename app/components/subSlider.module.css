@@ -25,24 +25,7 @@
   overflow: hidden;
   height: 50vh;
 }
-/* 
-.verticalNavContainer {
-  width: 160px;
-  height: 700px;
-  overflow: hidden;
-  border-radius: 8px;
-  padding-right: 20px;
-} */
 
-
-/* .scrollSnapContainer {
-  display: flex;
-  flex-direction: column;
-  scroll-snap-type: y mandatory;
-  overflow-y: auto;
-  height: 100%;
-  gap: 20px;
-} */
 
 .verticalNavContainer {
   width: 160px;
@@ -51,7 +34,6 @@
   padding-right: 20px;
   position: relative;
   height: 320px;
-  /* 고정 높이로 보이는 영역 제한 */
 }
 
 .scrollSnapContainer {
@@ -60,6 +42,13 @@
   gap: 10px;
   transition: transform 0.3s ease-in-out;
   will-change: transform;
+  height: 5 * 100px;
+}
+
+.scrollInner {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
 }
 
 .cityNavItem {
@@ -83,7 +72,6 @@
 /* 현재 활성 아이템 */
 .active {
   color: #0070f3;
-  font-weight: bold;
   border-right: 3px solid #0070f3;
 }
 
@@ -91,9 +79,6 @@
 .active:hover {
   color: #0070f3;
 }
-
-
-
 
 /* welcome-section: 우측 콘텐츠 영역 */
 .welcomeSection {

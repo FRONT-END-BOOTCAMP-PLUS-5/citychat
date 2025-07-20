@@ -12,7 +12,7 @@ interface City {
   description: string;
 }
 
-const ITEM_HEIGHT = 100;
+const ITEM_HEIGHT = 35;
 const ITEM_GAP = 10;
 const SLIDE_HEIGHT = ITEM_HEIGHT + ITEM_GAP;
 
@@ -113,24 +113,25 @@ const SubSlider: React.FC = () => {
     <div className={styles.appContainer}>
       <div className={styles.mainContentArea}>
         <div className={styles.verticalNavContainer}>
-          <div
-            ref={scrollRef}
-            className={styles.scrollSnapContainer}
-            style={{
-              transform: `translateY(-${activeIndex * SLIDE_HEIGHT}px)`,
-            }}
-          >
-            {cities.map((city, index) => (
-              <div
-                key={city.id || city.name}
-                className={`${styles.cityNavItem} ${
-                  index === activeIndex ? styles.active : ""
-                }`}
-                onClick={() => handleNavClick(index)}
-              >
-                {city.name}
-              </div>
-            ))}
+          <div className={styles.scrollSnapContainer}>
+            <div
+              ref={scrollRef}
+              className={styles.scrollInner}
+              style={{
+                transform: `translateY(-${activeIndex * SLIDE_HEIGHT}px)`,
+                transition: "transform 0.3s ease",
+              }}
+            >
+              {cities.map((city, index) => (
+                <div
+                  key={city.id || city.name}
+                  className={`${styles.cityNavItem} ${index === activeIndex ? styles.active : ""}`}
+                  onClick={() => handleNavClick(index)}
+                >
+                  {city.name}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <div className={styles.welcomeSection}>
