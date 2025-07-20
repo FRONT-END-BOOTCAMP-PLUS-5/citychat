@@ -71,7 +71,7 @@ export class SbChatRepository implements ChatRepository {
 
       // 페이지네이션된 데이터 조회
       const { data, error } = await filteredDataQuery
-        .order("sent_at", { ascending: true })
+        .order("sent_at", { ascending: false })
         .range(offset, offset + limit - 1);
 
       if (error) throw new Error(error.message);

@@ -1,0 +1,264 @@
+.form-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-form {
+  color: #023047;
+  background-color: #fff;
+  padding: 1rem;
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-title {
+  width: 80%;
+  font-weight: 500;
+  text-align: start;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  width: 80%;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.form-input {
+  color: #000;
+  width: 100%;
+  background-color: #fff;
+  padding: 10px;
+  border: 0.1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-input::placeholder {
+  color: #aaa;
+}
+
+.form-button {
+  background-color: #023047;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.form-button:hover {
+  background-color: #034c6b;
+}
+
+.input-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.edit-button {
+  padding: 8px 12px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  width: 100%;
+}
+
+.info-display {
+  width: 100%;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  color: #495057;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+/* 모달 관련 스타일 */
+.modal-wrapper {
+  width: 100%;
+}
+
+.modal-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-form-group {
+  width: 90%;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+}
+
+.modal-form-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.modal-form-input {
+  color: #000;
+  width: 100%;
+  background-color: #fff;
+  padding: 10px;
+  border: 0.1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 0;
+}
+
+.modal-form-input::placeholder {
+  color: #aaa;
+}
+
+.modal-form-button {
+  background-color: #023047;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal-form-button:hover {
+  background-color: #034c6b;
+}
+
+.modal-input-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-edit-button {
+  padding: 8px 12px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  width: 100%;
+}
+
+.modal-input {
+  margin-bottom: 0;
+}
+
+.modal-buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.modal-button {
+  background-color: #023047;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+  min-width: 80px;
+}
+
+.modal-button:hover {
+  background-color: #034c6b;
+}
+
+.cancel-button {
+  background-color: #6c757d;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
+}
+
+.duplicate-message {
+  font-size: 12px;
+  margin: 0;
+  margin-top: 0.5rem;
+  padding-left: 0.25rem;
+  height: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.duplicate-message-success {
+  color: green;
+}
+
+.duplicate-message-error {
+  color: red;
+}
+
+@media (min-width: 480px) {
+  .profile-form {
+    border: 0.1px solid #ccc;
+    border-radius: 8px;
+    padding: 2rem;
+    min-width: 400px;
+  }
+
+  .form-group {
+    width: 80%;
+  }
+
+  .input-row {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .edit-button {
+    width: auto;
+    justify-content: flex-start;
+  }
+
+  /* 모달 내부 웹 스타일 */
+  .modal-form-group {
+    width: 80%;
+  }
+
+  .modal-input-row {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .modal-edit-button {
+    width: auto;
+    justify-content: flex-start;
+  }
+}
