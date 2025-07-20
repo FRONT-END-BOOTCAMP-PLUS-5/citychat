@@ -87,44 +87,10 @@ export default function DetailPage() {
                 {currentCity.description}
               </p>
             </header>
-            
-            {/* 인기 태그 */}
-            {/* <div
-              className="tagWrap"
-              style={{
-                width: "200px",
-                textAlign: "center",
-                marginTop: "28px",
-                float: "left",
-              }}
-            >
-              <span>내가 관심있는 태그</span>
-              <aside
-                style={{
-                  width: "200px",
-                  display: "grid",
-                  gridTemplateColumns: "repeat(2, 1fr)",
-                  padding: "10px",
-                  borderRadius: "8px",
-                  float: "left",
-                }}
-              >
-                {Tags.map((tag, idx) => (
-                  <span
-                    key={idx}
-                    style={{
-                      margin: "8px",
-                      padding: "6px 12px",
-                      background: "#eee",
-                      borderRadius: "15px",
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </aside>
-            </div> */}
 
+            {/* 인기 태그 */}
+            <TopTagList roomId={Number(cityId)} />
+        
             <div
               style={{
                 display: "flex",

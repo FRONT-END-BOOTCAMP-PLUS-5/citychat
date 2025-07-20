@@ -1,19 +1,38 @@
 .empty-container {
-    height: 60%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #6c757d;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #6c757d;
 }
 
 .empty-container h3 {
-    margin: 1rem 0 0.5rem 0;
-    color: #023047;
+  margin: 1rem 0 0.5rem 0;
+  color: #023047;
 }
 
 .empty-container p {
-    margin: 0;
-    font-size: 0.875rem;
+  margin: 0;
+  font-size: 0.875rem;
+  padding: 2vh;
 }
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px 0px,
+    rgba(0, 0, 0, 0.02) 0px 1px 4px 0px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.menu-item:hover {
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+}
+
