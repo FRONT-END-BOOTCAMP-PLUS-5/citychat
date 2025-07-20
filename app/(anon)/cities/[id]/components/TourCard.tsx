@@ -17,9 +17,9 @@ const TourCard: React.FC<TourCardProps> = ({
 }) => {
   return (
     <div className={styles.card}>
-      <h3>{rlteTatsNm}</h3>
-      <p>지역: {areaNm} {rlteSignguNm}</p>
-      <p>분류: {rlteCtgrySclsNm}</p>
+      <h3 className={styles.title}>{rlteTatsNm}</h3>
+      <p className={styles.description}>지역: {areaNm} {rlteSignguNm}</p>
+      <p className={styles.description}>분류: {rlteCtgrySclsNm}</p>
     </div>
   );
 };

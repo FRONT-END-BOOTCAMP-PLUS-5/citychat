@@ -77,11 +77,12 @@ export default function DetailPage() {
           <ChatButton cityId={cityId} />
           <section>
             <header>
-              <p
+              <p 
                 style={{
                   marginBottom: "10px",
                   display: "inline-block",
                   fontSize: "16px",
+                  color: "#4b5563",
                 }}
               >
                 {currentCity.description}

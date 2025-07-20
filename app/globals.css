@@ -1,11 +1,11 @@
 /* 폰트 수정해야 하는 부분 1▼ */
-@font-face {
+/* @font-face {
   font-family: "Paperlogy";
   src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-4regular.woff2")
     format("woff2");
   font-style: normal;
   unicode-range: U+0041-005A, U+0061-007A;
-}
+} */
 
 @font-face {
   font-family: "Pretendard";
