@@ -41,7 +41,6 @@ export default function ChatLog({
   useEffect(() => {
     if (incomingMessages.length > renderedMessages.length) {
       const newMessages = incomingMessages.slice(renderedMessages.length);
-      console.log(newMessages);
       setRenderedMessages((prev) => [...prev, ...newMessages]);
     }
   }, [incomingMessages]);
@@ -141,15 +140,14 @@ export default function ChatLog({
                   messageRefs.current.set(numericId, el);
                 }
               }}
-              className={`${styles.messageItem} ${
-                isHighlighted ? styles.highlighted : ""
-              }`}
+              className={`${styles.messageItem}`}
             >
               <span className={styles.sender}>
                 {isMe ? "" : msg.senderNickname}
               </span>
               {msg.parentChatId != null &&
                 (() => {
+                  console.log("parentChatId", msg.parentChatId);
                   const repliedToMsg = renderedMessages.find(
                     (m) => m.id === msg.parentChatId
                   );
@@ -196,7 +194,7 @@ export default function ChatLog({
                 <span
                   className={`${styles.messageContent} ${
                     isMe ? styles.myMessage : styles.otherMessage
-                  }`}
+                  } ${isHighlighted ? styles.highlighted : ""}`}
                 >
                   <span
                     onClick={() => handleReplyWithScroll(msg)}
