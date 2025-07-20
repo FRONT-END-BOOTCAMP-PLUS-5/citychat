@@ -21,6 +21,7 @@ interface City {
   id: number;
   name: string;
   description: string;
+  image: string;
 }
 
 export default function DetailPage() {
@@ -73,7 +74,7 @@ export default function DetailPage() {
     <>
       {shouldLoadCity && <CityLoader />}
       {currentCity ? (
-        <SharedPageLayout title={currentCity.name}>
+        <SharedPageLayout title={currentCity.name} imgUrl={currentCity.image}>
           <ChatButton cityId={cityId} />
           <section>
             <header>

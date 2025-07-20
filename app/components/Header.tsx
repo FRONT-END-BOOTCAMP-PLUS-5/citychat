@@ -9,8 +9,6 @@ import { useEffect } from "react";
 import { useUserStore } from "@/app/stores/useUserStore";
 import { useSignout } from "@/app/hooks/useSignout";
 import { useCityStore } from "../stores/useCitystore";
-import { GetCityListUseCase } from "@/backend/application/cities/usecases/GetCityListUseCase";
-import { SbCityRepository } from "@/backend/infrastructure/repositories/SbCityRepository";
 
 // ─────── 페이지 목록 ───────
 const pages = [
@@ -41,9 +39,12 @@ function Header() {
   // Supabase 정보 스토어 저장
   useEffect(() => {
     const fetchCities = async () => {
-      const useCase = new GetCityListUseCase(new SbCityRepository());
-      const cities = await useCase.execute();
-      addCities(cities);
+      try {
+        const response = await fetch("/api/cities");
+        const data = await response.json();
+        addCities(data);
+      } catch (error) {
+      }
     };
 
     fetchCities();
