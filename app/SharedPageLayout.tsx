@@ -27,6 +27,7 @@ export default function SharedPageLayout({
               <h1 className="page-title">{title}</h1>
               {children}
             </div>
+            <Footer />
           </div>
         </main>
       </div>

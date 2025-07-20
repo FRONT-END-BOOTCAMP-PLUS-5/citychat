@@ -1,23 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
 import SharedPageLayout from "@/app/SharedPageLayout";
 import { useSignup } from "@/app/hooks/useSignup";
+import { validators } from "@/config/validation";
+import FormField from "./components/FormField";
+import DuplicateField from "./components/DuplicateField";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 const {
   ["form-container"]: formContainer,
   ["signup-form"]: signupForm,
   ["form-group"]: formGroup,
-  ["form-label"]: formLabel,
-  ["form-input"]: formInput,
   ["form-button"]: formButton,
-  ["input-row"]: inputRow,
-  ["duplicate-check-button"]: duplicateCheckButton,
-  ["duplicate-message"]: duplicateMessage,
-  ["duplicate-message-success"]: duplicateMessageSuccess,
-  ["duplicate-message-error"]: duplicateMessageError,
   ["error-message"]: errorMessage,
   ["signin-link"]: signinLink,
 } = styles;
@@ -25,54 +21,89 @@ const {
 export default function SignupPage() {
   const { mutate: signup, isPending, error } = useSignup();
   const [validationError, setValidationError] = useState<string>("");
-  const [duplicateStatus, setDuplicateStatus] = useState<{
-    userId: { checked: boolean; isDuplicate: boolean; message: string };
-    nickname: { checked: boolean; isDuplicate: boolean; message: string };
-    email: { checked: boolean; isDuplicate: boolean; message: string };
+  const [fieldErrors, setFieldErrors] = useState<{
+    nickname: string;
+    userId: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
   }>({
-    userId: { checked: false, isDuplicate: false, message: "" },
-    nickname: { checked: false, isDuplicate: false, message: "" },
-    email: { checked: false, isDuplicate: false, message: "" },
+    nickname: "",
+    userId: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [duplicateStatus, setDuplicateStatus] = useState<{
+    userId: { checked: boolean; isDuplicate: boolean };
+    nickname: { checked: boolean; isDuplicate: boolean };
+    email: { checked: boolean; isDuplicate: boolean };
+  }>({
+    userId: { checked: false, isDuplicate: false },
+    nickname: { checked: false, isDuplicate: false },
+    email: { checked: false, isDuplicate: false },
+  });
+  const [formData, setFormData] = useState({
+    nickname: "",
+    userId: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
-  async function checkDuplicate(field: "userId" | "nickname" | "email", value: string) {
-    if (!value.trim()) {
-      setValidationError(`${field}를 입력해주세요.`);
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/user/duplicate?field=${field}&value=${encodeURIComponent(value)}`);
-      const result = await response.json();
-
-      setDuplicateStatus(prev => ({
-        ...prev,
-        [field]: {
-          checked: true,
-          isDuplicate: result.isDuplicate,
-          message: result.message
+  // 필드별 입력 핸들러
+  const handleFieldChange = (field: keyof typeof formData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    
+    let error = "";
+    switch (field) {
+      case "nickname":
+        error = value ? validators.nickname(value) : "";
+        break;
+      case "userId":
+        error = value ? validators.userId(value) : "";
+        break;
+      case "email":
+        error = value ? validators.email(value) : "";
+        break;
+      case "password":
+        error = value ? validators.password(value) : "";
+        // 비밀번호가 변경되면 확인 비밀번호도 다시 검증
+        if (formData.confirmPassword) {
+          const confirmError = validators.confirmPassword(formData.confirmPassword, value);
+          setFieldErrors(prev => ({ ...prev, confirmPassword: confirmError }));
         }
-      }));
-    } catch (error) {
-      setValidationError("중복 확인 중 오류가 발생했습니다.");
+        break;
+      case "confirmPassword":
+        error = value ? validators.confirmPassword(value, formData.password) : "";
+        break;
     }
-  }
+    
+    setFieldErrors(prev => ({ ...prev, [field]: error }));
+    
+  };
+
+  const handleDuplicateResult = useCallback((field: string, isChecked: boolean, isDuplicate: boolean) => {
+    setDuplicateStatus(prev => ({
+      ...prev,
+      [field]: { checked: isChecked, isDuplicate }
+    }));
+  }, []);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
     setValidationError(""); // 에러 초기화
     
-    const formData = new FormData(event.currentTarget);
-    const data = {
-      nickname: formData.get("nickname") as string,
-      userId: formData.get("userid") as string,
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-      confirmPassword: formData.get("confirm-password") as string,
-    };
+    // 필드 에러 확인
+    const hasFieldErrors = Object.values(fieldErrors).some(error => error !== "");
+    if (hasFieldErrors) {
+      setValidationError("입력 정보를 확인해주세요.");
+      return;
+    }
 
-    if (data.password !== data.confirmPassword) {
-      setValidationError("비밀번호가 일치하지 않습니다.");
+    // 필수 필드 확인
+    if (!formData.nickname || !formData.userId || !formData.email || !formData.password || !formData.confirmPassword) {
+      setValidationError("모든 필드를 입력해주세요.");
       return;
     }
 
@@ -92,7 +123,7 @@ export default function SignupPage() {
     }
 
     // confirmPassword 제외하고 회원가입 데이터 전달
-    const { confirmPassword, ...signupData } = data;
+    const { confirmPassword, ...signupData } = formData;
     signup(signupData);
   }
 
@@ -100,119 +131,76 @@ export default function SignupPage() {
     <SharedPageLayout title="Sign up">
       <div className={formContainer}>
         <form className={signupForm} onSubmit={handleSubmit}>
-          <div className={formGroup}>
-            <label htmlFor="nickname" className={formLabel}>Nickname</label>
-            <div className={inputRow}>
-              <input
-                type="text"
-                id="nickname"
-                name="nickname"
-                className={formInput}
-                placeholder="Enter Nickname"
-                required
-                onChange={() => setDuplicateStatus(prev => ({ ...prev, nickname: { checked: false, isDuplicate: false, message: "" } }))}
-              />
-              <button
-                type="button"
-                className={`${formButton} ${duplicateCheckButton}`}
-                onClick={() => {
-                  const input = document.getElementById("nickname") as HTMLInputElement;
-                  checkDuplicate("nickname", input.value);
-                }}
-              >
-                중복확인
-              </button>
-            </div>
-            {duplicateStatus.nickname.checked && (
-              <p className={`${duplicateMessage} ${duplicateStatus.nickname.isDuplicate ? duplicateMessageError : duplicateMessageSuccess}`}>
-                {duplicateStatus.nickname.message}
-              </p>
-            )}
-          </div>
+          <DuplicateField
+            label="Nickname"
+            id="nickname"
+            name="nickname"
+            type="text"
+            placeholder="Enter Nickname"
+            value={formData.nickname}
+            onChange={(value) => handleFieldChange("nickname", value)}
+            field="nickname"
+            error={fieldErrors.nickname}
+            required
+            styles={styles}
+            onDuplicateResult={handleDuplicateResult}
+          />
 
-          <div className={formGroup}>
-            <label htmlFor="userid" className={formLabel}>ID</label>
-            <div className={inputRow}>
-              <input
-                type="text"
-                id="userid"
-                name="userid"
-                className={formInput}
-                placeholder="Enter ID"
-                required
-                onChange={() => setDuplicateStatus(prev => ({ ...prev, userId: { checked: false, isDuplicate: false, message: "" } }))}
-              />
-              <button
-                type="button"
-                className={`${formButton} ${duplicateCheckButton}`}
-                onClick={() => {
-                  const input = document.getElementById("userid") as HTMLInputElement;
-                  checkDuplicate("userId", input.value);
-                }}
-              >
-                중복확인
-              </button>
-            </div>
-            {duplicateStatus.userId.checked && (
-              <p className={`${duplicateMessage} ${duplicateStatus.userId.isDuplicate ? duplicateMessageError : duplicateMessageSuccess}`}>
-                {duplicateStatus.userId.message}
-              </p>
-            )}
-          </div>
+          <DuplicateField
+            label="ID"
+            id="userid"
+            name="userid"
+            type="text"
+            placeholder="Enter ID"
+            value={formData.userId}
+            onChange={(value) => handleFieldChange("userId", value)}
+            field="userId"
+            error={fieldErrors.userId}
+            required
+            styles={styles}
+            onDuplicateResult={handleDuplicateResult}
+          />
 
-          <div className={formGroup}>
-            <label htmlFor="email" className={formLabel}>Email</label>
-            <div className={inputRow}>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className={formInput}
-                placeholder="Enter Email"
-                required
-                onChange={() => setDuplicateStatus(prev => ({ ...prev, email: { checked: false, isDuplicate: false, message: "" } }))}
-              />
-              <button
-                type="button"
-                className={`${formButton} ${duplicateCheckButton}`}
-                onClick={() => {
-                  const input = document.getElementById("email") as HTMLInputElement;
-                  checkDuplicate("email", input.value);
-                }}
-              >
-                중복확인
-              </button>
-            </div>
-            {duplicateStatus.email.checked && (
-              <p className={`${duplicateMessage} ${duplicateStatus.email.isDuplicate ? duplicateMessageError : duplicateMessageSuccess}`}>
-                {duplicateStatus.email.message}
-              </p>
-            )}
-          </div>
+          <DuplicateField
+            label="Email"
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Enter Email"
+            value={formData.email}
+            onChange={(value) => handleFieldChange("email", value)}
+            field="email"
+            error={fieldErrors.email}
+            required
+            styles={styles}
+            onDuplicateResult={handleDuplicateResult}
+          />
 
-          <div className={formGroup}>
-            <label htmlFor="password" className={formLabel}>Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className={formInput}
-              placeholder="Enter Password"
-              required
-            />
-          </div>
+          <FormField
+            label="Password"
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Enter Password"
+            value={formData.password}
+            onChange={(value) => handleFieldChange("password", value)}
+            error={fieldErrors.password}
+            required
+            styles={styles}
+          />
 
-          <div className={formGroup}>
-            <label htmlFor="confirm-password" className={formLabel}>Confirm Password</label>
-            <input
-              type="password"
-              id="confirm-password"
-              name="confirm-password"
-              className={formInput}
-              placeholder="Confirm Password"
-              required
-            />
-          </div>
+          <FormField
+            label="Confirm Password"
+            id="confirm-password"
+            name="confirm-password"
+            type="password"
+            placeholder="Confirm Password"
+            value={formData.confirmPassword}
+            onChange={(value) => handleFieldChange("confirmPassword", value)}
+            error={fieldErrors.confirmPassword}
+            required
+            styles={styles}
+          />
 
           <div className={formGroup} style={{ minHeight: "1rem"}}>
             {(error || validationError) && (
@@ -224,7 +212,7 @@ export default function SignupPage() {
 
           <div className={formGroup}>
             <button type="submit" className={formButton} style={{ width: "100%" }} disabled={isPending}>
-              Sign Up
+              { isPending ? <LoadingSpinner size={8} /> : "Sign Up" }
             </button>
           </div>
           
