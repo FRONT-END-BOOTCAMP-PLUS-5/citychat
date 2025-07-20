@@ -41,6 +41,7 @@ export default function ChatLog({
   useEffect(() => {
     if (incomingMessages.length > renderedMessages.length) {
       const newMessages = incomingMessages.slice(renderedMessages.length);
+      console.log(newMessages);
       setRenderedMessages((prev) => [...prev, ...newMessages]);
     }
   }, [incomingMessages]);
@@ -63,6 +64,9 @@ export default function ChatLog({
   useEffect(() => {
     if (scrollByReply) {
       setScrollByReply(false);
+      return;
+    }
+    if (searchResultIds.length > 0) {
       return;
     }
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -147,12 +151,24 @@ export default function ChatLog({
               </span>
               {msg.parentChatId != null &&
                 (() => {
-                  console.log("parentChatId", msg.parentChatId);
-                  const repliedToMsg = renderedMessages.find(
-                    (m) => m.id === msg.parentChatId
-                  );
-                  if (!repliedToMsg) return null;
+                  const repliedToMsg =
+                    renderedMessages.find((m) => m.id === msg.parentChatId) ??
+                    incomingMessages.find((m) => m.id === msg.parentChatId);
 
+                  console.log("📌 현재 msg.id:", msg.id);
+                  console.log("📌 msg.parentChatId:", msg.parentChatId);
+                  console.log(
+                    "📌 renderedMessages:",
+                    renderedMessages.map((m) => m.id)
+                  );
+                  console.log(
+                    "📌 incomingMessages:",
+                    incomingMessages.map((m) => m.id)
+                  );
+
+                  if (!repliedToMsg) {
+                    return null;
+                  }
                   return (
                     <div
                       className={`${styles.replyBox} ${

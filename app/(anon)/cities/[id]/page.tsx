@@ -23,8 +23,6 @@ interface City {
   description: string;
 }
 
-const Tags = ["#날씨", "#음식", "#패션", "#꿀팁", "#문화", "#교통"];
-
 export default function DetailPage() {
   const [hasMounted, setHasMounted] = useState(false);
   const params = useParams();
@@ -89,7 +87,7 @@ export default function DetailPage() {
                 {currentCity.description}
               </p>
             </header>
-            
+
             {/* 인기 태그 */}
             {/* <div
               className="tagWrap"
