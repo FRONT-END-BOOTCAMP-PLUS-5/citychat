@@ -33,7 +33,6 @@ export default function ChatRoom() {
       const data: Message[] = await res.json();
       setMessages(data);
     };
-
     fetchInitialMessages();
   }, [roomId]);
 
@@ -55,6 +54,7 @@ export default function ChatRoom() {
     };
   }, [roomId]);
 
+  // 채팅 송신
   const handleSend = (
     content: string,
     tags: string[],
@@ -70,7 +70,6 @@ export default function ChatRoom() {
     socketRef.current?.emit("sendMessage", message);
   };
 
-  // 채팅 송신
   const handleReply = (msg: Message) => {
     setSearchResultIds([]);
     setCurrentSearchIndex(0);
