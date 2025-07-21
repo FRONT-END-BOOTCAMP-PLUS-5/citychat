@@ -21,7 +21,7 @@ export const useCityStore = create<CityStore>()(
     persist(
       (set, get) => ({
         cities: [],
-        getCityById: (id) => get().cities.find((c) => c.id === id),
+        getCityById: (id) => get().cities.find((c) => c.id == id),
         addCity: (city) =>
           set((state) => {
             const exists = state.cities.some((c) => c.id === city.id);
@@ -29,12 +29,11 @@ export const useCityStore = create<CityStore>()(
           }),
         addCities: (newCities) =>
           set((state) => {
-            
             // newCities가 배열인지 확인
             if (!Array.isArray(newCities)) {
               return state;
             }
-            
+
             const existingIds = new Set(state.cities.map((c) => c.id));
             const filtered = newCities.filter(
               (city) => !existingIds.has(city.id)
