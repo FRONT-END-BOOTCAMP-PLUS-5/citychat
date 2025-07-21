@@ -46,12 +46,12 @@ export default function MyChatPage() {
     { id: "all", name: "전체" },
     ...cities
       .sort((a, b) => {
-        return a.id as number - b.id as number;
+        return Number(a.id) - Number(b.id);
       })
       .map((city) => ({
         id: city.id.toString(),
         name: city.name,
-        chatroom_id: city.id, // cities의 id가 chatRoomId와 동일
+        chatroom_id: Number(city.id), // cities의 id가 chatRoomId와 동일
       })),
   ];
 
