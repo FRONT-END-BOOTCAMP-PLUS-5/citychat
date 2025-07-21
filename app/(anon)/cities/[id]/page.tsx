@@ -19,16 +19,16 @@ interface TourItem {
 }
 
 interface City {
-  id: number;
+  id: string;
   name: string;
   description: string;
-  image: string;
+  image?: string;
 }
 
 export default function DetailPage() {
   const [hasMounted, setHasMounted] = useState(false);
   const params = useParams();
-  const cityId = parseInt(params.id as string, 10);
+  const cityId = params.id as string;
 
   const getCityById = useCityStore((state) => state.getCityById);
   const currentCity: City | undefined = getCityById(cityId);
@@ -46,7 +46,6 @@ export default function DetailPage() {
         const res = await fetch(`/api/tour?id=${cityId}`);
         const data: TourItem[] = await res.json();
         setTourList(data);
-        console.log("공공데이터", data);
       } catch (err) {
         console.error("관광 정보 로딩 실패:", err);
       }
