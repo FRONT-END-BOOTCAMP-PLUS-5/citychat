@@ -1,53 +1,6 @@
-/* slick 전역 클래스 오버라이드 */
-/* :global(.slick-list) {
-  margin: 0 -50px;
-} */
-
-/* 슬라이드 기본 카드 스타일 */
-/* :global(.slick-slide) h3 {
-  background: #9bc7f6;
-  color: #333;
-  font-size: 36px;
-  line-height: 100px;
-  margin: 20px 10px;
-  padding: 2%;
-  position: relative;
-  text-align: center;
-  transition: transform 0.3s ease, z-index 0.3s ease, background 0.3s,
-    color 0.3s, opacity 0.3s;
-  z-index: 1;
-  opacity: 0.5;
-  width: 300px;
-  height: 380px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
-
-/* 가운데 카드 확대 효과 */
-/* :global(.slick-center) h3 {
-  transform: scale(1.1) translateZ(0.01px);
-  z-index: 10;
-  background: #007bff;
-  color: #fff;
-  opacity: 1;
-  border-radius: 20px;
-} */
-
-/* Section컴포넌트 relative */
-/* .customWrapper{
-  position: absolute;
-  right: 0;
-  bottom: -10px;
-} */
-
-.sliderWrap{
-  width: 900px; 
+.sliderWrap {
+  width: 900px;
   height: 450px;
-  /* overflow: hidden; */
-  /* margin-top: 120px; */
-  /* margin-left: 35%; */
 }
 
 .sliderContainer {
@@ -80,10 +33,8 @@
   object-fit: cover;
 }
 
-
-
 .cardActive {
-  transform: scale(1.1) ;
+  transform: scale(1.1);
   z-index: 10;
   /* background: #007bff; */
   color: #fff;
@@ -109,7 +60,6 @@
   position: relative;
 }
 
-
 .prev {
   left: -40px;
 }
@@ -130,11 +80,10 @@
   padding: 5px 20px;
   border-radius: 8px;
   height: 50px;
-  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .cityName {
-  color: white;
+  color: rgba(223, 220, 220, 0.777);
   font-size: 1.5rem;
   margin: 0;
 }
@@ -154,16 +103,3 @@
   transform: translateX(3px);
 }
 
-/* 반응형 */
-/* @media (max-width: 768px) {
-  :global(.slick-list) {
-    margin: 0 -20px;
-  }
-
-  :global(.slick-slide) h3 {
-    width: 240px;
-    height: 300px;
-    font-size: 28px;
-    line-height: 80px;
-  }
-} */

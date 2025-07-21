@@ -3,18 +3,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */
   padding: 20px;
   box-sizing: border-box;
   height: 65vh;
   margin: 10vh 20vh;
   border-radius: 10px;
+  color: #333;
 }
 
 /* main-content-area: 주요 콘텐츠 영역 */
 .mainContentArea {
   display: flex;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.4);
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -25,7 +26,6 @@
   overflow: hidden;
   height: 50vh;
 }
-
 
 .verticalNavContainer {
   width: 160px;
@@ -61,29 +61,29 @@
   cursor: pointer;
   color: #4b5563;
   transition: color 0.3s, background-color 0.3s;
-  font-size: 22px;
+  font-size: 1.5rem;
 }
 
-.navItemWrap{
+.navItemWrap {
   height: 1000px;
   margin: auto 0;
 }
 
 /* 현재 활성 아이템 */
 .active {
-  color: #ffd700;
-  border-right: 3px solid #ffd700;
+  color: #ffb803b4;
+  border-right: 1px solid #ffb703;
 }
 
 /* 활성화된 항목에 hover 시 텍스트 색상을 유지 */
 .active:hover {
-  color: #ffd700;
+  color: #ffb803b4;
 }
 
 /* welcome-section: 우측 콘텐츠 영역 */
 .welcomeSection {
   flex: 1;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.3);
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
@@ -108,46 +108,47 @@
   min-height: 40px;
   padding: 24px;
   flex-wrap: nowrap;
-  max-width: 800px;
+  max-width: 50vw;
   height: 80%;
 }
 
 /* 이미지 들어가는 영역 */
 .imageWrapper {
   flex-shrink: 0;
-  width: 250px;
-  height: 320px;
-  overflow: hidden;
-  border-radius: 20px;
+  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cardImage {
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 20px;
 }
 
 .cardTextContainer {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   min-height: 300px;
   width: 100%;
   height: 320px;
+  align-items: center;
 }
 
 .cardTextContainer p {
   display: block;
-  font-size: 14px;
+  font-size: 1rem;
   line-height: 1.3;
-  color: #4b5563;
+  color: #666;
   margin-bottom: 20px;
   min-height: 150px;
 }
 
 .exploreButton {
   background-color: #ffd700;
-  color: #4b5563;
+  color: #333;
   border: none;
   border-radius: 30px;
   padding: 15px 30px;
@@ -155,7 +156,7 @@
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  align-self: flex-start;
+  /* align-self: flex-start; */
   white-space: nowrap;
 }
 
@@ -218,8 +219,7 @@
   }
 
   .cardTextContainer p {
-    font-size: 16px;
-    margin-bottom: 15px;
+    font-size: 1rem;
   }
 
   .exploreButton {
@@ -228,5 +228,42 @@
   }
 }
 
-/*  반응형 */
+@media (max-width: 480px) {
+  .brickBackground {
+    padding: 20px;
+  }
+
+  .mainContentArea {
+    padding: 10px;
+  }
+
+  .verticalNavContainer {
+    height: 150px;
+  }
+
+  .cityNavItem {
+    font-size: 18px;
+  }
+
+  .welcomeSection h1 {
+    font-size: 30px;
+  }
+
+  .cardImage {
+    height: 180px;
+  }
+
+  .cardTextContainer {
+    padding: 15px;
+  }
+
+  .cardTextContainer p {
+    font-size: 15px;
+  }
+
+  .exploreButton {
+    font-size: 15px;
+    padding: 10px 20px;
+  }
+}
 

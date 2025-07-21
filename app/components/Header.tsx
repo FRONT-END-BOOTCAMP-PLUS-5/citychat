@@ -54,7 +54,6 @@ function Header() {
         console.log(errormessage);
       }
     };
-
     fetchCities();
   }, [addCities]);
 

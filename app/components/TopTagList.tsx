@@ -1,7 +1,9 @@
 "use client";
 
+import { Hash } from "lucide-react";
 import { useEffect, useState } from "react";
-import styles from "./TopTagList.module.css"; // ✅ CSS 모듈 가져오기
+import styles from "./TopTagList.module.css";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 interface TopTag {
   tag: string;
@@ -54,12 +56,26 @@ export default function TopTagList({ roomId, onSearchResults }: Props) {
     }
   };
 
-  if (loading) return <p>불러오는 중...</p>;
-  if (tags.length === 0) return <p>인기 태그가 아직 없어요 😢</p>;
+  if (loading)
+    return (
+      <div className={styles.loading}>
+        <LoadingSpinner size={10} />
+      </div>
+    );
+  if (tags.length === 0)
+    return (
+      <div className={styles.emptyContainer}>
+        <Hash size={18} />
+        <p>#해시태그를 보내보세요</p>
+      </div>
+    );
 
   return (
     <div className={styles.wrapper}>
-      <h3 className={styles.title}>🔥 인기 태그</h3>
+      <div className={styles.titleWrap}>
+        <Hash size={18} color="#252a31" />
+        <h3 className={styles.title}> 인기 태그</h3>
+      </div>
       <ul className={styles.tagList}>
         {tags.map((tagObj, i) => (
           <li

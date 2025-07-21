@@ -73,7 +73,7 @@ export default function ChatLog({
       setRenderedMessages(adaptedMessages);
       setTimeout(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-      }, 500);
+      }, 100);
     }
   }, [searchResultIds, adaptedMessages]);
 
@@ -83,7 +83,7 @@ export default function ChatLog({
       setRenderedMessages(adaptedMessages);
       setTimeout(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-      }, 500);
+      }, 100);
     }
   }, [searchResultIds, adaptedMessages]);
 
@@ -129,7 +129,7 @@ export default function ChatLog({
       } else {
         // console.warn("❌ ref 없음:", targetId);
       }
-    }, 500);
+    }, 100);
   }, [currentIndex, searchResultIds]);
 
   // 내가 작성한 메세지로 스크롤 이동
