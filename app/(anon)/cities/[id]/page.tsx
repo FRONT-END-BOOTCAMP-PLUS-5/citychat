@@ -46,7 +46,6 @@ export default function DetailPage() {
         const res = await fetch(`/api/tour?id=${cityId}`);
         const data: TourItem[] = await res.json();
         setTourList(data);
-        console.log("공공데이터", data);
       } catch (err) {
         console.error("관광 정보 로딩 실패:", err);
       }
