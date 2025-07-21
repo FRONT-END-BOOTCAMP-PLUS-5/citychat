@@ -20,10 +20,11 @@ const ChatButton: React.FC<ChatButtonProps> = ({ cityId }) => {
   return (
     <div className={styles.buttonWrap}>
       <button className={styles.chatButton} onClick={handleClick}>
-      Start Chat
+        Start Chat
       </button>
     </div>
   );
 };
 
 export default ChatButton;
+
