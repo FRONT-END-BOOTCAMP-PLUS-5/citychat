@@ -24,6 +24,7 @@ const SubSlider: React.FC = () => {
   const [cities, setCities] = useState<City[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -76,10 +77,7 @@ const SubSlider: React.FC = () => {
 
       if (handledBySubSlider) {
         setActiveIndex(newIndex);
-        e.stopPropagation(); // SubSlider가 스크롤을 처리했으므로 이벤트 전파 중지
-      } else {
-        // SubSlider가 더 이상 스크롤할 수 없는 경우 (맨 위 또는 맨 아래)
-        // 이벤트를 상위 (Home 컴포넌트)로 전파하도록 허용
+        e.stopPropagation();
       }
 
       wheelTimeout = setTimeout(() => {
@@ -165,3 +163,4 @@ const SubSlider: React.FC = () => {
 };
 
 export default SubSlider;
+

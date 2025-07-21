@@ -228,41 +228,5 @@
   }
 }
 
-@media (max-width: 480px) {
-  .brickBackground {
-    padding: 20px;
-  }
+/*  반응형 */
 
-  .mainContentArea {
-    padding: 10px;
-  }
-
-  .verticalNavContainer {
-    height: 150px;
-  }
-
-  .cityNavItem {
-    font-size: 18px;
-  }
-
-  .welcomeSection h1 {
-    font-size: 30px;
-  }
-
-  .cardImage {
-    height: 180px;
-  }
-
-  .cardTextContainer {
-    padding: 15px;
-  }
-
-  .cardTextContainer p {
-    font-size: 15px;
-  }
-
-  .exploreButton {
-    font-size: 15px;
-    padding: 10px 20px;
-  }
-}
