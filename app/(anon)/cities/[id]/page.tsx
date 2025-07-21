@@ -9,6 +9,7 @@ import { useCityStore } from "@/app/stores/useCitystore";
 import TourCard from "@/app/(anon)/cities/[id]/components/TourCard";
 import ChatButton from "@/app/(anon)/cities/[id]/components/ChatButton";
 import CategoryFilter from "@/app/(anon)/cities/[id]/components/CategoryFilter";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 interface TourItem {
   rlteCtgrySclsNm: string;
@@ -78,11 +79,12 @@ export default function DetailPage() {
           <ChatButton cityId={cityId} />
           <section>
             <header>
-              <p
+              <p 
                 style={{
                   marginBottom: "10px",
                   display: "inline-block",
                   fontSize: "16px",
+                  color: "#4b5563",
                 }}
               >
                 {currentCity.description}
@@ -90,8 +92,6 @@ export default function DetailPage() {
             </header>
 
             {/* 인기 태그 */}
-            <TopTagList roomId={Number(cityId)} />
-        
             <div
               style={{
                 display: "flex",
@@ -137,9 +137,7 @@ export default function DetailPage() {
                       />
                     ))
                   ) : (
-                    <p style={{ gridColumn: "1 / -1", textAlign: "center" }}>
-                    선택한 분류의 정보가 없습니다.
-                    </p>
+                    <LoadingSpinner size={15} />
                   )}
                 </div>
               </div>

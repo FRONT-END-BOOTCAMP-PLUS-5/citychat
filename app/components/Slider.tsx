@@ -7,6 +7,7 @@ import styles from "./slider.module.css";
 import type { CustomArrowProps } from "react-slick";
 import Image from "next/image";
 import Link from "next/link";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 interface City {
   id: string;
@@ -67,9 +68,7 @@ export default function CenterModeCarousel() {
 
   // 로딩, 오류, 데이터 없음 상태 처리
   if (loading) {
-    return (
-      <div className={styles.loadingState}>도시 정보를 불러오는 중...</div>
-    );
+    return<LoadingSpinner size={15} />;
   }
   if (error) {
     return <div className={styles.errorState}>오류: {error}</div>;
