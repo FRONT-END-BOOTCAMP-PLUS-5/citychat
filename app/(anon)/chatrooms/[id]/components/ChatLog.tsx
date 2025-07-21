@@ -51,6 +51,7 @@ export default function ChatLog({
     if (searchResultIds.length === 0 && renderedMessages.length > 0) {
       bottomRef.current?.scrollIntoView({ behavior: "auto" });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [renderedMessages]);
 
   // ✅ 처음 렌더링 시 adaptedMessages를 렌더링에 세팅
@@ -65,6 +66,7 @@ export default function ChatLog({
       setRenderedMessages((prev) => [...prev, ...newAdaptedMessages]);
     }
     setLoading(true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [incomingMessages]);
 
   // ✅ 검색 초기화 시도 adaptedMessages 사용
@@ -97,6 +99,7 @@ export default function ChatLog({
       return;
     }
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [renderedMessages]);
 
   //번역과 원본 토글 기능
@@ -170,11 +173,11 @@ export default function ChatLog({
               const isHighlighted = highlightSet.has(msg.id!);
               const formattedTime = msg.sentAt
                 ? new Date(msg.sentAt).toLocaleTimeString("ko-KR", {
-                    timeZone: "Asia/Seoul",
-                    hour: "numeric",
-                    minute: "numeric",
-                    hour12: true,
-                  })
+                  timeZone: "Asia/Seoul",
+                  hour: "numeric",
+                  minute: "numeric",
+                  hour12: true,
+                })
                 : "";
 
               return (

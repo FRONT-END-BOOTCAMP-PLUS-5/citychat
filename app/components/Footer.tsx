@@ -9,26 +9,26 @@ export default function Footer() {
     <footer className={styles.footerContainer}>
       <div className={styles.footerContentWrapper}>
         <Link href="/" className={styles.footerLogo}>
-            <Image
-              src="/assets/citychat2.png"
-              alt="CityChat"
-              width={50}
-              height={50}
-              priority
-            />
-          </Link>
+          <Image
+            src="/assets/citychat2.png"
+            alt="CityChat"
+            width={50}
+            height={50}
+            priority
+          />
+        </Link>
         <div className={styles.footerLinks}>
-            <p className={styles.footerText}>6조 1차 프로젝트</p>
-            <p className={styles.footerText}>
-              <Link
-                href="https://citychat-beta.vercel.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+          <p className={styles.footerText}>6조 1차 프로젝트</p>
+          <p className={styles.footerText}>
+            <Link
+              href="https://citychat-beta.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
                 배포 사이트 주소 링크
-              </Link>
-            </p>
-          </div>
+            </Link>
+          </p>
+        </div>
         
         {/* 오른쪽: 소셜 아이콘 */}
         <ul className={styles.socialIcons}>
