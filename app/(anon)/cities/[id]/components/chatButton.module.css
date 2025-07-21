@@ -1,20 +1,20 @@
 .buttonWrap {
-    position: relative;
+  /* position: relative; */
 }
 .chatButton {
-    display: block;
-    padding: 8px 16px;
-    background-color: white;
-    color: #ffbb00;
-    font-weight: bold;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    position: absolute;
-    bottom: 3vh;
-    left: 70vw;
-    width: 150px;
-    height: 40px;
-    box-shadow: 0 4px 8px #0000001a;
-    font-size: 18px;
+  display: block;
+  padding: 8px 16px;
+  background-color: white;
+  color: #ffbb00;
+  font-weight: bold;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  /* position: absolute; */
+  bottom: 3vh;
+  left: 70vw;
+  width: 150px;
+  height: 40px;
+  box-shadow: 0 4px 8px #0000001a;
+  font-size: 18px;
 }
