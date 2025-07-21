@@ -178,10 +178,7 @@ export default function ChatLog({
                     minute: "numeric",
                     hour12: true,
                   })
-                  hour: "numeric",
-                  minute: "numeric",
-                  hour12: true,
-                })
+              
                 : "";
 
               return (
