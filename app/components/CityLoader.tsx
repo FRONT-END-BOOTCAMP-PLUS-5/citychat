@@ -11,7 +11,10 @@ export default function CityLoader() {
   useEffect(() => {
     const loadCities = async () => {
       const useCase = new GetCityListUseCase(new SbCityRepository());
-      const cities = await useCase.execute();
+      const cities = (await useCase.execute()).map((city) => ({
+        ...city,
+        id: String(city.id),
+      }));
       addCities(cities);
     };
     loadCities();
