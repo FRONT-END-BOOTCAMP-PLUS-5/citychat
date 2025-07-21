@@ -19,16 +19,16 @@ interface TourItem {
 }
 
 interface City {
-  id: number;
+  id: string;
   name: string;
   description: string;
-  image: string;
+  image?: string;
 }
 
 export default function DetailPage() {
   const [hasMounted, setHasMounted] = useState(false);
   const params = useParams();
-  const cityId = parseInt(params.id as string, 10);
+  const cityId = params.id as string;
 
   const getCityById = useCityStore((state) => state.getCityById);
   const currentCity: City | undefined = getCityById(cityId);

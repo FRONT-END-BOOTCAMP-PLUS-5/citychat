@@ -170,7 +170,7 @@ export default function ChatLog({
               const isHighlighted = highlightSet.has(msg.id!);
               const formattedTime = msg.sentAt
                 ? new Date(msg.sentAt).toLocaleTimeString("ko-KR", {
-                    timeZone: "Asia/Seoul",
+                  timeZone: "Asia/Seoul",
                     hour: "numeric",
                     minute: "numeric",
                     hour12: true,
