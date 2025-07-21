@@ -11,7 +11,7 @@ interface FormFieldProps {
   error?: string;
   required?: boolean;
   disabled?: boolean;
-  styles: any;
+  styles: Record<string, string>;
 }
 
 export default function FormField({

@@ -34,7 +34,7 @@ export default function NicknameChangeModal({
   onClose,
   currentNickname = "",
 }: NicknameChangeModalProps) {
-  const { mutate: updateUser, isPending, error, isSuccess } = useUpdateUser();
+  const { mutate: updateUser, isPending, isSuccess } = useUpdateUser();
   const [newNickname, setNewNickname] = useState("");
   const [validationError, setValidationError] = useState("");
   const [nicknameStatus, setNicknameStatus] = useState({
@@ -97,7 +97,7 @@ export default function NicknameChangeModal({
       setNicknameStatus({
         checked: false,
         isDuplicate: false,
-        message: "중복 확인 중 오류가 발생했습니다.",
+        message: error instanceof Error ? error.message : "중복 확인 중 오류가 발생했습니다.",
       });
     }
   };
@@ -204,10 +204,10 @@ export default function NicknameChangeModal({
                   validationError
                     ? fieldMessageError
                     : nicknameStatus.message
-                    ? nicknameStatus.isDuplicate
-                      ? fieldMessageError
-                      : fieldMessageSuccess
-                    : ""
+                      ? nicknameStatus.isDuplicate
+                        ? fieldMessageError
+                        : fieldMessageSuccess
+                      : ""
                 }`}
               >
                 {validationError || nicknameStatus.message}
