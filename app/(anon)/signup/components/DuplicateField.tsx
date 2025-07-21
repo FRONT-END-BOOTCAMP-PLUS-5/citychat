@@ -13,7 +13,7 @@ interface DuplicateFieldProps {
   error?: string;
   required?: boolean;
   disabled?: boolean;
-  styles: any;
+  styles: Record<string, string>;
   onDuplicateResult?: (
     field: string,
     isChecked: boolean,
@@ -92,7 +92,7 @@ export default function DuplicateField({
       setDuplicateStatus({
         checked: true,
         isDuplicate: true,
-        message: "중복 확인 중 오류가 발생했습니다.",
+        message: error instanceof Error ? error.message : "중복 확인 중 오류가 발생했습니다.",
       });
 
       if (onDuplicateResult) {
@@ -148,10 +148,10 @@ export default function DuplicateField({
             error
               ? duplicateMessageError
               : duplicateStatus.checked
-              ? duplicateStatus.isDuplicate
-                ? duplicateMessageError
-                : duplicateMessageSuccess
-              : ""
+                ? duplicateStatus.isDuplicate
+                  ? duplicateMessageError
+                  : duplicateMessageSuccess
+                : ""
           }`}
         >
           {error || (duplicateStatus.checked ? duplicateStatus.message : "")}

@@ -29,7 +29,7 @@ export default function PasswordChangeModal({
   isOpen,
   onClose,
 }: PasswordChangeModalProps) {
-  const { mutate: updateUser, isPending, error, isSuccess } = useUpdateUser();
+  const { mutate: updateUser, isPending, isSuccess } = useUpdateUser();
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -123,36 +123,36 @@ export default function PasswordChangeModal({
 
   const handleInputChange =
     (field: keyof typeof passwordData) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setPasswordData((prev) => ({
-        ...prev,
-        [field]: value,
-      }));
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setPasswordData((prev) => ({
+          ...prev,
+          [field]: value,
+        }));
 
-      // 실시간 유효성 검증
-      if (field === "newPassword") {
-        const error = value ? validators.password(value) : "";
-        setFieldErrors((prev) => ({ ...prev, newPassword: error }));
+        // 실시간 유효성 검증
+        if (field === "newPassword") {
+          const error = value ? validators.password(value) : "";
+          setFieldErrors((prev) => ({ ...prev, newPassword: error }));
 
-        // 새 비밀번호가 변경되면 확인 비밀번호도 다시 검증
-        if (passwordData.confirmPassword) {
-          const confirmError = validators.confirmPassword(
-            passwordData.confirmPassword,
-            value
-          );
-          setFieldErrors((prev) => ({
-            ...prev,
-            confirmPassword: confirmError,
-          }));
+          // 새 비밀번호가 변경되면 확인 비밀번호도 다시 검증
+          if (passwordData.confirmPassword) {
+            const confirmError = validators.confirmPassword(
+              passwordData.confirmPassword,
+              value
+            );
+            setFieldErrors((prev) => ({
+              ...prev,
+              confirmPassword: confirmError,
+            }));
+          }
+        } else if (field === "confirmPassword") {
+          const error = value
+            ? validators.confirmPassword(value, passwordData.newPassword)
+            : "";
+          setFieldErrors((prev) => ({ ...prev, confirmPassword: error }));
         }
-      } else if (field === "confirmPassword") {
-        const error = value
-          ? validators.confirmPassword(value, passwordData.newPassword)
-          : "";
-        setFieldErrors((prev) => ({ ...prev, confirmPassword: error }));
-      }
-    };
+      };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="비밀번호 변경" size="small">
