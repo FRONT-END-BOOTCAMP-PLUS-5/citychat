@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import styles from "./chatButton.module.css";
 
 interface ChatButtonProps {
-  cityId: number;
+  cityId: string;
 }
 
 const ChatButton: React.FC<ChatButtonProps> = ({ cityId }) => {
