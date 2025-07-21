@@ -192,7 +192,7 @@ export default function ChatLog({
                   className={`${styles.messageItem}`}
                 >
                   <span className={styles.sender}>
-                    {isMe ? "" : msg.senderNickname}
+                    {isMe ? "" : msg.senderNickname ?? msg.sender}
                   </span>
                   {msg.replyToId != null &&
                     (() => {
