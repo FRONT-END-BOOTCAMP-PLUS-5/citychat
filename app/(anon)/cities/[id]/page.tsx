@@ -76,73 +76,98 @@ export default function DetailPage() {
       {shouldLoadCity && <CityLoader />}
       {currentCity ? (
         <SharedPageLayout title={currentCity.name} imgUrl={currentCity.image}>
-          <ChatButton cityId={cityId} />
-          <section>
-            <header>
-              <p 
-                style={{
-                  marginBottom: "10px",
-                  display: "inline-block",
-                  fontSize: "16px",
-                  color: "#4b5563",
-                }}
-              >
-                {currentCity.description}
-              </p>
-            </header>
-
-            {/* 인기 태그 */}
-            <div
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              maxWidth: "900px",
+              color: "#333",
+            }}
+          >
+            <section
               style={{
                 display: "flex",
-                gap: "20px",
-                marginTop: "28px",
+                flexDirection: "column",
+                alignItems: "center",
+                maxWidth: "fit-content",
+                alignSelf: "center",
               }}
             >
-
-              <div style={{ width: "200px", flexShrink: 0 }}>
-                <TopTagList roomId={Number(cityId)} />
-              </div>
-            
-              {/* 필터 및 카드 */}
-              <div
+              <header
                 style={{
-                  flex: 1, marginLeft:"30px", marginTop:"5px"
+                  display: "flex",
                 }}
               >
-                <CategoryFilter
-                  categories={categories}
-                  selectedCategory={selectedCategory}
-                  onChange={setSelectedCategory}
-                />
-
-                <div
+                <p
                   style={{
-                    display: "grid",
-                    gap: "16px",
-                    gridTemplateColumns: "repeat(2, 1fr)",
-                    padding: "20px",
-                    height: "40vh",
-                    overflowY: "auto",
+                    marginBottom: "10px",
+                    display: "inline-block",
+                    fontSize: "16px",
+                    color: "#a6a6a6",
+                    marginRight: "2vw",
                   }}
                 >
-                  {filteredTourList && filteredTourList.length > 0 ? (
-                    filteredTourList.map((item, idx) => (
-                      <TourCard
-                        key={idx}
-                        rlteTatsNm={item.rlteTatsNm}
-                        areaNm={item.areaNm}
-                        rlteSignguNm={item.rlteSignguNm}
-                        rlteCtgrySclsNm={item.rlteCtgrySclsNm}
-                      />
-                    ))
-                  ) : (
-                    <LoadingSpinner size={15} />
-                  )}
+                  {currentCity.description}
+                </p>
+                <ChatButton cityId={cityId} />
+              </header>
+
+              {/* 인기 태그 */}
+              <div
+                style={{
+                  display: "flex",
+                  gap: "20px",
+                  marginTop: "28px",
+                  justifyContent: "space-between",
+                  alignItems: "",
+                }}
+              >
+                <div style={{ height: "20%" }}>
+                  <TopTagList roomId={Number(cityId)} />
+                </div>
+
+                {/* 필터 및 카드 */}
+                <div
+                  style={{
+                    flex: 1,
+                    marginLeft: "30px",
+                    marginTop: "5px",
+                  }}
+                >
+                  <CategoryFilter
+                    categories={categories}
+                    selectedCategory={selectedCategory}
+                    onChange={setSelectedCategory}
+                  />
+
+                  <div
+                    style={{
+                      display: "grid",
+                      gap: "16px",
+                      gridTemplateColumns: "repeat(2, 1fr)",
+                      padding: "20px",
+                      height: "40vh",
+                      overflowY: "auto",
+                    }}
+                  >
+                    {filteredTourList && filteredTourList.length > 0 ? (
+                      filteredTourList.map((item, idx) => (
+                        <TourCard
+                          key={idx}
+                          rlteTatsNm={item.rlteTatsNm}
+                          areaNm={item.areaNm}
+                          rlteSignguNm={item.rlteSignguNm}
+                          rlteCtgrySclsNm={item.rlteCtgrySclsNm}
+                        />
+                      ))
+                    ) : (
+                      <LoadingSpinner size={15} />
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </SharedPageLayout>
       ) : (
         <div style={{ padding: "20px", textAlign: "center" }}>
