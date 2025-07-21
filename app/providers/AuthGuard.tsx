@@ -5,7 +5,9 @@ import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AUTH_CONFIG } from "@/config/auth";
 
-interface AuthGuardProps { children: React.ReactNode }
+interface AuthGuardProps {
+  children: React.ReactNode;
+}
 
 export default function AuthGuard({ children }: AuthGuardProps) {
   const user = useUserStore((state) => state.user);
@@ -20,13 +22,12 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   }, []);
 
   useEffect(() => {
-
-    if(!isHydrated) return;
+    if (!isHydrated) return;
 
     // 로그아웃 진행 중일 때는 로직 무시
-    if(isLoggingOut) {
+    if (isLoggingOut) {
       // 메인 페이지 도착시 로그아웃 상태 해제
-      if(pathname === "/") {
+      if (pathname === "/") {
         setLoggingOut(false);
       }
       return;
@@ -35,8 +36,10 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     const isProtectedPath = AUTH_CONFIG.protectedPaths.some((path) =>
       pathname.startsWith(path)
     );
-    const isAuthPath = AUTH_CONFIG.authPaths.some((path) => pathname.startsWith(path));
-    
+    const isAuthPath = AUTH_CONFIG.authPaths.some((path) =>
+      pathname.startsWith(path)
+    );
+
     if (isProtectedPath && !user) {
       // 보호된 페이지인데 로그인하지 않은 경우
       router.push("/signin");
@@ -48,3 +51,4 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
   return <>{children}</>;
 }
+
