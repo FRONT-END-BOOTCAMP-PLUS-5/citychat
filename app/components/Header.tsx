@@ -14,8 +14,8 @@ import { useCityStore } from "../stores/useCitystore";
 const pages = [
   { name: "Home", path: "/" },
   { name: "Cities", path: "/cities" },
-  { name: "Landmark", path: "/landmark" },
-  { name: "About", path: "/about" },
+  { name: "Landmark", path: "/" },
+  { name: "About", path: "/" },
 ];
 //  ─────── Cities의 드롭다운 항목 ───────
 const cityRegions = [
