@@ -112,8 +112,8 @@ export default function ChatRoom() {
                     ? searchResultIds.length - 1
                     : prev - 1
                   : prev === searchResultIds.length - 1
-                  ? 0
-                  : prev + 1
+                    ? 0
+                    : prev + 1
               );
             }}
           />

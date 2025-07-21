@@ -57,26 +57,26 @@ export default function SignupPage() {
     
     let error = "";
     switch (field) {
-      case "nickname":
-        error = value ? validators.nickname(value) : "";
-        break;
-      case "userId":
-        error = value ? validators.userId(value) : "";
-        break;
-      case "email":
-        error = value ? validators.email(value) : "";
-        break;
-      case "password":
-        error = value ? validators.password(value) : "";
-        // 비밀번호가 변경되면 확인 비밀번호도 다시 검증
-        if (formData.confirmPassword) {
-          const confirmError = validators.confirmPassword(formData.confirmPassword, value);
-          setFieldErrors(prev => ({ ...prev, confirmPassword: confirmError }));
-        }
-        break;
-      case "confirmPassword":
-        error = value ? validators.confirmPassword(value, formData.password) : "";
-        break;
+    case "nickname":
+      error = value ? validators.nickname(value) : "";
+      break;
+    case "userId":
+      error = value ? validators.userId(value) : "";
+      break;
+    case "email":
+      error = value ? validators.email(value) : "";
+      break;
+    case "password":
+      error = value ? validators.password(value) : "";
+      // 비밀번호가 변경되면 확인 비밀번호도 다시 검증
+      if (formData.confirmPassword) {
+        const confirmError = validators.confirmPassword(formData.confirmPassword, value);
+        setFieldErrors(prev => ({ ...prev, confirmPassword: confirmError }));
+      }
+      break;
+    case "confirmPassword":
+      error = value ? validators.confirmPassword(value, formData.password) : "";
+      break;
     }
     
     setFieldErrors(prev => ({ ...prev, [field]: error }));
@@ -123,6 +123,7 @@ export default function SignupPage() {
     }
 
     // confirmPassword 제외하고 회원가입 데이터 전달
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirmPassword, ...signupData } = formData;
     signup(signupData);
   }
