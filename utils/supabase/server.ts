@@ -10,7 +10,11 @@ export async function createClient() {
   return createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       getAll() {
-        return cookieStore.getAll();
+        // return cookieStore.getAll();
+        return [
+          {name: "sb-access-token", value: cookieStore.get("access-token")?.value || "" },
+          {name: "sb-refresh-token", value: cookieStore.get("refresh-token")?.value || ""},
+        ];
       },
       setAll(cookiesToSet) {
         try {

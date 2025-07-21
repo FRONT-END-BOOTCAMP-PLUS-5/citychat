@@ -8,9 +8,7 @@ export default function Footer() {
   return (
     <footer className={styles.footerContainer}>
       <div className={styles.footerContentWrapper}>
-        {/* 왼쪽: 로고 + 텍스트 */}
-        <div className={styles.footerLeftSection}>
-          <Link href="/" className={styles.footerLogo}>
+        <Link href="/" className={styles.footerLogo}>
             <Image
               src="/assets/citychat2.png"
               alt="CityChat"
@@ -19,12 +17,11 @@ export default function Footer() {
               priority
             />
           </Link>
-
-          <div className={styles.footerLinks}>
+        <div className={styles.footerLinks}>
             <p className={styles.footerText}>6조 1차 프로젝트</p>
             <p className={styles.footerText}>
               <Link
-                href="https://배포‑사이트‑주소"
+                href="https://citychat-beta.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -32,13 +29,12 @@ export default function Footer() {
               </Link>
             </p>
           </div>
-        </div>
-
+        
         {/* 오른쪽: 소셜 아이콘 */}
         <ul className={styles.socialIcons}>
           <li>
             <Link
-              href="https://github.com/your-repo"
+              href="https://github.com/FRONT-END-BOOTCAMP-PLUS-5/citychat"
               target="_blank"
               rel="noopener noreferrer"
             >

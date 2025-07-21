@@ -4,6 +4,8 @@ import { useState, useRef, KeyboardEvent } from "react";
 import { parseTags } from "./ParseTags";
 import { ChatReply } from "./ChatReply";
 import { ChatInputProps } from "../types";
+import { SendHorizontal } from "lucide-react";
+import styles from "./ChatInput.module.css";
 
 export default function ChatInput({
   onSend,
@@ -11,21 +13,17 @@ export default function ChatInput({
   onCancelReply,
 }: ChatInputProps) {
   const [input, setInput] = useState("");
-  const [isComposing, setIsComposing] = useState(false); // 한글 입력 상태
+  const [isComposing, setIsComposing] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSend = () => {
     if (!input.trim()) return;
-
     const tags = parseTags(input);
     onSend(input, tags, replyTo);
     setInput("");
-    if (replyTo) {
-      onCancelReply(); // 답글 보낸 후 초기화
-    }
-
+    if (replyTo) onCancelReply();
     setTimeout(() => {
-      textareaRef.current?.scrollIntoView({ behavior: "smooth" }); // 최근 채팅으로 스크롤 이동
+      textareaRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 0);
   };
 
@@ -37,31 +35,24 @@ export default function ChatInput({
   };
 
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", marginTop: "1rem" }}
-    >
+    <div className={styles.inputWrapper}>
       {replyTo && <ChatReply msg={replyTo} onCancel={onCancelReply} />}
-      <textarea
-        ref={textareaRef}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-        onCompositionStart={() => setIsComposing(true)} // 한글 입력 시작
-        onCompositionEnd={() => setIsComposing(false)} //한글 입력 종료
-        placeholder="메시지를 입력하세요 (Enter: 전송, Shift+Enter: 줄바꿈)"
-        style={{
-          padding: "8px",
-          resize: "none",
-          height: "80px",
-          fontSize: "1rem",
-        }}
-      />
-      <button
-        onClick={handleSend}
-        style={{ marginTop: "8px", alignSelf: "flex-end" }}
-      >
-        전송
-      </button>
+      <div className={styles.inputArea}>
+        <textarea
+          ref={textareaRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
+          placeholder="메시지를 입력하세요"
+          className={styles.textarea}
+        />
+        <button onClick={handleSend} className={styles.sendButton}>
+          <SendHorizontal size={15} />
+        </button>
+      </div>
     </div>
   );
 }
+

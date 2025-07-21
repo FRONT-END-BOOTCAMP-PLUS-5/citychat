@@ -1,5 +1,5 @@
-// Home.tsx
 "use client";
+
 import { useEffect, useRef } from "react";
 import Slider from "./components/Slider";
 import SubSlider from "./components/SubSlider";
@@ -39,21 +39,27 @@ export default function Home() {
     <div
       ref={mainScrollContainerRef}
       style={{
-        width: "100vw",
         height: "100vh",
         overflowY: "scroll",
         scrollSnapType: "y mandatory",
       }}
     >
       <Section
-        bgImageUrl="https://miro.medium.com/v2/resize:fit:2000/1*nf5RvOUHclJqEYIljcNmEw.jpeg"
-        style={{ height: "100vh", scrollSnapAlign: "start" }}
+        bgImageUrl="https://images.unsplash.com/photo-1603883055407-968560f7522e?q=80&w=920&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        style={{
+          height: "100vh",
+          scrollSnapAlign: "start",
+          position: "relative",
+          backgroundSize: "cover",
+          backgroundPosition: "top", // ✅ 여기를 추가
+          backgroundRepeat: "no-repeat",
+        }}
       >
         <Slider />
       </Section>
 
       <Section
-        bgImageUrl="https://uofhorang.com/wp-content/uploads/2024/08/Population-by-Age-Group-in-South-Korea-for-2023.jpg"
+        bgImageUrl="https://images.unsplash.com/photo-1603883055407-968560f7522e?q=80&w=920&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         style={{ height: "100vh", scrollSnapAlign: "start" }}
       >
         <SubSlider />
@@ -61,3 +67,4 @@ export default function Home() {
     </div>
   );
 }
+

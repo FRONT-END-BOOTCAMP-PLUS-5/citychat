@@ -1,45 +1,6 @@
-/* slick 전역 클래스 오버라이드 */
-/* :global(.slick-list) {
-  margin: 0 -50px;
-} */
-
-/* 슬라이드 기본 카드 스타일 */
-/* :global(.slick-slide) h3 {
-  background: #9bc7f6;
-  color: #333;
-  font-size: 36px;
-  line-height: 100px;
-  margin: 20px 10px;
-  padding: 2%;
-  position: relative;
-  text-align: center;
-  transition: transform 0.3s ease, z-index 0.3s ease, background 0.3s,
-    color 0.3s, opacity 0.3s;
-  z-index: 1;
-  opacity: 0.5;
-  width: 300px;
-  height: 380px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
-
-/* 가운데 카드 확대 효과 */
-/* :global(.slick-center) h3 {
-  transform: scale(1.1) translateZ(0.01px);
-  z-index: 10;
-  background: #007bff;
-  color: #fff;
-  opacity: 1;
-  border-radius: 20px;
-} */
-
-.sliderWrap{
-  width: 800; 
-  height: 450;
-  margin-top: 120px;
-  margin-left: 35%;
+.sliderWrap {
+  width: 900px;
+  height: 450px;
 }
 
 .sliderContainer {
@@ -47,33 +8,51 @@
 }
 
 .card {
-  background: #9bc7f6;
   color: #333;
   font-size: 36px;
   line-height: 100px;
   margin: 20px 10px;
   padding: 2%;
   text-align: center;
-  transition: transform 0.3s ease, z-index 0.3s ease, background 0.3s,
-    color 0.3s, opacity 0.3s;
-  z-index: 1;
-  opacity: 0.5;
-  width: 300px;
+  transition: transform 0.3s ease-in-out;
+  z-index: 0;
+  width: 350px;
   height: 380px;
   border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   right: 37px;
+  position: relative;
+}
+
+.cityImage {
+  border-radius: 20px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .cardActive {
   transform: scale(1.1);
   z-index: 10;
-  background: #007bff;
+  /* background: #007bff; */
   color: #fff;
   opacity: 1;
   position: relative;
+}
+
+/* 왼쪽/오른쪽 보이는 슬라이드 (가운데 기준 -1, +1 위치) */
+.cardLeftVisible,
+.cardRightVisible {
+  transform: scale(0.8);
+}
+
+/* 보이는 3개 이미지 외의 슬라이드: 뒤로 보내는 효과 */
+.cardBehind {
+  transform: scale(0.8);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .card,
@@ -81,36 +60,46 @@
   position: relative;
 }
 
-/* 화살표 */
-.arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 5;
-  color: white;
-  padding: 10px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
 .prev {
   left: -40px;
 }
 
 .next {
-  right: -20px;
+  right: -40px;
 }
 
-/* 반응형 */
-/* @media (max-width: 768px) {
-  :global(.slick-list) {
-    margin: 0 -20px;
-  }
+.cityLink {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 20px;
+  border-radius: 8px;
+  height: 50px;
+}
 
-  :global(.slick-slide) h3 {
-    width: 240px;
-    height: 300px;
-    font-size: 28px;
-    line-height: 80px;
-  }
-} */
+.cityName {
+  color: rgba(223, 220, 220, 0.777);
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+/* 링크 화살표 */
+.linkArrow {
+  color: white;
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: transform 0.2s;
+  font-weight: bold;
+  width: 50px;
+  align-items: center;
+}
+
+.linkArrow:hover {
+  transform: translateX(3px);
+}
+

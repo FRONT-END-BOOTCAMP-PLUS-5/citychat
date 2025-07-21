@@ -1,22 +1,18 @@
 /* 전체 앱 바 스타일 */
 .appBar {
-  min-height: 10vh; 
-  position: sticky; 
-  width: 100%;
-  box-sizing: border-box; 
   position: fixed;
-  left: 0;
   top: 0;
-  z-index: 10; 
+  left: 0;
+  width: 100%;
+  z-index: 5;
 }
 
 /* 컨테이너 Wrapper */
 .containerWrapper {
   max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 16px;
-  padding-right: 16px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
 }
 
 /* 툴바 (내부 요소 정렬) */
@@ -25,7 +21,7 @@
   align-items: center;
   /* padding-top: 2.5vh; */
   min-height: 10vh;
-  justify-content: space-between; /* 로고와 메뉴를 양 끝으로 정렬 */
+  justify-content: space-between; 
   flex-wrap: wrap; /* 작은 화면에서 요소들이 줄바꿈되도록 */
 }
 
@@ -83,6 +79,36 @@
   color: rgba(255, 255, 255, 0.7); /* 호버 시 색상 변경 */
 }
 
+.navItemDropdownWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.citiesButton {
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.citiesDropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  margin-top: 15px;
+  gap: 30px;
+  background-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+
 /* 마이페이지(로그인 & 비로그인) 이미지 */
 .mypageIcon {
   vertical-align: middle; /* 필요한 경우 텍스트와 아이콘을 수직으로 정렬 */
@@ -134,16 +160,17 @@
 }
 
 .dropdownItem:hover {
-  background-color: #f0f0f0; /* 호버 시 배경색 변경 */
+  background-color: #f0f0f0;
+  border-radius: 10px;
 }
 
 /* ---------------- 모바일 영역(반응형) ----------------- */
 
 /* 모바일 메뉴 아이콘 Wrapper (데스크톱에서는 숨김) */
 .mobileMenuIconWrapper {
-  display: flex; /* 기본적으로 모바일에서 보임 */
+  display: flex; 
   justify-content: flex-end;
-  flex-grow: 1; /* 오른쪽으로 밀어내기 */
+  flex-grow: 1;
 }
 
 /* 사이드바 (Drawer) */
@@ -153,14 +180,16 @@
   right: -200px; /* 초기에는 화면 밖으로 숨김 */
   width: 200px;
   height: 100vh;
-  background-color: #ffbb00; /* 사이드바 배경색 */
+  background-color: #ffbb00; 
   transition: right 0.3s ease-in-out; /* 부드러운 슬라이드 효과 */
   z-index: 10; /* AppBar보다 위에 오도록 */
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2); 
 }
 
 .drawerIcon {
-  margin-right: 10px;
+  width: 50px;
+  height: 35px;
+  margin-left: 45px;
 }
 
 .drawer.open {
@@ -171,7 +200,7 @@
 .drawerContent {
   width: 100%;
   height: 100%;
-  padding: 16px; /* 내부 패딩 */
+  padding: 16px; 
   box-sizing: border-box;
 }
 
@@ -200,20 +229,56 @@
   text-decoration: none;
   padding: 12px 16px;
   font-size: 16px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  /* transition: background-color 0.3s ease, color 0.3s ease; */
   border-radius: 4px;
   color: #ffffff; /* 기본 글자색 */
 }
 
 /* 사이드바 버튼 호버 */
 .drawerLink:hover {
+  width: 100%;
   background-color: #ffffff; /* 호버 시 배경색 */
   color: #ffbb00; /* 호버 시 글자색 */
+}
+.drawerLink:has(.drawerIcon):hover {
+    background-color: transparent; 
+    color: #ffffff;
+}
+
+/* 반응형 cities 드롭다운 */
+.drawerSubList {
+  list-style: none;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.drawerSubList li {
+  margin-bottom: 8px;
+}
+
+.drawerSubLink {
+  display: block;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: center;
+  color: #ffffff;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  font-size: 0.95em;
+}
+
+.drawerSubLink:hover {
+  background-color: #ffffff;
+  color: #ffbb00;
 }
 
 /* 미디어 쿼리: 데스크톱 화면에서만 적용 */
 @media (min-width: 900px) {
-  /* MUI 'md' breakpoint가 900px, 이 이상에서 데스크톱 내비게이션 보임 */
   .navDesktop {
     display: flex; /* 데스크톱에서 보임 */
   }
@@ -223,8 +288,7 @@
   }
 }
 
-/* 모바일 화면에서만 적용 (Optional: 명시적으로 모바일 스타일 지정) */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .toolbar {
     justify-content: space-between; /* 로고와 햄버거 아이콘만 양 끝으로 */
   }

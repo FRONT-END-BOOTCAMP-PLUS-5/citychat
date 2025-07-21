@@ -1,10 +1,14 @@
 "use client";
-import React from "react";
+
+import React, { useRef } from "react"; // useRef 추가
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./header.module.css";
 import Avatar from "./Avatar";
+import { useEffect } from "react";
 import { useUserStore } from "@/app/stores/useUserStore";
+import { useSignout } from "@/app/hooks/useSignout";
+import { useCityStore } from "../stores/useCitystore";
 
 // ─────── 페이지 목록 ───────
 const pages = [
@@ -13,21 +17,52 @@ const pages = [
   { name: "Landmark", path: "/landmark" },
   { name: "About", path: "/about" },
 ];
+//  ─────── Cities의 드롭다운 항목 ───────
+const cityRegions = [
+  { name: "서울", path: "/cities/1" },
+  { name: "부산", path: "/cities/2" },
+  { name: "대전", path: "/cities/3" },
+  { name: "강원", path: "/cities/4" },
+  { name: "제주", path: "/cities/5" },
+];
 
 function Header() {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
   const [isMypageDropdownOpen, setIsMypageDropdownOpen] = React.useState(false);
+  const [isCitiesDropdownOpen, setIsCitiesDropdownOpen] = React.useState(false);
+  const [isDrawerCitiesDropdownOpen, setIsDrawerCitiesDropdownOpen] =
+    React.useState(false); // 드로어 내 Cities 드롭다운을 위한 새로운 상태
+
+  // 아코디언 콘텐츠의 높이를 측정하기 위한 Ref
+  const citiesDropdownRef = useRef<HTMLUListElement>(null);
 
   // Zustand 스토어에서 상태와 액션
   const user = useUserStore((state) => state.user); // 유저 정보 데이터
-  const clearUser = useUserStore((state) => state.clearUser); // 로그아웃 액션
+  const { mutate: signout } = useSignout();
+  const addCities = useCityStore((state) => state.addCities); //도시 정보 데이터
+
+  // Supabase 정보 스토어 저장
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await fetch("/api/cities");
+        const data = await response.json();
+        addCities(data);
+      } catch (error) {
+        const errormessage =
+          error instanceof Error ? error.message : "데이터를 불러오지 못했습니다.";
+        console.log(errormessage);
+      }
+    };
+    fetchCities();
+  }, [addCities]);
 
   // 로그인 여부 확인
   const isLoggedIn = !!user;
 
   // 로그아웃 이벤트
   const handleLogout = () => {
-    clearUser();
+    signout();
   };
 
   // 드로어 상태 변경을 막기 위해 예외 처리(키보드 이벤트인 경우 :Tap 과 Shift키 작동 막기)
@@ -43,12 +78,30 @@ function Header() {
       setIsDrawerOpen(open);
       if (open) {
         setIsMypageDropdownOpen(false);
+        setIsCitiesDropdownOpen(false);
+        setIsDrawerCitiesDropdownOpen(false); // 드로어가 열릴 때 드로어 내 Cities 드롭다운 닫기
       }
     };
 
-  // 토글로 드롭다운을 열고 닫는 기능
+  // 토글로 드롭다운을 열고 닫는 기능(me)
   const toggleMypageDropdown = () => {
     setIsMypageDropdownOpen((prev) => !prev);
+    setIsCitiesDropdownOpen(false); // 마이페이지 드롭다운이 열릴 때 Cities 드롭다운 닫기
+  };
+
+  // 토글로 드롭다운을 열고 닫는 기능(cities)
+  const toggleCitiesDropdown = (event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsCitiesDropdownOpen((prev) => !prev);
+    setIsMypageDropdownOpen(false); // Cities 드롭다운이 열릴 때 마이페이지 드롭다운 닫기
+  };
+
+  // New: 토글로 드로어 내 Cities 드롭다운을 열고 닫는 기능 (아코디언용)
+  const toggleDrawerCitiesDropdown = (event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsDrawerCitiesDropdownOpen((prev) => !prev);
   };
 
   // 마우스 클릭시 드롭다운과 안에 있는 요소들(회원가입,로그인 등..)(한번만 실행 :,[])
@@ -56,6 +109,9 @@ function Header() {
     const handleClickOutside = (event: MouseEvent) => {
       const mypageButton = document.getElementById("mypage-button");
       const mypageDropdown = document.getElementById("mypage-dropdown");
+      const citiesDropdownWrapper = document.getElementById(
+        "cities-dropdown-wrapper"
+      );
 
       // 클릭된 버튼과 드롭다운 요소 포함 여부 확인
       if (
@@ -65,6 +121,12 @@ function Header() {
         !mypageDropdown.contains(event.target as Node)
       ) {
         setIsMypageDropdownOpen(false); // 드롭다운 자동 닫힘
+      }
+      if (
+        citiesDropdownWrapper &&
+        !citiesDropdownWrapper.contains(event.target as Node)
+      ) {
+        setIsCitiesDropdownOpen(false);
       }
     };
     // 드롭다운 실행 후 이벤트 제거
@@ -100,12 +162,51 @@ function Header() {
           </div>
 
           <nav className={styles.navDesktop}>
-            {pages.map((page) => (
-              <Link href={page.path} key={page.name} className={styles.navItem}>
-                {page.name}
-              </Link>
-            ))}
-            {/* 아이콘 버튼 */}
+            {/* 기존 pages.map 안에 "Cities" 조건 처리 */}
+            {pages.map((page) =>
+              page.name === "Cities" ? (
+                <div
+                  key={page.name}
+                  className={styles.navItemDropdownWrapper}
+                  id="cities-dropdown-wrapper"
+                >
+                  <Link
+                    href={page.path} // Cities 경로 유지
+                    className={`${styles.navItem} ${styles.citiesLink}`} // navItem 기본 스타일 적용
+                    onClick={toggleCitiesDropdown} // Link 클릭 시 드롭다운 토글
+                    aria-haspopup="true"
+                    aria-expanded={isCitiesDropdownOpen}
+                    id="cities-button" // 외부 클릭 감지를 위해 ID 유지 (옵션)
+                  >
+                    {page.name}
+                  </Link>
+                  {isCitiesDropdownOpen && (
+                    <div id="cities-dropdown" className={styles.citiesDropdown}>
+                      {cityRegions.map((region) => (
+                        <Link
+                          key={region.name}
+                          href={region.path}
+                          className={styles.dropdownItem}
+                          onClick={() => setIsCitiesDropdownOpen(false)}
+                        >
+                          {region.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={page.name}
+                  href={page.path}
+                  className={styles.navItem}
+                >
+                  {page.name}
+                </Link>
+              )
+            )}
+
+            {/* 마이페이지 버튼 */}
             <div className={styles.mypageContainer}>
               <button
                 id="mypage-button"
@@ -119,20 +220,19 @@ function Header() {
                 ) : (
                   <Image
                     src="/assets/login-profile.png"
-                    alt="MYPAGE"
+                    alt="ME"
                     width={30}
                     height={30}
                     className={styles.mypageIcon}
                   />
                 )}
               </button>
-              {/* 드롭다운 내용 변경 */}
               {isMypageDropdownOpen && (
                 <div id="mypage-dropdown" className={styles.mypageDropdown}>
                   {isLoggedIn ? (
                     <>
                       <Link
-                        href="/mypage"
+                        href="/me"
                         className={styles.dropdownItem}
                         onClick={toggleMypageDropdown}
                       >
@@ -159,7 +259,7 @@ function Header() {
                         회원가입
                       </Link>
                       <Link
-                        href="/login"
+                        href="/signin"
                         className={styles.dropdownItem}
                         onClick={toggleMypageDropdown}
                       >
@@ -173,7 +273,7 @@ function Header() {
           </nav>
         </div>
       </div>
-      {/* 반응형 영역 */}
+      {/* 반응형 영역 (드로어) */}
       <div
         className={`${styles.drawer} ${isDrawerOpen ? styles.open : ""}`.trim()}
       >
@@ -189,90 +289,78 @@ function Header() {
           </div>
 
           <ul className={styles.drawerList}>
-            {pages.map((page) => (
-              <li key={page.name} className={styles.drawerListItem}>
-                <Link
-                  href={page.path}
-                  className={styles.drawerLink}
-                  onClick={toggleDrawer(false)}
-                >
-                  {page.name}
-                </Link>
-              </li>
-            ))}
-            {isLoggedIn ? (
-              <>
-                <li className={styles.drawerListItem}>
+            {pages.map((page) =>
+              page.name === "Cities" ? (
+                <li key={page.name} className={styles.drawerListItem}>
                   <Link
-                    href="/mypage"
+                    href={page.path}
                     className={styles.drawerLink}
-                    onClick={toggleDrawer(false)}
+                    onClick={toggleDrawerCitiesDropdown} // 아코디언 토글 함수
+                    aria-haspopup="true"
+                    aria-expanded={isDrawerCitiesDropdownOpen}
                   >
-                    <Image
-                      src="/assets/login-profile.png"
-                      alt="마이페이지"
-                      width={24}
-                      height={24}
-                      className={styles.drawerIcon}
-                    />
-                    마이페이지
+                    {page.name}
+                    {/* 아코디언 열림/닫힘 시 아이콘 변경 (선택 사항) */}
+                    <span className={styles.dropdownArrow}>
+                      {isDrawerCitiesDropdownOpen ? "" : ""}
+                    </span>
                   </Link>
-                </li>
-                <li className={styles.drawerListItem}>
-                  <button
-                    className={styles.drawerLink}
-                    onClick={() => {
-                      handleLogout();
-                      toggleDrawer(false);
+                  {/* 아코디언 콘텐츠 부분 */}
+                  <ul
+                    ref={citiesDropdownRef} // Ref 연결
+                    className={`${styles.drawerSubList} ${
+                      isDrawerCitiesDropdownOpen ? styles.openAccordion : ""
+                    }`}
+                    style={{
+                      maxHeight: isDrawerCitiesDropdownOpen
+                        ? `${citiesDropdownRef.current?.scrollHeight}px` // 열렸을 때 실제 높이로
+                        : "0px", // 닫혔을 때 높이 0
                     }}
                   >
-                    <Image
-                      src="/assets/login-profile.png"
-                      alt="로그아웃"
-                      width={24}
-                      height={24}
-                      className={styles.drawerIcon}
-                    />
-                    로그아웃
-                  </button>
+                    {cityRegions.map((region) => (
+                      <li key={region.name}>
+                        <Link
+                          href={region.path}
+                          className={styles.drawerSubLink}
+                          onClick={toggleDrawer(false)} // 도시 선택 시 드로어 닫기
+                        >
+                          {region.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </li>
-              </>
-            ) : (
-              <>
-                <li className={styles.drawerListItem}>
+              ) : (
+                <li key={page.name} className={styles.drawerListItem}>
                   <Link
-                    href="/signin"
+                    href={page.path}
                     className={styles.drawerLink}
                     onClick={toggleDrawer(false)}
                   >
-                    <Image
-                      src="/assets/login-profile.png"
-                      alt="회원가입"
-                      width={24}
-                      height={24}
-                      className={styles.drawerIcon}
-                    />
-                    회원가입
+                    {page.name}
                   </Link>
                 </li>
-                <li className={styles.drawerListItem}>
-                  <Link
-                    href="/login"
-                    className={styles.drawerLink}
-                    onClick={toggleDrawer(false)}
-                  >
-                    <Image
-                      src="/assets/login-profile.png"
-                      alt="로그인"
-                      width={24}
-                      height={24}
-                      className={styles.drawerIcon}
-                    />
-                    로그인
-                  </Link>
-                </li>
-              </>
+              )
             )}
+            <li className={styles.drawerListItem}>
+              <Link
+                href="/signin"
+                onClick={toggleDrawer(false)}
+                className={styles.drawerLink}
+              >
+                {isLoggedIn && user?.nickname ? (
+                  <Avatar name={user.nickname} />
+                ) : (
+                  <Image
+                    src="/assets/login-profile.png"
+                    alt="마이페이지"
+                    width={24}
+                    height={24}
+                    className={styles.drawerIcon}
+                  />
+                )}
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
