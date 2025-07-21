@@ -174,11 +174,10 @@ export default function ChatLog({
               const formattedTime = msg.sentAt
                 ? new Date(msg.sentAt).toLocaleTimeString("ko-KR", {
                   timeZone: "Asia/Seoul",
-                    hour: "numeric",
-                    minute: "numeric",
-                    hour12: true,
-                  })
-              
+                  hour: "numeric",
+                  minute: "numeric",
+                  hour12: true,
+                })
                 : "";
 
               return (
