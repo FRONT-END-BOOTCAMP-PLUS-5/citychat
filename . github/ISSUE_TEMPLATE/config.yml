@@ -1,0 +1,13 @@
+blank_issues_enabled: false
+issue_templates:
+  - name: 🐛 Bug Report
+    description: 버그를 제보하려면 이 템플릿을 사용하세요.
+    file: bug_issue_template.md
+
+  - name: ✨ Feature Request
+    description: 새로운 기능을 제안하려면 이 템플릿을 사용하세요.
+    file: feature_issue_template.md
+
+  - name: 🔧 Refactor Task
+    description: 리팩토링 작업을 위해 이 템플릿을 사용하세요.
+    file: refactor_issue_template.md
