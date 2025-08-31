@@ -1,24 +1,14 @@
 ---
 name: refactor_issue_template
-about: Describe this issue template's purpose here.
+about: 리팩토링 템플릿 
 title: "[Refactor]"
 labels: ""
 assignees: ""
 ---
 
----
+## 📌 어떤 기능을 리팩토링 하나요?
 
-name: refactor_issue_template
-about: 리팩토링 템플릿
-title: ''
-labels: ''
-assignees: ''
-
----
-
-## 📌 어떤 기능을 리팩터링 하나요?
-
-> 리팩터링 할 기능에 대해 간결하게 설명해주세요
+> 리팩토링 할 기능에 대해 간결하게 설명해주세요
 
 ## AS-IS
 
@@ -31,3 +21,4 @@ assignees: ''
 0일 0시간 소요 (00/00 00:00)
 
 ## 🔍 참고할만한 자료(선택)
+

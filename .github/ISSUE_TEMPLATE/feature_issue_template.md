@@ -1,9 +1,9 @@
 ---
 name: feature_issue_template
-about: Suggest an idea for this project
+about: Feature 템플릿
 title: "[Feat]"
-labels: "\U0001F529 Feature"
-assignees: ''
+labels: ""
+assignees: ""
 
 ---
 
