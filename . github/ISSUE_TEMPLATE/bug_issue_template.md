@@ -1,13 +1,4 @@
 ---
-name: bug_issue_template
-about: Create a report to help us improve
-title: "[Bug]"
-labels: "\U0001F528 Fix"
-assignees: ''
-
----
-
----
 name: bug_fix_template
 about: 버그 이슈 템플릿
 title: ''
