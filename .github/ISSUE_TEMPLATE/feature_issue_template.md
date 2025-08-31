@@ -2,8 +2,8 @@
 name: feature_issue_template
 about: Feature 템플릿
 title: "[Feat]"
-labels: 
-assignees: ''
+labels: ""
+assignees: ""
 
 ---
 
