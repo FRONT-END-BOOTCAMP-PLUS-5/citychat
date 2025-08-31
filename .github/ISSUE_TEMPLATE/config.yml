@@ -1,6 +1,6 @@
 blank_issues_enabled: false
 issue_templates:
-  - name: 🐛 Bug Report
+  - name: 🐞 Bug Report
     description: 버그를 제보하려면 이 템플릿을 사용하세요.
     file: bug_issue_template.md
 
