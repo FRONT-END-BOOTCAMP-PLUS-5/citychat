@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./header.module.css";
 import Avatar from "./Avatar";
-import { useUserStore } from "@/app/stores/useUserStore";
-import { useGetCities } from "@/app/hooks/useGetCities";
+import { useUserStore } from "@/stores/useUserStore";
+import { useGetCities } from "@/hooks/useGetCities";
 import { MenuIcon, XIcon } from "lucide-react";
 
 // ─────── 페이지 목록 ───────

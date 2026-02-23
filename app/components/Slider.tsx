@@ -8,7 +8,7 @@ import type { CustomArrowProps } from "react-slick";
 import Image from "next/image";
 import Link from "next/link";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
-import { useGetCities } from "@/app/hooks/useGetCities";
+import { useGetCities } from "@/hooks/useGetCities";
 
 const NextArrow = (props: CustomArrowProps) => {
   const { className, onClick } = props;

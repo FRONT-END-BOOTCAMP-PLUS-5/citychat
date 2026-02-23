@@ -4,8 +4,8 @@ import React from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
 import SharedPageLayout from "@/app/SharedPageLayout";
-import { useSignin } from "@/app/hooks/useSignin";
-import { useUserStore } from "@/app/stores/useUserStore";
+import { useSignin } from "@/hooks/useSignin";
+import { useUserStore } from "@/stores/useUserStore";
 
 const {
   ["form-container"]: formContainer,

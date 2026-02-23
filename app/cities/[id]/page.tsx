@@ -4,10 +4,10 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import TopTagList from "@/app/components/TopTagList";
 import SharedPageLayout from "@/app/SharedPageLayout";
-import { useCityStore } from "@/app/stores/useCityStore";
-import TourCard from "@/app/(anon)/cities/[id]/components/TourCard";
-import ChatButton from "@/app/(anon)/cities/[id]/components/ChatButton";
-import CategoryFilter from "@/app/(anon)/cities/[id]/components/CategoryFilter";
+import { useCityStore } from "@/stores/useCityStore";
+import TourCard from "@/app/cities/[id]/components/TourCard";
+import ChatButton from "@/app/cities/[id]/components/ChatButton";
+import CategoryFilter from "@/app/cities/[id]/components/CategoryFilter";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 interface TourItem {

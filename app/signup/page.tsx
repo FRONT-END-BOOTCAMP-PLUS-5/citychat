@@ -3,7 +3,7 @@ import React, { useState, useCallback } from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
 import SharedPageLayout from "@/app/SharedPageLayout";
-import { useSignup } from "@/app/hooks/useSignup";
+import { useSignup } from "@/hooks/useSignup";
 import { validators } from "@/config/validation";
 import FormField from "./components/FormField";
 import DuplicateField from "./components/DuplicateField";

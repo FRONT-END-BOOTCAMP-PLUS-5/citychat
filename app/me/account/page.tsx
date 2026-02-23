@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import styles from "./page.module.css";
 import SharedPageLayout from "@/app/SharedPageLayout";
-import { useUserStore } from "@/app/stores/useUserStore";
+import { useUserStore } from "@/stores/useUserStore";
 import { Edit2 } from "lucide-react";
 import NicknameChangeModal from "./components/NicknameChangeModal";
 import PasswordChangeModal from "./components/PasswordChangeModal";

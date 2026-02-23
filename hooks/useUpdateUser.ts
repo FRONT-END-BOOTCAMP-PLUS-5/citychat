@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { useUserStore } from "@/app/stores/useUserStore";
+import { useUserStore } from "@/stores/useUserStore";
 import { UpdateUserResponseDto } from "@/backend/application/users/dtos/UpdateUserResponseDto";
 
 type UpdateUserData = {

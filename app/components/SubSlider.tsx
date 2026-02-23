@@ -5,7 +5,7 @@ import styles from "./subSlider.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
-import { useGetCities } from "@/app/hooks/useGetCities";
+import { useGetCities } from "@/hooks/useGetCities";
 
 const SWIPE_THRESHOLD = 50;
 

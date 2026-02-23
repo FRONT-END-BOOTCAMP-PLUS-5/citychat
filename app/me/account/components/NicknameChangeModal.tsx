@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@/app/components/Modal";
 import styles from "../page.module.css";
-import { useUpdateUser } from "@/app/hooks/useUpdateUser";
+import { useUpdateUser } from "@/hooks/useUpdateUser";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import { validators } from "@/config/validation";
 

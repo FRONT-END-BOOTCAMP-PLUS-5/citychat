@@ -1,4 +1,4 @@
-import { ApiResponse } from "@/app/types/ApiResponse";
+import { ApiResponse } from "@/types/ApiResponse";
 import { ChatRepository } from "@/backend/domain/repositories/ChatRepository";
 import { GetChatListRequestDto } from "../dtos/GetChatListRequestDto";
 import { GetChatListResponseDto } from "../dtos/GetChatListResponseDto";

@@ -1,4 +1,4 @@
-import { useCityStore } from "@/app/stores/useCityStore";
+import { useCityStore } from "@/stores/useCityStore";
 import { CityDTO } from "@/backend/application/cities/dtos/GetCityListResponseDto";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";

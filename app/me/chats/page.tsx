@@ -1,5 +1,5 @@
 "use client";
-import { useGetCurrentUserChats } from "@/app/hooks/useGetCurrentUserChats";
+import { useGetCurrentUserChats } from "@/hooks/useGetCurrentUserChats";
 import styles from "./page.module.css";
 import SharedPageLayout from "@/app/SharedPageLayout";
 import { useInView } from "react-intersection-observer";
@@ -7,7 +7,7 @@ import React, { useEffect, useState, useRef } from "react";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import EmptyChatList from "./components/EmptyChatList";
 import { useRouter } from "next/navigation";
-import { useCityStore } from "@/app/stores/useCityStore";
+import { useCityStore } from "@/stores/useCityStore";
 
 const {
   ["page-container"]: pageContainer,

@@ -2,11 +2,11 @@
 import SharedPageLayout from "@/app/SharedPageLayout";
 import styles from "./page.module.css";
 import React from "react";
-import { useUserStore } from "@/app/stores/useUserStore";
+import { useUserStore } from "@/stores/useUserStore";
 import Avatar from "@/app/components/Avatar";
 import { ChevronRight, MessagesSquare, User, LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { useSignout } from "@/app/hooks/useSignout";
+import { useSignout } from "@/hooks/useSignout";
 
 const {
   ["page-container"]: pageContainer,
