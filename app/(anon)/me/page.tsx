@@ -4,8 +4,8 @@ import styles from "./page.module.css";
 import React from "react";
 import { useUserStore } from "@/app/stores/useUserStore";
 import Avatar from "@/app/components/Avatar";
-import { ChevronRight, MessagesSquare, User } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { ChevronRight, MessagesSquare, User, LucideIcon } from "lucide-react";
+import Link from "next/link";
 import { useSignout } from "@/app/hooks/useSignout";
 
 const {
@@ -22,23 +22,21 @@ const {
   ["sign-out-button"]: signOutButton,
 } = styles;
 
+interface MenuItem {
+  icon: LucideIcon;
+  label: string;
+  href: string;
+}
+
+const menuItems: MenuItem[] = [
+  { icon: User, label: "My Account", href: "/me/account" },
+  { icon: MessagesSquare, label: "My chats", href: "/me/chats" },
+];
+
 export default function MePage() {
-  const user = useUserStore((state) => state.user); // 유저 정보 데이터
+  const user = useUserStore((state) => state.user);
   const { mutate: signout } = useSignout();
-  const router = useRouter();
-  
-  const handleSignout = () => {
-    signout();
-  };
-  
-  const handleManageAccount = () => {
-    router.push("/me/account");
-  };
-  
-  const handleMyChats = () => {
-    router.push("/me/chats");
-  };
-  
+
   return (
     <SharedPageLayout title="My page">
       <div className={pageContainer}>
@@ -52,35 +50,33 @@ export default function MePage() {
             </div>
           </div>
           <div className={menuList}>
-            <div className={menuItem} onClick={handleManageAccount}>
-              <div className={menuIcon}>
-                <User />
-              </div>
-              <span className={menuText}>My Account</span>
-              <div className={menuArrow}>
-                <ChevronRight />
-              </div>
-            </div>
-            <div className={menuItem} onClick={handleMyChats}>
-              <div className={menuIcon}>
-                <MessagesSquare />
-              </div>
-              <span className={menuText}>My chats</span>
-              <div className={menuArrow}>
-                <ChevronRight />
-              </div>
-            </div>
+            {menuItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                scroll={false}
+                className={menuItem}
+              >
+                <div className={menuIcon}>
+                  <item.icon />
+                </div>
+                <span className={menuText}>{item.label}</span>
+                <div className={menuArrow}>
+                  <ChevronRight />
+                </div>
+              </Link>
+            ))}
           </div>
           <button
             type="button"
-            onClick={handleSignout}
+            onClick={() => signout()}
             className={signOutButton}
           >
-              Sign out
+            Sign out
           </button>
         </div>
       </div>
     </SharedPageLayout>
   );
-};
+}
 
