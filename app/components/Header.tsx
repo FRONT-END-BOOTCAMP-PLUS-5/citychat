@@ -144,6 +144,7 @@ function Header() {
                         <Link
                           key={region.name}
                           href={region.path}
+                          scroll={false}
                           className={styles.dropdownItem}
                           onClick={() => setIsCitiesDropdownOpen(false)}
                         >
@@ -168,6 +169,7 @@ function Header() {
             <div className={styles.mypageContainer}>
               <Link
                 href="/me"
+                scroll={false}
                 id="mypage-button"
                 className={styles.mypageIconButton}
               >
@@ -235,6 +237,7 @@ function Header() {
                       <li key={region.name}>
                         <Link
                           href={region.path}
+                          scroll={false}
                           className={styles.drawerSubLink}
                           onClick={toggleDrawer(false)} // 도시 선택 시 드로어 닫기
                         >
@@ -259,6 +262,7 @@ function Header() {
             <li className={styles.drawerListItem}>
               <Link
                 href="/me"
+                scroll={false}
                 className={styles.drawerLink}
               >{isLoggedIn ? "My page" : "Sign in" }</Link>
             </li>

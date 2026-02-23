@@ -96,6 +96,7 @@ export default function CenterModeCarousel() {
                     {" "}
                     <Link
                       href={`/cities/${city.id}`}
+                      scroll={false}
                       className={styles.linkArrow}
                     >
                       <div
