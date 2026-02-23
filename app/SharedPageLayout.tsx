@@ -2,7 +2,6 @@
 import React from "react";
 import "./shared-page-layout.css";
 import "./globals.css"; // 전역 스타일
-import Footer from "./components/Footer";
 
 interface SharedPageLayoutProps {
   children: React.ReactNode;
@@ -27,7 +26,6 @@ export default function SharedPageLayout({
               <h1 className="page-title">{title}</h1>
               {children}
             </div>
-            <Footer />
           </div>
         </main>
       </div>

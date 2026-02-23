@@ -6,6 +6,7 @@ import { useUserStore } from "@/app/stores/useUserStore";
 import Avatar from "@/app/components/Avatar";
 import { ChevronRight, MessagesSquare, User } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useSignout } from "@/app/hooks/useSignout";
 
 const {
   ["page-container"]: pageContainer,
@@ -18,11 +19,17 @@ const {
   ["menu-icon"]: menuIcon,
   ["menu-text"]: menuText,
   ["menu-arrow"]: menuArrow,
+  ["sign-out-button"]: signOutButton,
 } = styles;
 
 export default function MePage() {
   const user = useUserStore((state) => state.user); // 유저 정보 데이터
+  const { mutate: signout } = useSignout();
   const router = useRouter();
+  
+  const handleSignout = () => {
+    signout();
+  };
   
   const handleManageAccount = () => {
     router.push("/me/account");
@@ -64,6 +71,13 @@ export default function MePage() {
               </div>
             </div>
           </div>
+          <button
+            type="button"
+            onClick={handleSignout}
+            className={signOutButton}
+          >
+              Sign out
+          </button>
         </div>
       </div>
     </SharedPageLayout>
