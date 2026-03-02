@@ -43,11 +43,9 @@ export default function ChatSearch({
           }, 30 * 1000);
         }
       } else {
-        console.warn("검색 결과 형식이 배열이 아닙니다:", data);
         setResults([]);
       }
-    } catch (err) {
-      console.error("검색 오류:", err);
+    } catch {
       setResults([]);
     }
   };

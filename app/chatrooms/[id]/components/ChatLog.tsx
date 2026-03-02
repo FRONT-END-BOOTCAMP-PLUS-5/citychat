@@ -60,9 +60,7 @@ export default function ChatLog({
     if (incomingMessages.length > renderedMessages.length) {
       setLoading(false);
       const newMessages = incomingMessages.slice(renderedMessages.length);
-      console.log("🔄 새 메시지 추가됨:", newMessages);
       const newAdaptedMessages = newMessages.map(AdaptChatFromSupabase);
-      console.log("💡", newAdaptedMessages);
       setRenderedMessages((prev) => [...prev, ...newAdaptedMessages]);
     }
     setLoading(true);
@@ -168,7 +166,6 @@ export default function ChatLog({
         <>
           <ul className={styles.chatContainer}>
             {renderedMessages.map((msg, i) => {
-              console.log("페이지 렌더링");
               const isMe = msg.senderId === currentUserId;
               const isHighlighted = highlightSet.has(msg.id!);
               const formattedTime = msg.sentAt

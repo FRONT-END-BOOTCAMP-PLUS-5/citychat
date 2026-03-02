@@ -37,8 +37,5 @@ export const useUpdateUser = () => {
         setUser(data.user);
       }
     },
-    onError: (error) => {
-      console.error("User update failed:", error);
-    },
   });
 };

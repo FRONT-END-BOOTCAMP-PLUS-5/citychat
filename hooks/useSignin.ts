@@ -1,5 +1,6 @@
 import { SigninRequestDto } from "@/backend/application/auth/dtos/SigninRequestDto";
 import { SigninResponseDto } from "@/backend/application/auth/dtos/SigninResponseDto";
+import { useUserStore } from "@/stores/useUserStore";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
@@ -28,15 +29,10 @@ export const useSignin = () => {
       return signin(params);
     },
     onSuccess: (data) => {
-      // 로그인 성공 시
       if (data.user) {
-        console.log("hook에서 정보", data.user);
+        useUserStore.getState().setUser(data.user);
       }
       router.push("/");
-    },
-    onError: (error) => {
-      // 로그인 실패 시 처리
-      console.error("Sign in failed:", error);
     },
   });
 };

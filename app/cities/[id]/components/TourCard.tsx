@@ -56,8 +56,7 @@ const TourCard: React.FC<TourCardProps> = ({ item }) => {
         icon: "🌐",
         duration: 2000,
       });
-    } catch (error) {
-      console.error("Failed to fetch tour detail:", error);
+    } catch {
       toast("홈페이지 정보를 불러올 수 없습니다.", {
         icon: "⚠️",
         duration: 2000,
