@@ -9,7 +9,7 @@ import {
   TOUR_TAB_CONFIG,
   ALL_TOUR_TABS
 } from "@/app/constants/tourTabs";
-import { useGetCurrentCityTours } from "@/app/hooks/useGetCurrentCityTours";
+import { useGetCurrentCityTours } from "@/hooks/useGetCurrentCityTours";
 import { TourListItem } from "@/backend/domain/entities/TourListItem";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import ScrollToTopButton from "@/app/components/ScrollToTopButton";

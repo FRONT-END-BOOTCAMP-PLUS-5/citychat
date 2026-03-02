@@ -4,7 +4,7 @@ import React from "react";
 import styles from "./tourCard.module.css";
 import { TourListItem } from "@/backend/domain/entities/TourListItem";
 import Image from "next/image";
-import { useGetTourDetail } from "@/app/hooks/useGetTourDetail";
+import { useGetTourDetail } from "@/hooks/useGetTourDetail";
 import toast from "react-hot-toast"; 
 import { HouseIcon, MapPinnedIcon } from "lucide-react";
 
