@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "@/app/components/Modal";
 import styles from "../page.module.css";
 import { useUpdateUser } from "@/hooks/useUpdateUser";
+import { useCheckDuplicate } from "@/hooks/useCheckDuplicate";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import { validators } from "@/config/validation";
 
@@ -34,7 +35,12 @@ export default function NicknameChangeModal({
   onClose,
   currentNickname = "",
 }: NicknameChangeModalProps) {
-  const { mutate: updateUser, isPending, isSuccess } = useUpdateUser();
+  const { mutate: updateUser, isPending, isSuccess, reset } = useUpdateUser();
+  const {
+    mutate: checkDuplicate,
+    isPending: isCheckingDuplicate,
+    reset: resetDuplicate,
+  } = useCheckDuplicate();
   const [newNickname, setNewNickname] = useState("");
   const [validationError, setValidationError] = useState("");
   const [nicknameStatus, setNicknameStatus] = useState({
@@ -58,7 +64,15 @@ export default function NicknameChangeModal({
     }
   }, [isOpen, currentNickname]);
 
-  const checkNicknameDuplicate = async () => {
+  // 모달이 닫힐 때 mutation 상태 초기화
+  useEffect(() => {
+    if (!isOpen) {
+      reset();
+      resetDuplicate();
+    }
+  }, [isOpen, reset, resetDuplicate]);
+
+  const checkNicknameDuplicate = () => {
     if (!newNickname.trim()) {
       setValidationError("닉네임을 입력해주세요.");
       return;
@@ -80,26 +94,25 @@ export default function NicknameChangeModal({
       return;
     }
 
-    try {
-      const response = await fetch(
-        `/api/user/duplicate?field=nickname&value=${encodeURIComponent(
-          newNickname
-        )}`
-      );
-      const result = await response.json();
-
-      setNicknameStatus({
-        checked: true,
-        isDuplicate: result.isDuplicate,
-        message: result.message,
-      });
-    } catch (error) {
-      setNicknameStatus({
-        checked: false,
-        isDuplicate: false,
-        message: error instanceof Error ? error.message : "중복 확인 중 오류가 발생했습니다.",
-      });
-    }
+    checkDuplicate(
+      { field: "nickname", value: newNickname },
+      {
+        onSuccess: (result) => {
+          setNicknameStatus({
+            checked: true,
+            isDuplicate: result.isDuplicate,
+            message: result.message,
+          });
+        },
+        onError: () => {
+          setNicknameStatus({
+            checked: false,
+            isDuplicate: false,
+            message: "중복 확인 중 오류가 발생했습니다.",
+          });
+        },
+      }
+    );
   };
 
   const handleSubmit = async () => {
@@ -129,11 +142,11 @@ export default function NicknameChangeModal({
             text: "사용자 정보가 성공적으로 수정되었습니다.",
           });
         },
-        onError: (error) => {
+        onError: () => {
           setSubmitMessage({
             show: true,
             type: "error",
-            text: error.message || "사용자 정보 수정에 실패했습니다.",
+            text: "사용자 정보 수정에 실패했습니다.",
           });
         },
       }
@@ -169,7 +182,10 @@ export default function NicknameChangeModal({
               <button
                 type="button"
                 className={modalButton}
-                onClick={onClose}
+                onClick={() => {
+                  reset();
+                  onClose();
+                }}
                 style={{ width: "100%" }}
               >
                 확인
@@ -194,9 +210,9 @@ export default function NicknameChangeModal({
                   type="button"
                   className={`${modalFormButton} ${modalEditButton}`}
                   onClick={checkNicknameDuplicate}
-                  disabled={isPending || !!validationError || !newNickname}
+                  disabled={isPending || isCheckingDuplicate || !!validationError || !newNickname}
                 >
-                  중복확인
+                  {isCheckingDuplicate ? <LoadingSpinner size={5} /> : "중복확인"}
                 </button>
               </div>
               <p

@@ -85,11 +85,11 @@ export default function DuplicateField({
             onDuplicateResult(field, true, result.isDuplicate);
           }
         },
-        onError: (err) => {
+        onError: () => {
           setDuplicateStatus({
             checked: true,
             isDuplicate: true,
-            message: err instanceof Error ? err.message : "중복 확인 중 오류가 발생했습니다.",
+            message: "중복 확인 중 오류가 발생했습니다.",
           });
 
           if (onDuplicateResult) {
