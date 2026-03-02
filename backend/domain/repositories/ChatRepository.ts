@@ -1,4 +1,4 @@
-import { ApiResponse } from "@/app/types/ApiResponse";
+import { ApiResponse } from "@/types/ApiResponse";
 import { Chat } from "../entities/Chat";
 
 export interface ChatRepository {

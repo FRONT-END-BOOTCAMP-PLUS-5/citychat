@@ -36,20 +36,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 로그인 성공 시 쿠키에 access token 저장
+    // 로그인 성공 시 쿠키에 토큰 저장
     const cookieStore = await cookies();
-    if (result.success && result.accessToken)
+    const isProduction = process.env.NODE_ENV === "production";
+
+    if (result.accessToken) {
       cookieStore.set("access-token", result.accessToken, {
         httpOnly: true,
-        secure: true,
+        secure: isProduction,
+        sameSite: "lax",
         maxAge: 3600, // 1시간
       });
-    if (result.success && result.refreshToken)
+    }
+    if (result.refreshToken) {
       cookieStore.set("refresh-token", result.refreshToken, {
         httpOnly: true,
-        secure: true,
+        secure: isProduction,
+        sameSite: "lax",
         maxAge: 604800, // 7일
       });
+    }
 
     return NextResponse.json({
       user: result.user,

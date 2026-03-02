@@ -5,7 +5,7 @@ import styles from "./subSlider.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
-import { useGetCities } from "@/app/hooks/useGetCities";
+import { useGetCities } from "@/hooks/useGetCities";
 
 const SWIPE_THRESHOLD = 50;
 
@@ -175,7 +175,7 @@ const SubSlider: React.FC = () => {
             <div className={styles.textContainer}>
               <h1>{currentCity.name}에 오신 것을 환영합니다!</h1>
               <p>{currentCity.description}</p>
-              <Link href={`/cities/${currentCity.id}`} className={styles.exploreButton}>
+              <Link href={`/cities/${currentCity.id}`} scroll={false} className={styles.exploreButton}>
                 Explore
               </Link>
             </div>

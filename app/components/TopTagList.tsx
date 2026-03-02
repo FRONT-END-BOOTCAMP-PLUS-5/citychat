@@ -25,8 +25,8 @@ export default function TopTagList({ roomId, onSearchResults }: Props) {
         const res = await fetch(`/api/chat/top-tags?roomId=${roomId}`);
         const data = await res.json();
         setTags(data);
-      } catch (err) {
-        console.error("🔥 태그 불러오기 실패:", err);
+      } catch {
+        // 태그 불러오기 실패
       } finally {
         setLoading(false);
       }
@@ -51,8 +51,8 @@ export default function TopTagList({ roomId, onSearchResults }: Props) {
       const idArray = (ids as { id: number }[]).map((item) => item.id);
       setSelectedTag(tag);
       onSearchResults?.(idArray);
-    } catch (err) {
-      console.error("🔥 태그 검색 실패:", err);
+    } catch {
+      // 태그 검색 실패
     }
   };
 

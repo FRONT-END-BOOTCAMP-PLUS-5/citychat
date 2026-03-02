@@ -3,12 +3,19 @@ import { CheckDuplicateRequestDto } from "../dtos/CheckDuplicateRequestDto";
 import { CheckDuplicateResponseDto } from "../dtos/CheckDuplicateResponseDto";
 import { GetUserCriteria } from "@/backend/infrastructure/repositories/criteria/GetUserCriteria";
 
+const fieldNameMap: Record<string, string> = {
+  userId: "아이디",
+  nickname: "닉네임",
+  email: "이메일",
+};
+
 export class CheckDuplicateUsecase {
   constructor(private userRepository: UserRepository) { }
 
   async execute(request: CheckDuplicateRequestDto): Promise<CheckDuplicateResponseDto> {
     try {
       const criteria: GetUserCriteria = {};
+      const fieldName = fieldNameMap[request.field];
 
       switch (request.field) {
       case "userId":
@@ -33,7 +40,7 @@ export class CheckDuplicateUsecase {
 
       return {
         success: true,
-        message: isDuplicate ? `이미 사용 중인 ${request.field}입니다.` : `사용 가능한 ${request.field}입니다.`,
+        message: isDuplicate ? `이미 사용 중인 ${fieldName}입니다.` : `사용 가능한 ${fieldName}입니다.`,
         isDuplicate
       };
     } catch (error) {

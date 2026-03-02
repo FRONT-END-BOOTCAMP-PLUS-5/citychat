@@ -2,7 +2,7 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { ChatRepository } from "../../domain/repositories/ChatRepository";
 import { Chat } from "../../domain/entities/Chat";
 import { createClient } from "@/utils/supabase/server";
-import { ApiResponse } from "@/app/types/ApiResponse";
+import { ApiResponse } from "@/types/ApiResponse";
 
 interface ChatTable {
   id: number;
