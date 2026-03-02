@@ -33,6 +33,7 @@ export const useSignout = () => {
       // 로그아웃 성공 시 사용자 정보 초기화
       clearUser();
       router.replace("/");
+      router.refresh();
     },
   });
 };
