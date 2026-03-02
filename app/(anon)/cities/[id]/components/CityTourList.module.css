@@ -51,6 +51,12 @@
   overflow-y: auto;
 }
 
+.listInfo {
+  padding: 8px 20px;
+  font-size: 0.875rem;
+  color: #666;
+}
+
 .toursGrid {
   display: grid;
   gap: 16px;

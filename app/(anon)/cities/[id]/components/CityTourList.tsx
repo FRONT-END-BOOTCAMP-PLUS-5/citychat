@@ -73,6 +73,11 @@ export default function CityTourList ({ cityId }: CityTourListProps) {
             disabled={isFetching}
           />
         </div>
+        {data && data.total > 0 && (
+          <div className={styles.listInfo}>
+            {tourList.length} / {data.total}개
+          </div>
+        )}
       </div>
 
       {/* 투어 리스트 */}
