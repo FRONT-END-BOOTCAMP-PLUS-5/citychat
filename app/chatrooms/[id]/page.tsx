@@ -26,7 +26,7 @@ export default function ChatRoom() {
   // 채팅방의 기록(log) 불러오기
   useEffect(() => {
     const fetchInitialMessages = async () => {
-      const res = await fetch(`/api/chat/logs?roomId=${roomId}&days=30`, {
+      const res = await fetch(`/api/chat/logs?roomId=${roomId}&days=365`, {
         method: "GET",
         credentials: "include",
       });
