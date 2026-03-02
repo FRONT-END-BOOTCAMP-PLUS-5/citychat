@@ -2,7 +2,7 @@ import {
   useInfiniteQuery,
   UseInfiniteQueryResult,
 } from "@tanstack/react-query";
-import { ApiResponse } from "@/app/types/ApiResponse";
+import { ApiResponse } from "@/types/ApiResponse";
 import { TourListItem } from "@/backend/domain/entities/TourListItem";
 import { TourTab } from "@/app/constants/tourTabs";
 

@@ -1,5 +1,5 @@
 import { GetTourListRequestDto } from "@/backend/application/tours/dtos/GetTourListRequestDto";
-import { ApiResponse } from "@/app/types/ApiResponse";
+import { ApiResponse } from "@/types/ApiResponse";
 import { TourListItem } from "@/backend/domain/entities/TourListItem";
 import { TourRepository } from "@/backend/domain/repositories/TourRepository";
 
