@@ -29,7 +29,7 @@ export default function PasswordChangeModal({
   isOpen,
   onClose,
 }: PasswordChangeModalProps) {
-  const { mutate: updateUser, isPending, isSuccess } = useUpdateUser();
+  const { mutate: updateUser, isPending, isSuccess, reset } = useUpdateUser();
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -60,6 +60,13 @@ export default function PasswordChangeModal({
       setSubmitMessage({ show: false, type: "success", text: "" });
     }
   }, [isOpen]);
+
+  // 모달이 닫힐 때 mutation 상태 초기화
+  useEffect(() => {
+    if (!isOpen) {
+      reset();
+    }
+  }, [isOpen, reset]);
 
   const handleSubmit = async () => {
     if (
@@ -110,11 +117,11 @@ export default function PasswordChangeModal({
             text: "사용자 정보가 성공적으로 수정되었습니다.",
           });
         },
-        onError: (error) => {
+        onError: () => {
           setSubmitMessage({
             show: true,
             type: "error",
-            text: error.message || "사용자 정보 수정에 실패했습니다.",
+            text: "사용자 정보 수정에 실패했습니다.",
           });
         },
       }
@@ -169,7 +176,10 @@ export default function PasswordChangeModal({
               <button
                 type="button"
                 className={modalButton}
-                onClick={onClose}
+                onClick={() => {
+                  reset();
+                  onClose();
+                }}
                 style={{ width: "100%" }}
               >
                 확인
