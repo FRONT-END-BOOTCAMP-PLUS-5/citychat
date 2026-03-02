@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
 import SharedPageLayout from "@/app/SharedPageLayout";
@@ -16,7 +16,7 @@ const {
   ["signup-link"]: signupLink,
 } = styles;
 
-export default function SigninPage() {
+function SigninForm() {
   const { mutate: signin, isPending, error } = useSignin();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -81,5 +81,13 @@ export default function SigninPage() {
         </form>
       </div>
     </SharedPageLayout>
+  );
+}
+
+export default function SigninPage() {
+  return (
+    <Suspense fallback={null}>
+      <SigninForm />
+    </Suspense>
   );
 }
