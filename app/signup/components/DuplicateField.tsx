@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
+import { useCheckDuplicate } from "@/hooks/useCheckDuplicate";
 
 interface DuplicateFieldProps {
   label: string;
@@ -41,18 +42,17 @@ export default function DuplicateField({
     isDuplicate: false,
     message: "",
   });
-  const [isChecking, setIsChecking] = useState(false);
+  const { mutate: checkDuplicate, isPending: isChecking } = useCheckDuplicate();
 
   // value가 변경되면 중복확인 상태 초기화
   useEffect(() => {
     setDuplicateStatus({ checked: false, isDuplicate: false, message: "" });
-    setIsChecking(false);
     if (onDuplicateResult) {
       onDuplicateResult(field, false, false);
     }
   }, [value, field, onDuplicateResult]);
 
-  async function handleDuplicateCheck() {
+  function handleDuplicateCheck() {
     if (!value.trim()) {
       setDuplicateStatus({
         checked: true,
@@ -71,36 +71,33 @@ export default function DuplicateField({
       return;
     }
 
-    setIsChecking(true);
+    checkDuplicate(
+      { field, value },
+      {
+        onSuccess: (result) => {
+          setDuplicateStatus({
+            checked: true,
+            isDuplicate: result.isDuplicate,
+            message: result.message,
+          });
 
-    try {
-      const response = await fetch(
-        `/api/user/duplicate?field=${field}&value=${encodeURIComponent(value)}`
-      );
-      const result = await response.json();
+          if (onDuplicateResult) {
+            onDuplicateResult(field, true, result.isDuplicate);
+          }
+        },
+        onError: (err) => {
+          setDuplicateStatus({
+            checked: true,
+            isDuplicate: true,
+            message: err instanceof Error ? err.message : "중복 확인 중 오류가 발생했습니다.",
+          });
 
-      setDuplicateStatus({
-        checked: true,
-        isDuplicate: result.isDuplicate,
-        message: result.message,
-      });
-
-      if (onDuplicateResult) {
-        onDuplicateResult(field, true, result.isDuplicate);
+          if (onDuplicateResult) {
+            onDuplicateResult(field, true, true);
+          }
+        },
       }
-    } catch (error) {
-      setDuplicateStatus({
-        checked: true,
-        isDuplicate: true,
-        message: error instanceof Error ? error.message : "중복 확인 중 오류가 발생했습니다.",
-      });
-
-      if (onDuplicateResult) {
-        onDuplicateResult(field, true, true);
-      }
-    } finally {
-      setIsChecking(false);
-    }
+    );
   }
   const {
     ["form-group"]: formGroup,
