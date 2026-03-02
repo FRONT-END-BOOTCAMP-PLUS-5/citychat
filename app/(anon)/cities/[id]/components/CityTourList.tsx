@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useInView } from "react-intersection-observer";
 import styles from "./CityTourList.module.css";
 import { SigunguDropdown } from "./SigunguDropdown";
 
-import { 
-  TOUR_TABS, 
-  TourTab, 
-  TOUR_TAB_CONFIG, 
-  ALL_TOUR_TABS 
+import {
+  TOUR_TABS,
+  TourTab,
+  TOUR_TAB_CONFIG,
+  ALL_TOUR_TABS
 } from "@/app/constants/tourTabs";
 import { useGetCurrentCityTours } from "@/app/hooks/useGetCurrentCityTours";
 import { TourListItem } from "@/backend/domain/entities/TourListItem";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
+import ScrollToTopButton from "@/app/components/ScrollToTopButton";
 import TourCard from "./TourCard";
 
 interface CityTourListProps {
@@ -18,9 +20,13 @@ interface CityTourListProps {
 }
 
 export default function CityTourList ({ cityId }: CityTourListProps) {
-  
   const [activeTab, setActiveTab] = useState<TourTab>(TOUR_TABS.TOUR);
   const [sigunguCode, setSigunguCode] = useState<string>();
+  const toursWrapperRef = useRef<HTMLDivElement>(null);
+  const { ref: triggerRef, inView } = useInView({
+    threshold: 0,
+    rootMargin: "30px",
+  });
 
   const {
     data,
@@ -29,7 +35,13 @@ export default function CityTourList ({ cityId }: CityTourListProps) {
     isFetchingNextPage,
     hasNextPage,
   } = useGetCurrentCityTours(String(cityId), activeTab, sigunguCode, 4);
-  
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   const tourList: TourListItem[] = data?.items ?? [];
     
   return (
@@ -64,7 +76,7 @@ export default function CityTourList ({ cityId }: CityTourListProps) {
       </div>
 
       {/* 투어 리스트 */}
-      <div className={styles.toursWrapper}>
+      <div className={styles.toursWrapper} ref={toursWrapperRef}>
         <div className={styles.toursGrid}>
           {isFetching && tourList.length === 0 ? (
             <div className={styles.loadingContainer}>
@@ -80,19 +92,14 @@ export default function CityTourList ({ cityId }: CityTourListProps) {
                 <TourCard key={item.contentid} item={item} />
               ))}
               {hasNextPage && (
-                <div className={styles.loadMoreContainer}>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => fetchNextPage()}
-                    disabled={isFetchingNextPage}
-                  >
-                    {isFetchingNextPage ? "로딩 중..." : "더 보기"}
-                  </button>
+                <div ref={triggerRef} className={styles.loadMoreContainer}>
+                  {isFetchingNextPage && <LoadingSpinner size={10} />}
                 </div>
               )}
             </>
           )}
         </div>
+        <ScrollToTopButton containerRef={toursWrapperRef} />
       </div>
     </div>
   );

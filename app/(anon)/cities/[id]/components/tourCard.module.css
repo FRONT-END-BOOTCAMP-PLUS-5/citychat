@@ -18,6 +18,7 @@
 .actionButton {
   cursor: pointer;
   background-color: transparent;
+  color: black;
   flex-shrink: 0;
   width: 30px;
   height: 30px;
