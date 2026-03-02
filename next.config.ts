@@ -9,6 +9,14 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/storage/v1/object/public/**",
       },
+      {
+        protocol: "https",
+        hostname: "**.visitkorea.or.kr",
+      },
+      {
+        protocol: "http",
+        hostname: "**.visitkorea.or.kr",
+      },
     ],
     domains: [
       "miro.medium.com",

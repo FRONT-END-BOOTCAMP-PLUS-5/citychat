@@ -44,7 +44,8 @@
 }
 
 .content-inner {
-  max-width: fit-content;
+  max-width: 100%;
+  width: fit-content;
 }
 
 .page-title {

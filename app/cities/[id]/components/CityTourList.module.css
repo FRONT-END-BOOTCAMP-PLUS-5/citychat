@@ -1,0 +1,100 @@
+.tourListContainer {
+  width: 100%;
+}
+.filterContainer {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.tabsWrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tabsWrapper::-webkit-scrollbar {
+  display: none;
+}
+.tabButton {
+  border: none;
+  background-color: transparent;
+  display: flex;
+  cursor: pointer;
+  color: gray;
+}
+.tabButton.active {
+  color: #333;
+}
+.tabText {
+  font-size: 1rem;
+  padding-right: 1rem;
+  border-right: #a6a6a6 solid 1px;
+}
+
+.dropdownWrapper {
+  width: 15%;
+  flex-shrink: 0;
+}
+
+.toursWrapper {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.listInfo {
+  padding: 8px 20px;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.toursGrid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 20px;
+  /* min-height: 40vh; */
+}
+
+.loadingContainer {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2rem 0;
+  grid-column: 1 / -1;
+}
+
+.loadMoreContainer {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .filterContainer {
+    flex-direction: column;
+  }
+  .dropdownWrapper {
+    width: 100%;
+  }
+  .toursGrid {
+    grid-template-columns: 1fr; 
+    padding: 10px;
+    gap: 12px;
+  }
+}
