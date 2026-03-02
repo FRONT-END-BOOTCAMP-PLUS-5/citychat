@@ -34,8 +34,5 @@ export const useSignout = () => {
       clearUser();
       router.replace("/");
     },
-    onError: (error) => {
-      console.error("Sign out failed:", error);
-    },
   });
 };

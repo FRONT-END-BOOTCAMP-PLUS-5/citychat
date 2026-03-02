@@ -1,16 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
 import SharedPageLayout from "@/app/SharedPageLayout";
 import { useSignin } from "@/hooks/useSignin";
-import { useUserStore } from "@/stores/useUserStore";
 
 const {
   ["form-container"]: formContainer,
   ["signin-form"]: signinForm,
-  ["form-title"]: formTitle,
   ["form-group"]: formGroup,
   ["form-label"]: formLabel,
   ["form-input"]: formInput,
@@ -21,27 +18,13 @@ const {
 
 export default function SigninPage() {
   const { mutate: signin, isPending, error } = useSignin();
-  const setUser = useUserStore((state) => state.setUser); // ✅ 상태 설정 함수 가져오기
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const userId = (e.target as HTMLFormElement).userid.value.trim();
     const password = (e.target as HTMLFormElement).password.value.trim();
 
-    // useSignin 훅 호출
-    signin(
-      { userId, password },
-      {
-        onSuccess: (data) => {
-          if (data.user) {
-            setUser(data.user); // useUserStore에 정보 저장
-          }
-        },
-        onError: (error) => {
-          console.error("Sign in failed:", error);
-        },
-      }
-    );
+    signin({ userId, password });
   };
 
   return (
