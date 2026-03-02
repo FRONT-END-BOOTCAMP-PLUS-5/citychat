@@ -33,6 +33,7 @@ export const useSignin = () => {
         useUserStore.getState().setUser(data.user);
       }
       router.push("/");
+      router.refresh();
     },
   });
 };
