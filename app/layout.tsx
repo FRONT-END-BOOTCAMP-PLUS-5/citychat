@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "./components/Header";
 import QueryProvider from "./providers/QueryProvider";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "CityChat",
@@ -35,6 +36,7 @@ export default function MainLayout({
         <QueryProvider>
           <Header />
           {children}
+          <Toaster position="bottom-right" />
         </QueryProvider>
       </body>
     </html>
