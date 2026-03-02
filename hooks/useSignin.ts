@@ -2,7 +2,7 @@ import { SigninRequestDto } from "@/backend/application/auth/dtos/SigninRequestD
 import { SigninResponseDto } from "@/backend/application/auth/dtos/SigninResponseDto";
 import { useUserStore } from "@/stores/useUserStore";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const signin = async (data: SigninRequestDto): Promise<SigninResponseDto> => {
   const response = await fetch("/api/auth/signin", {
@@ -23,6 +23,7 @@ const signin = async (data: SigninRequestDto): Promise<SigninResponseDto> => {
 
 export const useSignin = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   return useMutation({
     mutationFn: (params: SigninRequestDto) => {
@@ -32,7 +33,8 @@ export const useSignin = () => {
       if (data.user) {
         useUserStore.getState().setUser(data.user);
       }
-      router.push("/");
+      const redirectUrl = searchParams.get("redirect") || "/";
+      router.push(redirectUrl);
       router.refresh();
     },
   });
