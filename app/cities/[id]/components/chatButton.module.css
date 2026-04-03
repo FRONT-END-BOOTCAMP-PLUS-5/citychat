@@ -1,0 +1,20 @@
+.chatButton {
+  display: block;
+  padding: 0.5rem 1rem;
+  background-color: white;
+  color: #ffbb00;
+  font-weight: bold;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px #0000001a;
+  font-size: 16px;
+}
+
+@media (min-width: 768px) {
+  .chatButton {
+    width: 150px;
+    height: 40px;
+    font-size: 18px;
+  }
+}

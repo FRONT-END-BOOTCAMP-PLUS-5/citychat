@@ -7,7 +7,6 @@ import styles from "./section.module.css";
 interface SectionProps {
   bgImageUrl: string;
   children: React.ReactNode;
-  style?: React.CSSProperties; // React.CSSProperties 타입을 사용하면 돼!
 }
 
 export default function Section({
@@ -15,13 +14,7 @@ export default function Section({
   bgImageUrl, // props로 받은 bgImageUrl 사용
 }: SectionProps) {
   return (
-    <section
-      className={styles.section}
-      style={{
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
+    <section className={styles.section}>
       {bgImageUrl && (
         <Image
           src={bgImageUrl} // 여기에 props로 받은 bgImageUrl이 사용됨

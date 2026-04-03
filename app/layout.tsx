@@ -2,12 +2,27 @@ import type { Metadata } from "next";
 import Header from "./components/Header";
 import QueryProvider from "./providers/QueryProvider";
 import "./globals.css";
-import AuthGuard from "./providers/AuthGuard";
-
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "CityChat",
-  description: "A city chat application",
+  description: "대한민국 도시별 커뮤니티 플랫폼",
+  openGraph: {
+    title: "CityChat",
+    description: "대한민국 도시별 커뮤니티 플랫폼",
+    url: "https://citychat-beta.vercel.app/",
+    siteName: "CityChat",
+    images: [
+      {
+        url: "/assets/citychat2.png",
+        width: 782,
+        height: 756,
+        alt: "CityChat logo",
+      },
+    ],
+    locale: "ko_KR",
+    type: "website",
+  },
 };
 
 export default function MainLayout({
@@ -16,18 +31,12 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </head>
-      <title>Title</title>
+    <html lang="ko">
       <body>
         <QueryProvider>
-          <AuthGuard>
-            <Header />
-            {children}
-          </AuthGuard>
+          <Header />
+          {children}
+          <Toaster position="bottom-right" />
         </QueryProvider>
       </body>
     </html>

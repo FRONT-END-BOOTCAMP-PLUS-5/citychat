@@ -1,162 +1,156 @@
-/* app-container: 전체 앱을 감싸는 컨테이너 */
-.appContainer {
+/* =========== 모바일 우선 =============== */
+/* container: 전체 앱을 감싸는 컨테이너 */
+.container {
+  padding: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: #f0f0f0; */
-  padding: 20px;
   box-sizing: border-box;
-  height: 65vh;
-  margin: 10vh 20vh;
-  border-radius: 10px;
+  height: 80dvh;
+  margin: 10dvh 0;
   color: #333;
 }
 
-/* main-content-area: 주요 콘텐츠 영역 */
-.mainContentArea {
+/* content-wrapper: 주요 콘텐츠 영역 */
+.contentWrapper {
+  max-width: 400px;
+  height: 100%;
   display: flex;
-  background-color: rgba(255, 255, 255, 0.4);
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  min-height: 380px;
+  flex-direction: column;
+  justify-content: flex-end;
   align-items: center;
-  position: relative;
-  overflow: hidden;
-  height: 50vh;
-  width: 80vw;
-  max-width: 900px;
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
 }
 
-.verticalNavContainer {
-  width: 160px;
-  overflow: hidden;
-  border-radius: 8px;
-  padding-right: 20px;
-  position: relative;
-  height: 320px;
-}
-
-.scrollSnapContainer {
+/* 도시 네비게이션 */
+.cityNav {
+  width: 80%;
+  padding: 1rem 1.5rem 0;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: transform 0.3s ease-in-out;
-  will-change: transform;
-  height: 5 * 100px;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
-.scrollInner {
+.cityNavInner {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.cityNavInner::-webkit-scrollbar {
+  display: none;
 }
 
 .cityNavItem {
-  scroll-snap-align: start;
-  padding: 0, 16px;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  scroll-snap-align: center;
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  color: #4b5563;
   cursor: pointer;
-  color: #4b5563;
-  transition: color 0.3s, background-color 0.3s;
-  font-size: 1.5rem;
-}
-
-.navItemWrap {
-  height: 1000px;
-  margin: auto 0;
-}
-
-/* 현재 활성 아이템 */
-.active {
-  color: #ffb803b4;
-  border-right: 1px solid #ffb703;
-}
-
-/* 활성화된 항목에 hover 시 텍스트 색상을 유지 */
-.active:hover {
-  color: #ffb803b4;
-}
-
-/* welcome-section: 우측 콘텐츠 영역 */
-.welcomeSection {
-  flex: 1;
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 1.125rem;
   transition: all 0.3s ease;
-  min-height: 350px;
-  display: flex;
-  align-items: center;
-  height: 50vh;
+  border-bottom: 1px solid transparent;
 }
 
-.welcomeSection h1 {
-  font-size: 19px;
-  color: #4b5563;
-  margin-bottom: 10px;
-  font-weight: bold;
+.cityNavItem.active {
+  color: #ffb803b4;
+  border-bottom-color: #ffb703;
+}
+
+.cityDetail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  width: 100%;
+  min-height: 0;
+  background-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
 }
 
 /* 이미지 + 내용 텍스트 영역 */
-.contentCard {
+.detailCard {
   display: flex;
-  gap: 24px;
+  flex-direction: column;
+  gap: 1.5rem;
   align-items: center;
-  min-height: 40px;
-  padding: 24px;
-  flex-wrap: nowrap;
-  max-width: 50vw;
-  height: 80%;
+  height: 100%;
 }
 
 /* 이미지 들어가는 영역 */
 .imageWrapper {
+  width: 100%;
+  max-width: 280px;
   flex-shrink: 0;
-  width: 40%;
   display: flex;
-  align-items: center;
   justify-content: center;
+  margin: 0 auto;
 }
 
-.cardImage {
+.cityImage {
   object-fit: cover;
-  border-radius: 20px;
+  border-radius: 16px;
+  width: 100%;
+  height: auto;
+  max-height: 150px;
 }
 
-.cardTextContainer {
-  flex: 1;
+.textContainer {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  min-height: 300px;
-  width: 100%;
-  height: 320px;
+  gap: 0.5rem;
+  text-align: center;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
 }
 
-.cardTextContainer p {
-  display: block;
-  font-size: 1rem;
-  line-height: 1.3;
+.textContainer h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #4b5563;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.textContainer p {
+  flex: 1;
+  padding: 0 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
   color: #666;
-  margin-bottom: 20px;
-  min-height: 150px;
+  height: 60%;
+  overflow-y: auto;
+  margin: 0;
+  scrollbar-width: thin;
 }
 
 .exploreButton {
+  flex-shrink: 0;
   background-color: #ffd700;
   color: #333;
   border: none;
-  border-radius: 30px;
-  padding: 15px 30px;
-  font-size: 18px;
+  border-radius: 24px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  /* align-self: flex-start; */
   white-space: nowrap;
 }
 
@@ -165,107 +159,97 @@
   transform: translateY(-2px);
 }
 
-/* --- 반응형 --- */
-@media (max-width: 768px) {
-  .mainContentArea {
-    flex-direction: column;
-    padding: 15px;
-  }
+.errorState, .emptyState {
+  width: 100%;
+  padding: 2rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 1rem;
+}
 
-  .verticalNavContainer {
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 30px;
-    height: 200px;
-    justify-content: flex-start;
-  }
+/* --- 태블릿 이상 --- */
+@media (min-width: 768px) {
+  .container {
+    width: 80vw;
+    padding: 2rem;
+    height: 55dvh;
+   }
 
-  .cityNavItem::before {
-    display: none;
-  }
+   .contentWrapper {
+    max-width: 900px;
+    flex-direction: row;
+    padding: 0;
+    gap: 0rem;
+   }
 
-  .welcomeSection {
-    padding-left: 0;
+   .cityNav {
+    width: 150px;
+    height: 300px;
     align-items: center;
-    text-align: center;
-    justify-content: space-evenly;
-    width: 95%;
-  }
+    padding-right: 1rem;
+   }
 
-  .welcomeSection h1 {
-    font-size: 32px;
-    margin-bottom: 20px;
-    color: #4b5563;
-  }
-
-  .contentCard {
+   .cityNavInner {
+    height: 100%;
     flex-direction: column;
-    max-width: 400px;
-    width: 100%;
-    box-sizing: border-box;
-  }
+    gap: 1rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+   }
 
-  .cardImage {
-    width: 220px;
-    height: 320px;
-    border-radius: 15px 15px 0 0;
-  }
-
-  .cardTextContainer {
+   .cityNavItem {
     width: 100%;
-    padding: 20px;
-    text-align: center;
+    height: 80px;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    min-width: 100%;
-    box-sizing: border-box;
-  }
+    border-bottom: none;
+    border-right: 1px solid transparent;
+    font-size: 1.25rem;
+   }
 
-  .cardTextContainer p {
+   .cityNavItem.active {
+    border-right-color: #ffb703;
+   }
+
+   .cityNavItem:hover {
+      color: #ffb803b4;
+    }
+
+   .cityDetail {
+    height: 100%;
+    padding: 1.5rem;
+   }
+
+   .detailCard {
+    flex-direction: row;
+    height: 100%;
+    align-items: center;
+    gap: 1.5rem;
+   }
+
+   .imageWrapper {
+    width: 40%;
+   }
+
+   .cityImage {
+    min-height: 250px;
+   }
+
+   .textContainer {
+    max-height: 100%;
+    padding: 1rem 0;
+    text-align: left;
+    justify-content: center;
+   }
+
+   .textContainer h1 {
+    font-size: 1.5rem;
+   }
+
+   .textContainer p {
     font-size: 1rem;
-  }
-
-  .exploreButton {
-    padding: 12px 25px;
-    font-size: 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .brickBackground {
-    padding: 20px;
-  }
-
-  .mainContentArea {
-    padding: 10px;
-  }
-
-  .verticalNavContainer {
-    height: 150px;
-  }
-
-  .cityNavItem {
-    font-size: 18px;
-  }
-
-  .welcomeSection h1 {
-    font-size: 30px;
-  }
-
-  .cardImage {
-    height: 180px;
-  }
-
-  .cardTextContainer {
-    padding: 15px;
-  }
-
-  .cardTextContainer p {
-    font-size: 15px;
-  }
-
-  .exploreButton {
-    font-size: 15px;
-    padding: 10px 20px;
-  }
-}
-
+   }
+} 

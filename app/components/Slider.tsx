@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -8,12 +8,7 @@ import type { CustomArrowProps } from "react-slick";
 import Image from "next/image";
 import Link from "next/link";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
-
-interface City {
-  id: string;
-  name: string;
-  image: string;
-}
+import { useGetCities } from "@/hooks/useGetCities";
 
 const NextArrow = (props: CustomArrowProps) => {
   const { className, onClick } = props;
@@ -41,37 +36,14 @@ const PrevArrow = (props: CustomArrowProps) => {
 
 export default function CenterModeCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [cities, setCities] = useState<City[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Supabase에서 도시 목록 불러오기 (API 라우트 사용)
-  useEffect(() => {
-    const fetchCities = async () => {
-      try {
-        const response = await fetch("/api/cities"); // SubSlider와 동일한 API 라우트 사용
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data: City[] = await response.json();
-        setCities(data); // 불러온 데이터를 cities 상태에 저장
-      } catch (err: unknown) {
-        console.error("도시 데이터를 불러오는 중 오류 발생:", err);
-        setError("도시 데이터를 불러오는 데 실패했습니다.");
-      } finally {
-        setLoading(false); // 로딩 완료
-      }
-    };
-
-    fetchCities();
-  }, []); // 컴포넌트 마운트 시 한 번만 실행
+  const { cities, isLoading, error } = useGetCities();
 
   // 로딩, 오류, 데이터 없음 상태 처리
-  if (loading) {
+  if (isLoading) {
     return<LoadingSpinner size={15} />;
   }
   if (error) {
-    return <div className={styles.errorState}>오류: {error}</div>;
+    return <div className={styles.errorState}>오류: {error.message}</div>;
   }
   if (cities.length === 0) {
     return <div className={styles.emptyState}>표시할 도시가 없습니다.</div>;
@@ -124,6 +96,7 @@ export default function CenterModeCarousel() {
                     {" "}
                     <Link
                       href={`/cities/${city.id}`}
+                      scroll={false}
                       className={styles.linkArrow}
                     >
                       <div
@@ -137,7 +110,7 @@ export default function CenterModeCarousel() {
                           <h3 className={styles.cityName}>{city.name}</h3>
                         </div>
                         <Image
-                          src={city.image}
+                          src={city.image || "assets/citychat2.png"}
                           alt={city.name}
                           className={styles.cityImage}
                           width={350}
